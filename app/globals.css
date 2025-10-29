@@ -3,59 +3,61 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Adding warm earth tone color palette from design brief */
 :root {
-  /* Updated theme to match Outdoors.ng brand colors - green primary, warm neutrals */
-  --background: oklch(0.99 0.005 85);
-  --foreground: oklch(0.15 0.01 85);
+  --background: oklch(0.98 0.01 60);
+  --foreground: oklch(0.25 0.02 60);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.15 0.01 85);
+  --card-foreground: oklch(0.25 0.02 60);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.15 0.01 85);
-  --primary: oklch(0.45 0.15 145);
-  --primary-foreground: oklch(0.99 0.005 85);
-  --secondary: oklch(0.92 0.01 85);
-  --secondary-foreground: oklch(0.15 0.01 85);
-  --muted: oklch(0.95 0.005 85);
-  --muted-foreground: oklch(0.5 0.01 85);
-  --accent: oklch(0.55 0.18 35);
-  --accent-foreground: oklch(0.99 0.005 85);
+  --popover-foreground: oklch(0.25 0.02 60);
+  --primary: oklch(0.45 0.12 40);
+  --primary-foreground: oklch(0.98 0.01 60);
+  --secondary: oklch(0.92 0.02 60);
+  --secondary-foreground: oklch(0.25 0.02 60);
+  --muted: oklch(0.95 0.01 60);
+  --muted-foreground: oklch(0.5 0.02 60);
+  --accent: oklch(0.35 0.08 120);
+  --accent-foreground: oklch(0.98 0.01 60);
   --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.99 0.005 85);
-  --border: oklch(0.88 0.01 85);
-  --input: oklch(0.88 0.01 85);
-  --ring: oklch(0.45 0.15 145);
-  --chart-1: oklch(0.45 0.15 145);
-  --chart-2: oklch(0.55 0.18 35);
-  --chart-3: oklch(0.35 0.12 145);
-  --chart-4: oklch(0.65 0.15 145);
-  --chart-5: oklch(0.5 0.1 85);
-  --radius: 0.75rem;
+  --destructive-foreground: oklch(0.98 0.01 60);
+  --border: oklch(0.88 0.01 60);
+  --input: oklch(0.88 0.01 60);
+  --ring: oklch(0.45 0.12 40);
+  --chart-1: oklch(0.45 0.12 40);
+  --chart-2: oklch(0.55 0.1 35);
+  --chart-3: oklch(0.35 0.08 120);
+  --chart-4: oklch(0.65 0.08 40);
+  --chart-5: oklch(0.5 0.05 60);
+  --radius: 0.5rem;
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
 
-.dark {
-  --background: oklch(0.12 0.01 85);
-  --foreground: oklch(0.95 0.005 85);
-  --card: oklch(0.15 0.01 85);
-  --card-foreground: oklch(0.95 0.005 85);
-  --popover: oklch(0.15 0.01 85);
-  --popover-foreground: oklch(0.95 0.005 85);
-  --primary: oklch(0.55 0.18 145);
-  --primary-foreground: oklch(0.12 0.01 85);
-  --secondary: oklch(0.22 0.01 85);
-  --secondary-foreground: oklch(0.95 0.005 85);
-  --muted: oklch(0.2 0.01 85);
-  --muted-foreground: oklch(0.6 0.01 85);
-  --accent: oklch(0.65 0.2 35);
-  --accent-foreground: oklch(0.12 0.01 85);
-  --destructive: oklch(0.396 0.141 25.723);
-  --destructive-foreground: oklch(0.95 0.005 85);
-  --border: oklch(0.25 0.01 85);
-  --input: oklch(0.25 0.01 85);
-  --ring: oklch(0.55 0.18 145);
+.light {
+  --background: oklch(0.98 0.01 60);
+  --foreground: oklch(0.25 0.02 60);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.25 0.02 60);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.25 0.02 60);
+  --primary: oklch(0.45 0.12 40);
+  --primary-foreground: oklch(0.98 0.01 60);
+  --secondary: oklch(0.92 0.02 60);
+  --secondary-foreground: oklch(0.25 0.02 60);
+  --muted: oklch(0.95 0.01 60);
+  --muted-foreground: oklch(0.5 0.02 60);
+  --accent: oklch(0.35 0.08 120);
+  --accent-foreground: oklch(0.98 0.01 60);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.98 0.01 60);
+  --border: oklch(0.88 0.01 60);
+  --input: oklch(0.88 0.01 60);
+  --ring: oklch(0.45 0.12 40);
 }
 
 @theme inline {
   --font-sans: "Geist", "Geist Fallback";
+  --font-serif: "Playfair Display", "Playfair Display Fallback", serif;
   --font-mono: "Geist Mono", "Geist Mono Fallback";
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -98,6 +100,9 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-duration: 0.5s;
+    transition-timing-function: ease;
   }
   body {
     @apply bg-background text-foreground;
@@ -429,6 +434,19 @@ html {
   background: oklch(0.4 0.15 145);
 }
 
+/* Enhanced dark mode scrollbar styling */
+.dark ::-webkit-scrollbar-track {
+  background: oklch(0.15 0.01 85);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: oklch(0.55 0.18 145);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.6 0.18 145);
+}
+
 /* Adding new advanced animations and effects */
 @keyframes magnetic-pull {
   0% {
@@ -639,4 +657,61 @@ html {
 /* Stagger animation delays for children */
 .stagger-children > * {
   animation-delay: calc(var(--stagger-delay, 100ms) * var(--index, 0));
+}
+
+/* Adding infinite scroll carousel animation for brand logos */
+@keyframes scroll-infinite {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-33.333%);
+  }
+}
+
+.animate-scroll-infinite {
+  animation: scroll-infinite 40s linear infinite;
+}
+
+.pause-animation:hover {
+  animation-play-state: paused;
+}
+
+/* Adding chromatic aberration effect for modern look */
+@keyframes chromatic-aberration {
+  0%,
+  100% {
+    text-shadow: -2px 0 0 oklch(0.65 0.22 145), 2px 0 0 oklch(0.55 0.18 35);
+  }
+  50% {
+    text-shadow: -4px 0 0 oklch(0.65 0.22 145), 4px 0 0 oklch(0.55 0.18 35);
+  }
+}
+
+.text-chromatic {
+  animation: chromatic-aberration 3s ease-in-out infinite;
+}
+
+/* Adding glitch effect */
+@keyframes glitch {
+  0%,
+  100% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+}
+
+.hover-glitch:hover {
+  animation: glitch 0.3s ease-in-out;
 }

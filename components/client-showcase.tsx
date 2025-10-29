@@ -2,25 +2,40 @@
 
 import { Card } from "@/components/ui/card"
 import { Play, Star } from "lucide-react"
-import { useState } from "react"
 
 export function ClientShowcase() {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
-
   const clients = [
-    { name: "Puma", logo: "PUMA" },
-    { name: "Oracle", logo: "ORACLE" },
-    { name: "FedEx", logo: "FedEx" },
-    { name: "Jumia", logo: "Jumia" },
-    { name: "Paystack", logo: "Paystack" },
-    { name: "Sony Music", logo: "SONY" },
-    { name: "MTN", logo: "MTN" },
-    { name: "Coca-Cola", logo: "Coca-Cola" },
-    { name: "Guinness", logo: "GUINNESS" },
-    { name: "Access Bank", logo: "Access" },
-    { name: "Airtel", logo: "airtel" },
-    { name: "Nestlé", logo: "Nestlé" },
+    {
+      name: "ICM Capital",
+      logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ICM-U6eSaDNmn06Z8idBjFeVV1mwPZLRlO.png",
+    },
+    {
+      name: "FedEx",
+      logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/FedEx-SMKXvP9s86BmQh4L1ltJL9oJPYvmfc.png",
+    },
+    {
+      name: "Fastestcakes",
+      logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Fastestcakes-5ytOehC2VSqIhJO88ef6XmzIAUr9My.png",
+    },
+    {
+      name: "QuickQart",
+      logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Quickqart-j9s983nU8QLJPQZcHfyCq3z0p9llW6.png",
+    },
+    {
+      name: "LetsChat",
+      logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Letschat-QJZVcMfVehRcrM5jnVe61MBETVCCpt.png",
+    },
+    {
+      name: "Sairtek",
+      logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Sairtek-60LA1r9x0hZkbHQPxMzsr8zbeZIr5e.png",
+    },
+    {
+      name: "Oracle",
+      logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/oracle-ESalOblSzITV3DrUXbdbkJyx7gnEzI.png",
+    },
   ]
+
+  const duplicatedClients = [...clients, ...clients, ...clients]
 
   return (
     <section className="py-32 bg-background relative overflow-hidden">
@@ -49,25 +64,30 @@ export function ClientShowcase() {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mb-24">
-          {clients.map((client, index) => (
-            <Card
-              key={client.name}
-              className="p-10 flex items-center justify-center hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 cursor-pointer group hover-lift-3d hover-glow glass-effect relative overflow-hidden"
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-              style={{
-                animationDelay: `${index * 50}ms`,
-              }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-depth-pulse" />
-              <div className="absolute inset-0 animate-shimmer opacity-0 group-hover:opacity-100" />
+        <div className="relative mb-24 overflow-hidden">
+          {/* Gradient overlays for fade effect */}
+          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
 
-              <span className="text-2xl font-black text-muted-foreground group-hover:text-primary transition-all duration-500 group-hover:scale-125 relative z-10">
-                {client.logo}
-              </span>
-            </Card>
-          ))}
+          {/* Scrolling container */}
+          {/* Animation now loops perfectly - when first set finishes, second set is in position */}
+          <div className="flex gap-8 animate-scroll-infinite hover:pause-animation">
+            {duplicatedClients.map((client, index) => (
+              <div
+                key={`${client.name}-${index}`}
+                className="flex-shrink-0 w-64 h-40 glass-effect rounded-2xl overflow-hidden hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 cursor-pointer group hover-lift-3d hover-glow relative"
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
+                <div className="absolute inset-0 animate-shimmer opacity-0 group-hover:opacity-100 z-10" />
+
+                <img
+                  src={client.logo || "/placeholder.svg"}
+                  alt={`${client.name} logo`}
+                  className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-110"
+                />
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto mb-16">
