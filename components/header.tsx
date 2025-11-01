@@ -21,87 +21,90 @@ export function Header() {
   return (
     <header
       className={`fixed top-0 z-50 w-full transition-all duration-500 ${
-        scrolled ? "bg-background/80 backdrop-blur-xl border-b" : "bg-transparent"
+        scrolled ? "bg-background/80 backdrop-blur-xl border-b shadow-lg" : "bg-transparent"
       }`}
     >
-      <div className="container mx-auto px-6 lg:px-12">
-        <div className="flex h-20 items-center justify-between">
-          <Link href="/" className="flex items-center space-x-3">
-            <div className="h-10 w-10 rounded-full bg-primary" />
-            <span className="text-2xl font-serif font-bold">Outdoors</span>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12">
+        <div className="flex h-16 sm:h-20 items-center justify-between">
+          <Link href="/" className="flex items-center space-x-2 sm:space-x-3 hover-lift">
+            <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-primary animate-glow-pulse" />
+            <span className="text-xl sm:text-2xl font-serif font-bold">Outdoors</span>
           </Link>
 
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden md:flex items-center space-x-4 lg:space-x-8">
             <Link
               href="/"
-              className="text-sm uppercase tracking-wider font-medium hover:text-primary transition-colors"
+              className="text-xs lg:text-sm uppercase tracking-wider font-medium hover:text-primary transition-all duration-300 hover-lift"
             >
               Home
             </Link>
             <Link
               href="/billboards"
-              className="text-sm uppercase tracking-wider font-medium text-muted-foreground hover:text-primary transition-colors"
+              className="text-xs lg:text-sm uppercase tracking-wider font-medium text-muted-foreground hover:text-primary transition-all duration-300 hover-lift"
             >
               Locations
             </Link>
             <Link
               href="/about"
-              className="text-sm uppercase tracking-wider font-medium text-muted-foreground hover:text-primary transition-colors"
+              className="text-xs lg:text-sm uppercase tracking-wider font-medium text-muted-foreground hover:text-primary transition-all duration-300 hover-lift"
             >
               About
             </Link>
             <Link
               href="/contact"
-              className="text-sm uppercase tracking-wider font-medium text-muted-foreground hover:text-primary transition-colors"
+              className="text-xs lg:text-sm uppercase tracking-wider font-medium text-muted-foreground hover:text-primary transition-all duration-300 hover-lift"
             >
               Contact
             </Link>
           </nav>
 
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-2 lg:space-x-4">
             <ThemeToggle />
-            <Button variant="ghost" className="rounded-full" asChild>
+            <Button variant="ghost" className="rounded-full text-sm hover-lift" asChild>
               <Link href="/login">Login</Link>
             </Button>
-            <Button className="rounded-full" asChild>
+            <Button className="rounded-full text-sm hover-lift-3d preserve-3d" asChild>
               <Link href="/register">Get Started</Link>
             </Button>
           </div>
 
-          <button className="md:hidden p-2" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          <button
+            className="md:hidden p-2 hover-magnetic rounded-lg transition-all duration-300"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? <X className="h-5 w-5 sm:h-6 sm:w-6" /> : <Menu className="h-5 w-5 sm:h-6 sm:w-6" />}
           </button>
         </div>
 
         {mobileMenuOpen && (
-          <div className="md:hidden py-6 space-y-4 border-t">
+          <div className="md:hidden py-4 sm:py-6 space-y-3 sm:space-y-4 border-t animate-slide-up">
             <Link
               href="/"
-              className="block text-sm font-medium text-foreground hover:text-primary transition-colors py-2"
+              className="block text-sm font-medium text-foreground hover:text-primary transition-colors py-2 hover-lift"
             >
               Home
             </Link>
             <Link
               href="/billboards"
-              className="block text-sm font-medium text-muted-foreground hover:text-primary transition-colors py-2"
+              className="block text-sm font-medium text-muted-foreground hover:text-primary transition-colors py-2 hover-lift"
             >
               Locations
             </Link>
             <Link
               href="/about"
-              className="block text-sm font-medium text-muted-foreground hover:text-primary transition-colors py-2"
+              className="block text-sm font-medium text-muted-foreground hover:text-primary transition-colors py-2 hover-lift"
             >
               About
             </Link>
             <Link
               href="/blog"
-              className="block text-sm font-medium text-muted-foreground hover:text-primary transition-colors py-2"
+              className="block text-sm font-medium text-muted-foreground hover:text-primary transition-colors py-2 hover-lift"
             >
               Blog
             </Link>
             <Link
               href="/contact"
-              className="block text-sm font-medium text-muted-foreground hover:text-primary transition-colors py-2"
+              className="block text-sm font-medium text-muted-foreground hover:text-primary transition-colors py-2 hover-lift"
             >
               Contact
             </Link>
@@ -110,10 +113,10 @@ export function Header() {
                 <span className="text-sm font-medium text-muted-foreground">Theme</span>
                 <ThemeToggle />
               </div>
-              <Button variant="ghost" className="rounded-full" asChild>
+              <Button variant="ghost" className="rounded-full hover-lift" asChild>
                 <Link href="/login">Login</Link>
               </Button>
-              <Button className="rounded-full" asChild>
+              <Button className="rounded-full hover-lift-3d preserve-3d" asChild>
                 <Link href="/register">Get Started</Link>
               </Button>
             </div>

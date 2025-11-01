@@ -10,7 +10,7 @@ export function CTA() {
   const [isHovered, setIsHovered] = useState(false)
 
   return (
-    <section className="py-32 bg-gradient-to-b from-background via-muted/20 to-background relative overflow-hidden">
+    <section className="py-16 sm:py-24 lg:py-32 bg-gradient-to-b from-background via-muted/20 to-background relative overflow-hidden">
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-float-3d" />
       <div
         className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-3xl animate-float-3d"
@@ -19,7 +19,7 @@ export function CTA() {
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <Card
-          className="max-w-5xl mx-auto bg-gradient-to-br from-primary via-primary to-accent text-primary-foreground p-16 sm:p-20 text-center relative overflow-hidden border-0 shadow-2xl hover:shadow-primary/50 transition-all duration-700 group"
+          className="max-w-5xl mx-auto bg-gradient-to-br from-primary via-primary to-accent text-primary-foreground p-8 sm:p-12 lg:p-16 xl:p-20 text-center relative overflow-hidden border-0 shadow-2xl hover:shadow-primary/50 transition-all duration-700 group"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
@@ -36,20 +36,20 @@ export function CTA() {
               <Sparkles className="h-8 w-8 animate-glow-pulse" style={{ animationDelay: "1s" }} />
             </div>
 
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black mb-6 text-balance leading-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4 sm:mb-6 text-balance leading-tight">
               Ready to Amplify Your Brand?
             </h2>
 
-            <p className="text-xl sm:text-2xl mb-12 opacity-95 max-w-3xl mx-auto text-pretty leading-relaxed font-light">
+            <p className="text-lg sm:text-xl lg:text-2xl mb-8 sm:mb-12 opacity-95 max-w-3xl mx-auto text-pretty leading-relaxed font-light">
               Join <span className="font-bold">500+ successful brands</span> using our outdoor advertising solutions.
               <span className="block mt-2">Start your campaign today and see real results.</span>
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
               <Button
                 size="lg"
                 variant="secondary"
-                className="w-full sm:w-auto text-xl px-12 py-8 font-bold hover:scale-110 transition-all duration-300 shadow-xl hover:shadow-2xl group/btn"
+                className="w-full sm:w-auto text-lg sm:text-xl px-8 sm:px-12 py-6 sm:py-8 font-bold hover:scale-110 transition-all duration-300 shadow-xl hover:shadow-2xl group/btn"
                 asChild
               >
                 <Link href="/register">
@@ -60,7 +60,7 @@ export function CTA() {
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full sm:w-auto bg-transparent border-2 border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary text-xl px-12 py-8 font-bold hover:scale-110 transition-all duration-300"
+                className="w-full sm:w-auto bg-transparent border-2 border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary text-lg sm:text-xl px-8 sm:px-12 py-6 sm:py-8 font-bold hover:scale-110 transition-all duration-300"
                 asChild
               >
                 <Link href="/contact">Contact Sales</Link>

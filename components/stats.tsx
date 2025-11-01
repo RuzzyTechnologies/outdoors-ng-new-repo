@@ -55,7 +55,7 @@ export function Stats() {
   return (
     <section
       id="stats-section"
-      className="py-24 border-y-2 border-border bg-gradient-to-r from-card via-primary/5 to-card relative overflow-hidden"
+      className="py-16 sm:py-20 lg:py-24 border-y-2 border-border bg-gradient-to-r from-card via-primary/5 to-card relative overflow-hidden"
     >
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary rounded-full blur-3xl animate-pulse animate-blob-morph animate-glow-pulse" />
@@ -66,7 +66,7 @@ export function Stats() {
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12">
           {stats.map((stat, index) => (
             <div
               key={index}
@@ -75,16 +75,16 @@ export function Stats() {
               }`}
               style={{ transitionDelay: `${index * 150}ms` }}
             >
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 hover-magnetic animate-glow-pulse">
-                <stat.icon className="h-8 w-8 text-primary group-hover:scale-125 transition-transform" />
+              <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 mb-3 sm:mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 hover-magnetic animate-glow-pulse">
+                <stat.icon className="h-6 w-6 sm:h-8 sm:w-8 text-primary group-hover:scale-125 transition-transform" />
               </div>
 
-              <div className="text-5xl sm:text-6xl font-black text-gradient-static mb-3 group-hover:scale-110 transition-transform duration-300">
+              <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-gradient-static mb-2 sm:mb-3 group-hover:scale-110 transition-transform duration-300">
                 {stat.value}
                 {stat.suffix}
               </div>
 
-              <div className="text-base font-semibold text-muted-foreground group-hover:text-foreground transition-colors">
+              <div className="text-sm sm:text-base font-semibold text-muted-foreground group-hover:text-foreground transition-colors">
                 {stat.label}
               </div>
             </div>

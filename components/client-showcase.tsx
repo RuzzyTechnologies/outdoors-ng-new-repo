@@ -38,7 +38,7 @@ export function ClientShowcase() {
   const duplicatedClients = [...clients, ...clients, ...clients]
 
   return (
-    <section className="py-32 bg-background relative overflow-hidden">
+    <section className="py-16 sm:py-24 lg:py-32 bg-background relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent animate-gradient" />
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-float-3d" />
       <div
@@ -47,7 +47,7 @@ export function ClientShowcase() {
       />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="max-w-4xl mx-auto text-center mb-20 animate-slide-up">
+        <div className="max-w-4xl mx-auto text-center mb-12 sm:mb-16 lg:mb-20 animate-slide-up">
           <div className="inline-flex items-center gap-2 mb-6">
             <Star className="h-6 w-6 text-accent fill-accent" />
             <Star className="h-6 w-6 text-accent fill-accent" />
@@ -55,27 +55,24 @@ export function ClientShowcase() {
             <Star className="h-6 w-6 text-accent fill-accent" />
             <Star className="h-6 w-6 text-accent fill-accent" />
           </div>
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-foreground mb-6 text-balance leading-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-foreground mb-4 sm:mb-6 text-balance leading-tight">
             Trusted by <span className="text-gradient-static">Leading Brands</span>
           </h2>
-          <p className="text-xl text-muted-foreground text-pretty leading-relaxed">
+          <p className="text-base sm:text-lg lg:text-xl text-muted-foreground text-pretty leading-relaxed">
             Join <span className="text-primary font-bold">500+ ambitious brands</span> that have amplified their
             visibility with our premium outdoor advertising solutions
           </p>
         </div>
 
-        <div className="relative mb-24 overflow-hidden">
-          {/* Gradient overlays for fade effect */}
-          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+        <div className="relative mb-16 sm:mb-20 lg:mb-24 overflow-hidden">
+          <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-24 lg:w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-24 lg:w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
 
-          {/* Scrolling container */}
-          {/* Animation now loops perfectly - when first set finishes, second set is in position */}
-          <div className="flex gap-8 animate-scroll-infinite hover:pause-animation">
+          <div className="flex gap-4 sm:gap-6 lg:gap-8 animate-scroll-infinite hover:pause-animation">
             {duplicatedClients.map((client, index) => (
               <div
                 key={`${client.name}-${index}`}
-                className="flex-shrink-0 w-64 h-40 glass-effect rounded-2xl overflow-hidden hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 cursor-pointer group hover-lift-3d hover-glow relative"
+                className="flex-shrink-0 w-48 h-32 sm:w-56 sm:h-36 lg:w-64 lg:h-40 glass-effect rounded-2xl overflow-hidden hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 cursor-pointer group hover-lift-3d hover-glow relative"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
                 <div className="absolute inset-0 animate-shimmer opacity-0 group-hover:opacity-100 z-10" />
@@ -90,17 +87,17 @@ export function ClientShowcase() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-6xl mx-auto mb-12 sm:mb-16">
           <div className="relative rounded-2xl overflow-hidden group hover-lift-3d cursor-pointer">
             <img
               src="/successful-billboard-advertising-campaign-for-majo.jpg"
               alt="Billboard Campaign Success"
-              className="w-full h-80 object-cover transform group-hover:scale-110 transition-transform duration-700"
+              className="w-full h-64 sm:h-72 lg:h-80 object-cover transform group-hover:scale-110 transition-transform duration-700"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex items-end p-8">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex items-end p-4 sm:p-6 lg:p-8">
               <div>
-                <h4 className="text-white font-bold text-2xl mb-2">Campaign Excellence</h4>
-                <p className="text-white/90 text-base">Delivering measurable results for top brands</p>
+                <h4 className="text-white font-bold text-xl sm:text-2xl mb-1 sm:mb-2">Campaign Excellence</h4>
+                <p className="text-white/90 text-sm sm:text-base">Delivering measurable results for top brands</p>
               </div>
             </div>
           </div>
@@ -109,12 +106,12 @@ export function ClientShowcase() {
             <img
               src="/multiple-billboards-showcasing-brand-advertising-a.jpg"
               alt="Multi-Location Campaign"
-              className="w-full h-80 object-cover transform group-hover:scale-110 transition-transform duration-700"
+              className="w-full h-64 sm:h-72 lg:h-80 object-cover transform group-hover:scale-110 transition-transform duration-700"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex items-end p-8">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex items-end p-4 sm:p-6 lg:p-8">
               <div>
-                <h4 className="text-white font-bold text-2xl mb-2">Strategic Placement</h4>
-                <p className="text-white/90 text-base">Premium locations across Nigeria</p>
+                <h4 className="text-white font-bold text-xl sm:text-2xl mb-1 sm:mb-2">Strategic Placement</h4>
+                <p className="text-white/90 text-sm sm:text-base">Premium locations across Nigeria</p>
               </div>
             </div>
           </div>
@@ -136,16 +133,16 @@ export function ClientShowcase() {
               </div>
 
               <div className="text-center relative z-10">
-                <div className="h-24 w-24 rounded-full glass-effect-strong flex items-center justify-center mx-auto mb-6 group-hover:scale-125 transition-all duration-500 cursor-pointer animate-pulse-glow shadow-2xl">
+                <div className="h-16 w-16 sm:h-20 sm:w-20 lg:h-24 lg:w-24 rounded-full glass-effect-strong flex items-center justify-center mx-auto mb-4 sm:mb-6 group-hover:scale-125 transition-all duration-500 cursor-pointer animate-pulse-glow shadow-2xl">
                   <Play
-                    className="h-12 w-12 text-primary group-hover:scale-110 transition-transform ml-1"
+                    className="h-8 w-8 sm:h-10 sm:w-10 lg:h-12 lg:w-12 text-primary group-hover:scale-110 transition-transform ml-1"
                     fill="currentColor"
                   />
                 </div>
-                <p className="text-lg font-bold text-muted-foreground group-hover:text-foreground transition-colors">
+                <p className="text-base sm:text-lg font-bold text-muted-foreground group-hover:text-foreground transition-colors">
                   Watch Our Campaign Showcase
                 </p>
-                <p className="text-sm text-muted-foreground mt-2">See how we transform brands</p>
+                <p className="text-xs sm:text-sm text-muted-foreground mt-2">See how we transform brands</p>
               </div>
             </div>
           </Card>
