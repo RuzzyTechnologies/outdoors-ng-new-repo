@@ -71,7 +71,7 @@ export function Hero() {
               </Button>
             </div>
 
-            <div className="grid grid-cols-1 xs:grid-cols-3 gap-4 sm:gap-6 pt-8 sm:pt-12 max-w-2xl">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 pt-8 sm:pt-12 max-w-2xl">
               {[
                 { value: "2,000+", label: "Locations" },
                 { value: "500+", label: "Brands" },
