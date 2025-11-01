@@ -59,7 +59,7 @@ export function Testimonials() {
           {testimonials.map((testimonial, index) => (
             <Card
               key={index}
-              className="p-6 sm:p-8 hover:shadow-2xl hover:shadow-primary/30 transition-all duration-700 cursor-pointer group hover-lift-3d glass-effect relative overflow-hidden border-2 hover:border-primary/40"
+              className="p-6 sm:p-8 transition-all duration-700 cursor-pointer group hover-lift-3d glass-effect relative overflow-hidden border-2 hover:border-primary/40 shadow-lg hover:shadow-2xl hover:shadow-primary/20"
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
               style={{ animationDelay: `${index * 100}ms` }}
