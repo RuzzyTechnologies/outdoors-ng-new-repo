@@ -5,34 +5,18 @@ import { Play, Star } from "lucide-react"
 
 export function ClientShowcase() {
   const clients = [
-    {
-      name: "ICM Capital",
-      logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ICM-U6eSaDNmn06Z8idBjFeVV1mwPZLRlO.png",
-    },
-    {
-      name: "FedEx",
-      logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/FedEx-SMKXvP9s86BmQh4L1ltJL9oJPYvmfc.png",
-    },
-    {
-      name: "Fastestcakes",
-      logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Fastestcakes-5ytOehC2VSqIhJO88ef6XmzIAUr9My.png",
-    },
-    {
-      name: "QuickQart",
-      logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Quickqart-j9s983nU8QLJPQZcHfyCq3z0p9llW6.png",
-    },
-    {
-      name: "LetsChat",
-      logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Letschat-QJZVcMfVehRcrM5jnVe61MBETVCCpt.png",
-    },
-    {
-      name: "Sairtek",
-      logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Sairtek-60LA1r9x0hZkbHQPxMzsr8zbeZIr5e.png",
-    },
-    {
-      name: "Oracle",
-      logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/oracle-ESalOblSzITV3DrUXbdbkJyx7gnEzI.png",
-    },
+    { name: "Puma", logo: "https://www.outdoors.ng/assets/images/logos/puma.png" },
+    { name: "Oracle", logo: "https://www.outdoors.ng/application/views/images/clients/oracle.png" },
+    { name: "FedEx", logo: "https://www.outdoors.ng/application/views/images/clients/Fedex_logo.webp" },
+    { name: "Jumia", logo: "https://www.outdoors.ng/application/views/images/clients/jumia_logo.png" },
+    { name: "Paystack", logo: "https://www.outdoors.ng/application/views/images/clients/paystack_logo.png" },
+    { name: "Dell", logo: "https://www.outdoors.ng/assets/images/logos/dell.png" },
+    { name: "Boomplay", logo: "https://www.outdoors.ng/assets/images/logos/boomplay.png" },
+    { name: "May & Baker", logo: "https://www.outdoors.ng/assets/images/logos/may_and_baker.png" },
+    { name: "Universal Music", logo: "https://www.outdoors.ng/application/views/images/clients/universal_music.png" },
+    { name: "Sony Music", logo: "https://www.outdoors.ng/assets/images/logos/sony_music.png" },
+    { name: "LetsChat", logo: "https://www.outdoors.ng/application/views/images/clients/LetsChat_Logo.png" },
+    { name: "QuickQart", logo: "https://www.outdoors.ng/application/views/images/clients/quickqart.png" },
   ]
 
   const duplicatedClients = [...clients, ...clients, ...clients]
@@ -55,12 +39,11 @@ export function ClientShowcase() {
             <Star className="h-6 w-6 text-accent fill-accent" />
             <Star className="h-6 w-6 text-accent fill-accent" />
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-foreground mb-4 sm:mb-6 text-balance leading-tight">
-            Trusted by <span className="text-gradient-static">Leading Brands</span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-foreground mb-4 sm:mb-6 text-balance leading-tight uppercase">
+            Our Clients
           </h2>
           <p className="text-base sm:text-lg lg:text-xl text-muted-foreground text-pretty leading-relaxed">
-            Join <span className="text-primary font-bold">500+ ambitious brands</span> that have amplified their
-            visibility with our premium outdoor advertising solutions
+            If these brands can trust us, so can you
           </p>
         </div>
 

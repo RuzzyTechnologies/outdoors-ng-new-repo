@@ -39,15 +39,16 @@ export function Hero() {
         <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           <div className="lg:col-span-7 space-y-6 sm:space-y-8">
             <div className="space-y-3 sm:space-y-4">
-              <h1 className="text-[clamp(3rem,12vw,12rem)] sm:text-[clamp(4rem,13vw,12rem)] md:text-[clamp(5rem,14vw,12rem)] lg:text-[clamp(6rem,15vw,12rem)] font-black leading-[0.85] tracking-tighter">
-                <span className="block">MAKE</span>
-                <span className="block text-primary">LAGOS</span>
-                <span className="block">NOTICE</span>
+              <h1 className="text-[clamp(2rem,6vw,4.5rem)] sm:text-[clamp(2.25rem,6.5vw,4.5rem)] md:text-[clamp(2.5rem,7vw,4.5rem)] lg:text-[clamp(2.75rem,7.5vw,4.5rem)] font-black leading-[0.95] tracking-tight">
+                <span className="block">Top Billboard and</span>
+                <span className="block text-primary">Outdoor Advertising</span>
+                <span className="block">Company in Lagos Nigeria</span>
               </h1>
+              <p className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-300 mt-6">for Ambitious Brands</p>
             </div>
 
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-400 max-w-2xl leading-relaxed">
-              Premium billboard advertising across Nigeria's most valuable locations. Your brand, impossible to miss.
+            <p className="text-base sm:text-lg md:text-xl text-gray-400 max-w-2xl leading-relaxed">
+              Increase brand visibility and revenue with outdoor advertising in Nigeria
             </p>
 
             <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 pt-4 sm:pt-6">
@@ -57,7 +58,7 @@ export function Hero() {
                 asChild
               >
                 <Link href="#search">
-                  Find Locations
+                  Get Started
                   <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </Button>

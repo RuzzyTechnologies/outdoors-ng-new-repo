@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Search, MapPin, Layers, Navigation, Sparkles } from "lucide-react"
@@ -14,17 +13,85 @@ export function BillboardSearch() {
   const [area, setArea] = useState("")
 
   const billboardTypes = [
+    "All",
     "Unipole",
     "Gantry",
     "LED Billboard",
     "Wall Drape",
+    "Lamp Post",
+    "Roof Top",
+    "Trivision/Ultrawave",
+    "Portrait",
+    "Backlit/Landscape",
     "Bridge Panel",
-    "Rooftop",
-    "Digital Screen",
-    "Bus Shelter",
+    "Mega Billboard",
+    "Long Banner",
+    "Sign Board",
+    "Mobile Bill Board",
+    "Large Format",
+    "Glass Panel",
+    "48 Sheet",
+    "BRT",
+    "Bulletin Board",
+    "Arc Flag",
+    "Ultra wave billboard",
+    "Frontlit Billboard",
+    "Building Wrap",
+    "Car park roof Gantry",
+    "Car Display",
+    "Airport digital signage",
+    "Tower Branding",
+    "Led Lamp post billboard",
+    "Portrait Led billboard",
+    "Revolving Portrait Billboard",
+    "Unipole LED Billboard",
+    "96 Sheet Billboard",
+    "Static Light Box Lamp Post Billboard",
   ]
 
-  const states = ["Lagos", "Abuja", "Port Harcourt", "Kano", "Ibadan", "Benin City"]
+  const states = [
+    "Abia",
+    "Abuja",
+    "Adamawa",
+    "Akwa Ibom",
+    "Anambra",
+    "Bauchi",
+    "Bayelsa",
+    "Benue",
+    "Borno",
+    "Cross Rivers",
+    "Delta",
+    "Ebonyi",
+    "Edo",
+    "Ekiti",
+    "Enugu",
+    "Gombe",
+    "Ilorin",
+    "Imo",
+    "Jigawa",
+    "Jos",
+    "Kaduna",
+    "Kano",
+    "Katsina",
+    "Kebbi",
+    "Kogi",
+    "Kwara",
+    "Lagos",
+    "Nassarawa",
+    "Niger",
+    "Ogun",
+    "Ojuelegba",
+    "Ondo",
+    "Osun",
+    "Oyo",
+    "Plateau",
+    "Port Harcourt",
+    "Rivers",
+    "Sokoto",
+    "Taraba",
+    "Yobe",
+    "Zamfara",
+  ]
 
   return (
     <section
@@ -46,20 +113,19 @@ export function BillboardSearch() {
                 <span className="text-sm font-bold uppercase tracking-widest text-primary">Location Finder</span>
               </div>
 
-              <h2 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-[0.85] text-white">
-                Find Your
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-[0.95] text-white">
+                Search through
                 <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-green-400 to-primary animate-gradient">
-                  Perfect
+                  2,000+
                 </span>
                 <br />
-                Billboard
+                Billboards in Nigeria
               </h2>
 
-              <p className="text-lg sm:text-xl text-gray-400 max-w-xl leading-relaxed">
-                Search through <span className="text-primary font-bold">2,000+</span> premium billboard locations across{" "}
-                <span className="text-primary font-bold">36 states</span> in Nigeria. Find the perfect spot to amplify
-                your brand.
+              <p className="text-base sm:text-lg text-gray-400 max-w-xl leading-relaxed">
+                Find the perfect billboard location across <span className="text-primary font-bold">36 states</span> in
+                Nigeria. Search by type, location, and availability.
               </p>
             </div>
 
@@ -95,8 +161,8 @@ export function BillboardSearch() {
 
               <div className="relative z-10 space-y-6 sm:space-y-8">
                 <div className="space-y-2">
-                  <h3 className="text-2xl sm:text-3xl font-black text-white">Start Your Search</h3>
-                  <p className="text-sm text-gray-400">Fill in the details to discover available locations</p>
+                  <h3 className="text-2xl sm:text-3xl font-black text-white">Find Billboards</h3>
+                  <p className="text-sm text-gray-400">Select your preferences to discover available locations</p>
                 </div>
 
                 <div className="space-y-5">
@@ -107,7 +173,7 @@ export function BillboardSearch() {
                       className="text-sm font-bold uppercase tracking-wider text-gray-300 flex items-center gap-2 group-focus-within:text-primary transition-colors"
                     >
                       <Layers className="h-4 w-4 text-primary" />
-                      Billboard Type
+                      Which do you need?
                     </Label>
                     <Select value={billboardType} onValueChange={setBillboardType}>
                       <SelectTrigger
@@ -116,11 +182,11 @@ export function BillboardSearch() {
                       >
                         <SelectValue placeholder="Select billboard type" className="text-gray-400" />
                       </SelectTrigger>
-                      <SelectContent className="bg-gray-900 border-white/10 backdrop-blur-xl">
+                      <SelectContent className="bg-gray-900 border-white/10 backdrop-blur-xl max-h-[300px]">
                         {billboardTypes.map((type) => (
                           <SelectItem
                             key={type}
-                            value={type.toLowerCase()}
+                            value={type.toLowerCase().replace(/\s+/g, "-")}
                             className="text-white hover:bg-primary/20 focus:bg-primary/20"
                           >
                             {type}
@@ -137,7 +203,7 @@ export function BillboardSearch() {
                       className="text-sm font-bold uppercase tracking-wider text-gray-300 flex items-center gap-2 group-focus-within:text-primary transition-colors"
                     >
                       <Navigation className="h-4 w-4 text-primary" />
-                      State
+                      Select State
                     </Label>
                     <Select value={state} onValueChange={setState}>
                       <SelectTrigger
@@ -146,11 +212,11 @@ export function BillboardSearch() {
                       >
                         <SelectValue placeholder="Select state" className="text-gray-400" />
                       </SelectTrigger>
-                      <SelectContent className="bg-gray-900 border-white/10 backdrop-blur-xl">
+                      <SelectContent className="bg-gray-900 border-white/10 backdrop-blur-xl max-h-[300px]">
                         {states.map((s) => (
                           <SelectItem
                             key={s}
-                            value={s.toLowerCase()}
+                            value={s.toLowerCase().replace(/\s+/g, "-")}
                             className="text-white hover:bg-primary/20 focus:bg-primary/20"
                           >
                             {s}
@@ -167,15 +233,21 @@ export function BillboardSearch() {
                       className="text-sm font-bold uppercase tracking-wider text-gray-300 flex items-center gap-2 group-focus-within:text-primary transition-colors"
                     >
                       <MapPin className="h-4 w-4 text-primary" />
-                      Area / Location
+                      Select State Area
                     </Label>
-                    <Input
-                      id="area"
-                      placeholder="e.g., Lekki, Victoria Island, Ikeja"
-                      value={area}
-                      onChange={(e) => setArea(e.target.value)}
-                      className="h-14 border-2 border-white/10 bg-white/5 hover:bg-white/10 hover:border-primary/50 focus:border-primary focus:bg-white/10 transition-all text-white placeholder:text-gray-500 backdrop-blur-sm rounded-xl"
-                    />
+                    <Select value={area} onValueChange={setArea}>
+                      <SelectTrigger
+                        id="area"
+                        className="h-14 border-2 border-white/10 bg-white/5 hover:bg-white/10 hover:border-primary/50 focus:border-primary focus:bg-white/10 transition-all text-white backdrop-blur-sm rounded-xl"
+                      >
+                        <SelectValue placeholder="All" className="text-gray-400" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-gray-900 border-white/10 backdrop-blur-xl">
+                        <SelectItem value="all" className="text-white hover:bg-primary/20 focus:bg-primary/20">
+                          All
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
 
                   <Button
@@ -183,7 +255,7 @@ export function BillboardSearch() {
                     size="lg"
                   >
                     <Search className="mr-2 h-5 w-5 group-hover:rotate-90 transition-transform duration-300" />
-                    Search Locations
+                    Find Billboards
                   </Button>
                 </div>
 

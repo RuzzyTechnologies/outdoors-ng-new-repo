@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card"
-import { MapPin, BarChart3, Clock, Shield, Zap } from "lucide-react"
+import { MapPin, BarChart3, Clock, Shield, Award } from "lucide-react"
 import Image from "next/image"
 
 export function Features() {
@@ -37,16 +37,19 @@ export function Features() {
           <div className="lg:col-span-5">
             <div className="lg:sticky lg:top-32 space-y-4 sm:space-y-6">
               <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-primary/20 text-primary">
-                <Zap className="h-3 w-3 sm:h-4 sm:w-4" />
-                <span className="text-xs sm:text-sm font-bold uppercase tracking-wider">Why Choose Us</span>
+                <Award className="h-3 w-3 sm:h-4 sm:w-4" />
+                <span className="text-xs sm:text-sm font-bold uppercase tracking-wider">Award-Winning Agency</span>
               </div>
-              <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-[0.9]">
-                Built For
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-[0.95]">
+                Outdoors is an
                 <br />
-                <span className="text-primary">Impact</span>
+                <span className="text-primary">Award-Winning</span>
+                <br />
+                Advertising Agency
               </h2>
-              <p className="text-base sm:text-lg md:text-xl text-gray-400 max-w-md">
-                Award-winning outdoor advertising that delivers measurable results for ambitious brands.
+              <p className="text-base sm:text-lg text-gray-400 max-w-md">
+                We are an award-winning out-of-home advertising agency in Nigeria. We specialize in the execution of
+                outdoor advertising campaigns for our clients, including media buying and creative concept development.
               </p>
               <div className="flex items-center gap-3 sm:gap-4 pt-3 sm:pt-4">
                 <div className="flex -space-x-2 sm:-space-x-3">
