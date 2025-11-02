@@ -17,6 +17,38 @@ export function ClientShowcase() {
     { name: "Sony Music", logo: "https://www.outdoors.ng/assets/images/logos/sony_music.png" },
     { name: "LetsChat", logo: "https://www.outdoors.ng/application/views/images/clients/LetsChat_Logo.png" },
     { name: "QuickQart", logo: "https://www.outdoors.ng/application/views/images/clients/quickqart.png" },
+    { name: "Sato", logo: "https://www.outdoors.ng/application/views/images/clients/sato-logo.webp" },
+    { name: "Romano Perfume", logo: "https://www.outdoors.ng/application/views/images/clients/romano_perfume.webp" },
+    { name: "Genesis Global", logo: "https://www.outdoors.ng/application/views/images/clients/Genesis_Global.webp" },
+    { name: "Cinder Build", logo: "https://www.outdoors.ng/application/views/images/clients/Cinder_build_logo.webp" },
+    {
+      name: "Christ Apostolic Church",
+      logo: "https://www.outdoors.ng/application/views/images/clients/Christ_Apostolic_Church_logo.webp",
+    },
+    { name: "TP Global FX", logo: "https://www.outdoors.ng/application/views/images/clients/Tp_Global_fx_Logo.webp" },
+    { name: "Tomi Drinks", logo: "https://www.outdoors.ng/application/views/images/clients/tomi_drinks_logo.webp" },
+    {
+      name: "Hench Education",
+      logo: "https://www.outdoors.ng/application/views/images/clients/Hench_Education_logo.webp",
+    },
+    {
+      name: "Hazibian International",
+      logo: "https://www.outdoors.ng/application/views/images/clients/Hazibian_International.webp",
+    },
+    { name: "ICM Capital", logo: "https://www.outdoors.ng/application/views/images/clients/icm_capital.png" },
+    { name: "Anchor", logo: "https://www.outdoors.ng/application/views/images/clients/anchor.png" },
+    { name: "Pat3cia", logo: "https://www.outdoors.ng/application/views/images/clients/pat3cia_logo.png" },
+    { name: "LOC", logo: "https://www.outdoors.ng/application/views/images/clients/loc.png" },
+    { name: "MAN", logo: "https://www.outdoors.ng/application/views/images/clients/man.png" },
+    { name: "Sairtek", logo: "https://www.outdoors.ng/application/views/images/clients/sairtek_logo.png" },
+    { name: "Syscomptech", logo: "https://www.outdoors.ng/application/views/images/clients/syscomptech.png" },
+    { name: "Capital Field", logo: "https://www.outdoors.ng/assets/images/logos/capital_field.png" },
+    { name: "Quidax", logo: "https://www.outdoors.ng/application/views/images/clients/quidax-logo.webp" },
+    { name: "Greenlife", logo: "https://www.outdoors.ng/assets/images/logos/greenlife.png" },
+    { name: "Hill Radio", logo: "https://www.outdoors.ng/assets/images/logos/hill_radio.png" },
+    { name: "Jadek Farms", logo: "https://www.outdoors.ng/assets/images/logos/jadek_farms.png" },
+    { name: "My Dokita", logo: "https://www.outdoors.ng/assets/images/logos/my_dokita.png" },
+    { name: "SGRL", logo: "https://www.outdoors.ng/assets/images/logos/sgrl.png" },
   ]
 
   const duplicatedClients = [...clients, ...clients, ...clients]
