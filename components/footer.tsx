@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { Facebook, Twitter, Instagram, Linkedin, Mail, MapPin, Phone } from "lucide-react"
 import { useState } from "react"
 
@@ -15,12 +16,16 @@ export function Footer() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           <div>
-            <div className="flex items-center space-x-3 mb-6 group cursor-pointer">
-              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary to-accent group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-lg" />
-              <span className="text-2xl font-black text-foreground group-hover:text-primary transition-colors">
-                Outdoors.ng
-              </span>
-            </div>
+            <Link href="/" className="flex items-center mb-6 group cursor-pointer">
+              <Image
+                src="/images/outdoors-logo.png"
+                alt="Outdoors.ng Logo"
+                width={180}
+                height={60}
+                className="h-16 w-auto group-hover:scale-105 transition-transform duration-300"
+                priority
+              />
+            </Link>
             <p className="text-base text-muted-foreground leading-relaxed mb-6">
               Award-winning outdoor advertising company transforming brand visibility across Nigeria.
             </p>

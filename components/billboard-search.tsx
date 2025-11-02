@@ -100,23 +100,23 @@ export function BillboardSearch() {
     >
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[150px] animate-pulse delay-1000" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(69,168,73,0.03)_0%,transparent_70%)]" />
+        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[150px] animate-pulse delay-1000" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(69,168,73,0.03)_0%,rgba(255,107,0,0.02)_50%,transparent_70%)]" />
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 max-w-[1400px] relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-20 items-center">
           <div className="space-y-8 lg:space-y-10">
             <div className="space-y-6">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/20 border border-primary/30 backdrop-blur-sm">
-                <Sparkles className="h-4 w-4 text-primary animate-pulse" />
-                <span className="text-sm font-bold uppercase tracking-widest text-primary">Location Finder</span>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/20 border border-accent/30 backdrop-blur-sm">
+                <Sparkles className="h-4 w-4 text-accent animate-pulse" />
+                <span className="text-sm font-bold uppercase tracking-widest text-accent">Location Finder</span>
               </div>
 
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-[0.95] text-white">
                 Search through
                 <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-green-400 to-primary animate-gradient">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent via-primary to-accent animate-gradient">
                   2,000+
                 </span>
                 <br />
@@ -124,23 +124,23 @@ export function BillboardSearch() {
               </h2>
 
               <p className="text-base sm:text-lg text-gray-400 max-w-xl leading-relaxed">
-                Find the perfect billboard location across <span className="text-primary font-bold">36 states</span> in
+                Find the perfect billboard location across <span className="text-accent font-bold">36 states</span> in
                 Nigeria. Search by type, location, and availability.
               </p>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               {[
-                { icon: MapPin, label: "2,000+ Locations", desc: "Premium spots" },
-                { icon: Layers, label: "30+ Types", desc: "All formats" },
-                { icon: Navigation, label: "36 States", desc: "Nationwide" },
-                { icon: Search, label: "Smart Search", desc: "Find instantly" },
+                { icon: MapPin, label: "2,000+ Locations", desc: "Premium spots", color: "primary" },
+                { icon: Layers, label: "30+ Types", desc: "All formats", color: "accent" },
+                { icon: Navigation, label: "36 States", desc: "Nationwide", color: "primary" },
+                { icon: Search, label: "Smart Search", desc: "Find instantly", color: "accent" },
               ].map((item, index) => (
                 <div
                   key={index}
-                  className="group p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/30 transition-all duration-300"
+                  className={`group p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-${item.color}/30 transition-all duration-300`}
                 >
-                  <item.icon className="h-6 w-6 text-primary mb-2 group-hover:scale-110 transition-transform" />
+                  <item.icon className={`h-6 w-6 text-${item.color} mb-2 group-hover:scale-110 transition-transform`} />
                   <p className="text-sm font-bold text-white mb-0.5">{item.label}</p>
                   <p className="text-xs text-gray-500">{item.desc}</p>
                 </div>
@@ -149,14 +149,11 @@ export function BillboardSearch() {
           </div>
 
           <div className="relative">
-            {/* Decorative glow behind form */}
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/10 to-transparent rounded-3xl blur-3xl" />
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-accent/15 to-transparent rounded-3xl blur-3xl" />
 
             <Card className="relative p-8 sm:p-10 md:p-12 border-0 bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-xl shadow-2xl shadow-black/50 rounded-3xl overflow-hidden">
-              {/* Subtle grid pattern overlay */}
               <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:20px_20px] [mask-image:radial-gradient(ellipse_at_center,black_50%,transparent_100%)]" />
 
-              {/* Animated border glow */}
               <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-primary/0 via-primary/50 to-primary/0 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500" />
 
               <div className="relative z-10 space-y-6 sm:space-y-8">
@@ -251,7 +248,7 @@ export function BillboardSearch() {
                   </div>
 
                   <Button
-                    className="w-full h-14 text-base bg-gradient-to-r from-primary via-green-500 to-primary bg-[length:200%_100%] hover:bg-[position:100%_0] text-white font-bold shadow-lg shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40 transition-all duration-500 hover:scale-[1.02] active:scale-[0.98] rounded-xl mt-8 group"
+                    className="w-full h-14 text-base bg-gradient-to-r from-accent via-primary to-accent bg-[length:200%_100%] hover:bg-[position:100%_0] text-white font-bold shadow-lg shadow-accent/30 hover:shadow-2xl hover:shadow-accent/40 transition-all duration-500 hover:scale-[1.02] active:scale-[0.98] rounded-xl mt-8 group"
                     size="lg"
                   >
                     <Search className="mr-2 h-5 w-5 group-hover:rotate-90 transition-transform duration-300" />
@@ -260,7 +257,7 @@ export function BillboardSearch() {
                 </div>
 
                 <p className="text-xs text-center text-gray-500 pt-4">
-                  Trusted by <span className="text-primary font-bold">500+</span> brands across Nigeria
+                  Trusted by <span className="text-accent font-bold">500+</span> brands across Nigeria
                 </p>
               </div>
             </Card>

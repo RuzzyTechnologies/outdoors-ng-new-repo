@@ -27,7 +27,7 @@ export function Hero() {
           style={{ transform: `translate(${mousePosition.x * 0.5}px, ${mousePosition.y * 0.5}px)` }}
         />
         <div
-          className="absolute top-1/3 right-0 w-[250px] h-[300px] sm:w-[350px] sm:h-[450px] lg:w-[500px] lg:h-[600px] bg-primary rounded-[40%_60%_70%_30%/40%_60%_40%_60%] opacity-80 blur-3xl animate-blob-morph"
+          className="absolute top-1/3 right-0 w-[250px] h-[300px] sm:w-[350px] sm:h-[450px] lg:w-[500px] lg:h-[600px] bg-accent rounded-[40%_60%_70%_30%/40%_60%_40%_60%] opacity-80 blur-3xl animate-blob-morph"
           style={{
             transform: `translate(${-mousePosition.x * 0.3}px, ${-mousePosition.y * 0.3}px)`,
             animationDelay: "2s",
@@ -41,7 +41,9 @@ export function Hero() {
             <div className="space-y-3 sm:space-y-4">
               <h1 className="text-[clamp(2rem,6vw,4.5rem)] sm:text-[clamp(2.25rem,6.5vw,4.5rem)] md:text-[clamp(2.5rem,7vw,4.5rem)] lg:text-[clamp(2.75rem,7.5vw,4.5rem)] font-black leading-[0.95] tracking-tight">
                 <span className="block">Top Billboard and</span>
-                <span className="block text-primary">Outdoor Advertising</span>
+                <span className="block bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+                  Outdoor Advertising
+                </span>
                 <span className="block">Company in Lagos Nigeria</span>
               </h1>
               <p className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-300 mt-6">for Ambitious Brands</p>
@@ -54,7 +56,7 @@ export function Hero() {
             <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 pt-4 sm:pt-6">
               <Button
                 size="lg"
-                className="h-14 sm:h-16 px-8 sm:px-10 text-base sm:text-lg rounded-full bg-primary hover:bg-primary/90 text-black font-bold group w-full sm:w-auto"
+                className="h-14 sm:h-16 px-8 sm:px-10 text-base sm:text-lg rounded-full bg-accent hover:bg-accent/90 text-white font-bold group w-full sm:w-auto"
                 asChild
               >
                 <Link href="#search">
@@ -65,7 +67,7 @@ export function Hero() {
               <Button
                 size="lg"
                 variant="outline"
-                className="h-14 sm:h-16 px-8 sm:px-10 text-base sm:text-lg rounded-full border-2 border-white/20 hover:border-primary hover:bg-primary/10 font-bold bg-transparent w-full sm:w-auto"
+                className="h-14 sm:h-16 px-8 sm:px-10 text-base sm:text-lg rounded-full border-2 border-white/20 hover:border-accent hover:bg-accent/10 font-bold bg-transparent w-full sm:w-auto"
                 asChild
               >
                 <Link href="#work">View Portfolio</Link>
@@ -74,12 +76,12 @@ export function Hero() {
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 pt-8 sm:pt-12 max-w-2xl">
               {[
-                { value: "2,000+", label: "Locations" },
-                { value: "500+", label: "Brands" },
-                { value: "36", label: "States" },
+                { value: "2,000+", label: "Locations", color: "primary" },
+                { value: "500+", label: "Brands", color: "accent" },
+                { value: "36", label: "States", color: "primary" },
               ].map((stat, index) => (
-                <div key={index} className="border-l-4 border-primary pl-3 sm:pl-4">
-                  <p className="text-3xl sm:text-4xl md:text-5xl font-black text-primary">{stat.value}</p>
+                <div key={index} className={`border-l-4 border-${stat.color} pl-3 sm:pl-4`}>
+                  <p className={`text-3xl sm:text-4xl md:text-5xl font-black text-${stat.color}`}>{stat.value}</p>
                   <p className="text-xs sm:text-sm text-gray-500 uppercase tracking-wider mt-1">{stat.label}</p>
                 </div>
               ))}

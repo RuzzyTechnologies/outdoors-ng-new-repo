@@ -5,6 +5,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
 import { ThemeToggle } from "@/components/theme-toggle"
+import Image from "next/image"
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -27,8 +28,14 @@ export function Header() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-12">
         <div className="flex h-16 sm:h-20 items-center justify-between">
           <Link href="/" className="flex items-center space-x-2 sm:space-x-3 hover-lift">
-            <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-primary animate-glow-pulse" />
-            <span className="text-xl sm:text-2xl font-serif font-bold">Outdoors</span>
+            <Image
+              src="/images/outdoors-logo.png"
+              alt="Outdoors.ng Logo"
+              width={120}
+              height={40}
+              className="h-10 sm:h-12 w-auto"
+              priority
+            />
           </Link>
 
           <nav className="hidden md:flex items-center space-x-4 lg:space-x-8">
