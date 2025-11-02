@@ -2,6 +2,8 @@ import { Header } from "@/components/header"
 import { Hero } from "@/components/hero"
 import { BillboardSearch } from "@/components/billboard-search"
 import { ClientShowcase } from "@/components/client-showcase"
+import { VideoSection } from "@/components/video-section"
+import { AboutSection } from "@/components/about-section"
 import { Stats } from "@/components/stats"
 import { Features } from "@/components/features"
 import { Testimonials } from "@/components/testimonials"
@@ -17,6 +19,8 @@ export default function Home() {
         <Stats />
         <BillboardSearch />
         <ClientShowcase />
+        <VideoSection />
+        <AboutSection />
         <Features />
         <Testimonials />
         <CTA />

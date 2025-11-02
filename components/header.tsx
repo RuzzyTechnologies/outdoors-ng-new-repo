@@ -58,6 +58,12 @@ export function Header() {
               About
             </Link>
             <Link
+              href="/blog"
+              className="text-xs lg:text-sm uppercase tracking-wider font-medium text-muted-foreground hover:text-primary transition-all duration-300 hover-lift"
+            >
+              Blog
+            </Link>
+            <Link
               href="/contact"
               className="text-xs lg:text-sm uppercase tracking-wider font-medium text-muted-foreground hover:text-primary transition-all duration-300 hover-lift"
             >
