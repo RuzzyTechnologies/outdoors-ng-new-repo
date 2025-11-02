@@ -17,15 +17,17 @@
   --secondary-foreground: oklch(0.15 0.01 85);
   --muted: oklch(0.96 0.005 85);
   --muted-foreground: oklch(0.5 0.01 85);
-  --accent: oklch(0.75 0.25 145); /* Green - now accent */
-  --accent-foreground: oklch(0.1 0.01 85);
+  /* Updated green to match logo color #2E7D32 */
+  --accent: oklch(0.5 0.15 145); /* Forest green from logo - now accent */
+  --accent-foreground: oklch(0.98 0.01 85);
   --destructive: oklch(0.65 0.25 27);
   --destructive-foreground: oklch(0.98 0.01 60);
   --border: oklch(0.9 0.005 85);
   --input: oklch(0.9 0.005 85);
   --ring: oklch(0.7 0.22 35); /* Orange ring */
   --chart-1: oklch(0.7 0.22 35); /* Orange */
-  --chart-2: oklch(0.75 0.25 145); /* Green */
+  /* Updated chart-2 to match logo green */
+  --chart-2: oklch(0.5 0.15 145); /* Forest green from logo */
   --chart-3: oklch(0.55 0.18 120);
   --chart-4: oklch(0.58 0.15 145);
   --chart-5: oklch(0.42 0.1 145);
@@ -46,8 +48,9 @@
   --secondary-foreground: oklch(0.98 0.005 85);
   --muted: oklch(0.14 0.01 240);
   --muted-foreground: oklch(0.6 0.01 240);
-  --accent: oklch(0.75 0.25 145); /* Green - now accent */
-  --accent-foreground: oklch(0.1 0.01 85);
+  /* Updated green to match logo color in dark mode */
+  --accent: oklch(0.55 0.16 145); /* Slightly brighter forest green for dark mode */
+  --accent-foreground: oklch(0.98 0.01 85);
   --destructive: oklch(0.65 0.25 27);
   --destructive-foreground: oklch(0.98 0.01 60);
   --border: oklch(0.2 0.01 240);
