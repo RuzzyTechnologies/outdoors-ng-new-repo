@@ -7,18 +7,21 @@ import Link from "next/link"
 export function TopDealsSection() {
   const deals = [
     {
+      id: 1,
       title: "BRT Billboard In Ikeja, Lagos",
       image: "/brt-billboard-lagos-nigeria.jpg",
       featured: true,
       available: true,
     },
     {
+      id: 2,
       title: "48 Sheet Billboard Along Ikotun-Idimu Road Ftf Ikotun",
       image: "/48-sheet-billboard-lagos-road.jpg",
       featured: true,
       available: true,
     },
     {
+      id: 3,
       title: "Cube Led Billboard At Lekki Phase 1",
       image: "/led-cube-billboard-lekki-lagos.jpg",
       featured: true,
@@ -36,8 +39,8 @@ export function TopDealsSection() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {deals.map((deal, index) => (
-              <Card key={index} className="overflow-hidden hover:shadow-xl transition-all group">
+            {deals.map((deal) => (
+              <Card key={deal.id} className="overflow-hidden hover:shadow-xl transition-all group">
                 <div className="relative h-64">
                   <Image
                     src={deal.image || "/placeholder.svg"}
@@ -52,8 +55,8 @@ export function TopDealsSection() {
                 </div>
                 <div className="p-6">
                   <h3 className="text-lg font-bold mb-4 line-clamp-2">{deal.title}</h3>
-                  <Button className="w-full bg-transparent" variant="outline">
-                    View Details
+                  <Button className="w-full bg-transparent" variant="outline" asChild>
+                    <Link href={`/billboards/${deal.id}`}>View Details</Link>
                   </Button>
                 </div>
               </Card>
