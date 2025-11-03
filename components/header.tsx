@@ -6,10 +6,12 @@ import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
 import { ThemeToggle } from "@/components/theme-toggle"
 import Image from "next/image"
+import { usePathname } from "next/navigation"
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const pathname = usePathname()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,6 +20,11 @@ export function Header() {
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
+
+  const isActive = (path: string) => {
+    if (path === "/") return pathname === "/"
+    return pathname.startsWith(path)
+  }
 
   return (
     <header
@@ -41,31 +48,43 @@ export function Header() {
           <nav className="hidden md:flex items-center space-x-4 lg:space-x-8">
             <Link
               href="/"
-              className="text-xs lg:text-sm uppercase tracking-wider font-medium hover:text-primary transition-all duration-300 hover-lift"
+              className={`text-xs lg:text-sm uppercase tracking-wider font-medium transition-all duration-300 hover-lift ${
+                isActive("/") ? "text-primary" : "text-muted-foreground hover:text-primary"
+              }`}
             >
               Home
             </Link>
             <Link
               href="/billboards"
-              className="text-xs lg:text-sm uppercase tracking-wider font-medium text-muted-foreground hover:text-primary transition-all duration-300 hover-lift"
+              className={`text-xs lg:text-sm uppercase tracking-wider font-medium transition-all duration-300 hover-lift ${
+                isActive("/billboards") || pathname.startsWith("/billboard-in-")
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-primary"
+              }`}
             >
               Locations
             </Link>
             <Link
               href="/about"
-              className="text-xs lg:text-sm uppercase tracking-wider font-medium text-muted-foreground hover:text-primary transition-all duration-300 hover-lift"
+              className={`text-xs lg:text-sm uppercase tracking-wider font-medium transition-all duration-300 hover-lift ${
+                isActive("/about") ? "text-primary" : "text-muted-foreground hover:text-primary"
+              }`}
             >
               About
             </Link>
             <Link
               href="/blog"
-              className="text-xs lg:text-sm uppercase tracking-wider font-medium text-muted-foreground hover:text-primary transition-all duration-300 hover-lift"
+              className={`text-xs lg:text-sm uppercase tracking-wider font-medium transition-all duration-300 hover-lift ${
+                isActive("/blog") ? "text-primary" : "text-muted-foreground hover:text-primary"
+              }`}
             >
               Blog
             </Link>
             <Link
               href="/contact"
-              className="text-xs lg:text-sm uppercase tracking-wider font-medium text-muted-foreground hover:text-primary transition-all duration-300 hover-lift"
+              className={`text-xs lg:text-sm uppercase tracking-wider font-medium transition-all duration-300 hover-lift ${
+                isActive("/contact") ? "text-primary" : "text-muted-foreground hover:text-primary"
+              }`}
             >
               Contact
             </Link>
@@ -93,31 +112,43 @@ export function Header() {
           <div className="md:hidden py-4 sm:py-6 space-y-3 sm:space-y-4 border-t animate-slide-up">
             <Link
               href="/"
-              className="block text-sm font-medium text-foreground hover:text-primary transition-colors py-2 hover-lift"
+              className={`block text-sm font-medium transition-colors py-2 hover-lift ${
+                isActive("/") ? "text-primary" : "text-muted-foreground hover:text-primary"
+              }`}
             >
               Home
             </Link>
             <Link
               href="/billboards"
-              className="block text-sm font-medium text-muted-foreground hover:text-primary transition-colors py-2 hover-lift"
+              className={`block text-sm font-medium transition-colors py-2 hover-lift ${
+                isActive("/billboards") || pathname.startsWith("/billboard-in-")
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-primary"
+              }`}
             >
               Locations
             </Link>
             <Link
               href="/about"
-              className="block text-sm font-medium text-muted-foreground hover:text-primary transition-colors py-2 hover-lift"
+              className={`block text-sm font-medium transition-colors py-2 hover-lift ${
+                isActive("/about") ? "text-primary" : "text-muted-foreground hover:text-primary"
+              }`}
             >
               About
             </Link>
             <Link
               href="/blog"
-              className="block text-sm font-medium text-muted-foreground hover:text-primary transition-colors py-2 hover-lift"
+              className={`block text-sm font-medium transition-colors py-2 hover-lift ${
+                isActive("/blog") ? "text-primary" : "text-muted-foreground hover:text-primary"
+              }`}
             >
               Blog
             </Link>
             <Link
               href="/contact"
-              className="block text-sm font-medium text-muted-foreground hover:text-primary transition-colors py-2 hover-lift"
+              className={`block text-sm font-medium transition-colors py-2 hover-lift ${
+                isActive("/contact") ? "text-primary" : "text-muted-foreground hover:text-primary"
+              }`}
             >
               Contact
             </Link>
