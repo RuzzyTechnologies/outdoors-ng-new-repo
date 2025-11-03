@@ -27,14 +27,14 @@ export default function LoginPage() {
       <main className="pt-32 pb-16 md:pt-40 md:pb-24 bg-gradient-to-b from-background to-muted/30">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-md mx-auto">
-            <Tabs defaultValue="login" className="w-full">
+            <Tabs defaultValue="login" className="w-full transition-all duration-300 ease-in-out">
               <TabsList className="grid w-full grid-cols-2 mb-8">
                 <TabsTrigger value="login">Login</TabsTrigger>
                 <TabsTrigger value="register">Register</TabsTrigger>
               </TabsList>
 
-              <TabsContent value="login">
-                <Card>
+              <TabsContent value="login" className="transition-all duration-300 ease-in-out">
+                <Card className="transition-all duration-300 ease-in-out">
                   <CardHeader>
                     <CardTitle>Welcome Back</CardTitle>
                     <CardDescription>Login to your account to manage your billboard campaigns</CardDescription>
@@ -57,8 +57,8 @@ export default function LoginPage() {
                 </Card>
               </TabsContent>
 
-              <TabsContent value="register">
-                <Card>
+              <TabsContent value="register" className="transition-all duration-300 ease-in-out">
+                <Card className="transition-all duration-300 ease-in-out">
                   <CardHeader>
                     <CardTitle>Create Account</CardTitle>
                     <CardDescription>Register to start advertising with Outdoors.ng</CardDescription>
