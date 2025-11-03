@@ -1,14 +1,19 @@
+"use client" // Convert to client component to manage modal state
+
+import { useState } from "react" // Import useState for modal state
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { Breadcrumbs } from "@/components/breadcrumbs"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
+import { BookingModal } from "@/components/booking-modal" // Import BookingModal component
 import Image from "next/image"
-import Link from "next/link"
 import { MapPin, Eye, Share2 } from "lucide-react"
 
 export default function BillboardDetailPage({ params }: { params: { id: string } }) {
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false)
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -99,9 +104,9 @@ export default function BillboardDetailPage({ params }: { params: { id: string }
                   <Button
                     size="lg"
                     className="flex-1 transition-all duration-300 ease-in-out hover:scale-105 shadow-md hover:shadow-lg"
-                    asChild
+                    onClick={() => setIsBookingModalOpen(true)}
                   >
-                    <Link href="/contact">Book Now</Link>
+                    Book Now
                   </Button>
                   <Button
                     size="lg"
@@ -117,6 +122,13 @@ export default function BillboardDetailPage({ params }: { params: { id: string }
         </div>
       </main>
       <Footer />
+
+      <BookingModal
+        isOpen={isBookingModalOpen}
+        onClose={() => setIsBookingModalOpen(false)}
+        billboardTitle="BRT Billboard In Ikeja, Lagos"
+        billboardLocation="Ikeja, Lagos"
+      />
     </div>
   )
 }
