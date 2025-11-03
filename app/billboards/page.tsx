@@ -1,5 +1,6 @@
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { Breadcrumbs } from "@/components/breadcrumbs"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -40,6 +41,7 @@ export default function BillboardsPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
+      <Breadcrumbs />
       <main className="flex-1">
         <section className="py-24 bg-gradient-to-b from-primary/10 to-background">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">

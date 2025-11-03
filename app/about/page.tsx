@@ -1,11 +1,13 @@
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { Breadcrumbs } from "@/components/breadcrumbs"
 import { Award, Target, Users, TrendingUp, MapPin, Zap } from "lucide-react"
 
 export default function AboutPage() {
   return (
     <div className="min-h-screen">
       <Header />
+      <Breadcrumbs />
       <main>
         {/* Hero Section */}
         <section className="pt-32 pb-16 md:pt-40 md:pb-24 bg-gradient-to-b from-black to-gray-950 text-white relative overflow-hidden">

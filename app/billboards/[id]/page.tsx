@@ -1,5 +1,6 @@
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { Breadcrumbs } from "@/components/breadcrumbs"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
@@ -11,6 +12,7 @@ export default function BillboardDetailPage({ params }: { params: { id: string }
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
+      <Breadcrumbs />
       <main className="flex-1 py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
           <div className="grid lg:grid-cols-2 gap-16">

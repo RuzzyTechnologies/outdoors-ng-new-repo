@@ -1,5 +1,6 @@
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { Breadcrumbs } from "@/components/breadcrumbs"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { MapPin, Clock, Briefcase } from "lucide-react"
@@ -29,6 +30,7 @@ export default function CareersPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
+      <Breadcrumbs />
       <main className="flex-1">
         <section className="py-20 bg-gradient-to-b from-primary/10 to-background">
           <div className="container mx-auto px-4 max-w-6xl">

@@ -1,5 +1,6 @@
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { Breadcrumbs } from "@/components/breadcrumbs"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -18,6 +19,7 @@ export default function BillboardInLagosPage() {
   return (
     <div className="min-h-screen">
       <Header />
+      <Breadcrumbs />
       <main className="pt-32 pb-16 md:pt-40 md:pb-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
