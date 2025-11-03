@@ -37,8 +37,8 @@ export default function BlogPage() {
   return (
     <div className="min-h-screen">
       <Header />
-      <Breadcrumbs />
       <main>
+        <Breadcrumbs />
         {/* Hero Section */}
         <section className="pt-32 pb-16 md:pt-40 md:pb-24 bg-gradient-to-b from-black to-gray-950 text-white relative overflow-hidden">
           <div className="absolute inset-0 overflow-hidden pointer-events-none">

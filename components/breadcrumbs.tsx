@@ -38,31 +38,33 @@ export function Breadcrumbs() {
   })
 
   return (
-    <div className="container mx-auto px-4 py-4 sm:py-6">
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link href="/">Home</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          {breadcrumbItems.map((item, index) => (
-            <div key={item.href} className="contents">
-              <BreadcrumbItem>
-                {item.isLast ? (
-                  <BreadcrumbPage>{item.text}</BreadcrumbPage>
-                ) : (
-                  <BreadcrumbLink asChild>
-                    <Link href={item.href}>{item.text}</Link>
-                  </BreadcrumbLink>
-                )}
-              </BreadcrumbItem>
-              {!item.isLast && <BreadcrumbSeparator />}
-            </div>
-          ))}
-        </BreadcrumbList>
-      </Breadcrumb>
+    <div className="bg-muted/30 border-b border-border">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link href="/">Home</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            {breadcrumbItems.map((item, index) => (
+              <div key={item.href} className="contents">
+                <BreadcrumbItem>
+                  {item.isLast ? (
+                    <BreadcrumbPage>{item.text}</BreadcrumbPage>
+                  ) : (
+                    <BreadcrumbLink asChild>
+                      <Link href={item.href}>{item.text}</Link>
+                    </BreadcrumbLink>
+                  )}
+                </BreadcrumbItem>
+                {!item.isLast && <BreadcrumbSeparator />}
+              </div>
+            ))}
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
     </div>
   )
 }
