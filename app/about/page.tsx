@@ -1,7 +1,6 @@
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { Award, Target, Users, TrendingUp, MapPin, Zap } from "lucide-react"
-import Image from "next/image"
 
 export default function AboutPage() {
   return (
@@ -25,8 +24,8 @@ export default function AboutPage() {
                 Award-Winning <span className="text-primary">Outdoor Advertising</span> Agency in Nigeria
               </h1>
               <p className="text-lg md:text-xl text-gray-400 text-balance leading-relaxed">
-                We specialize in the execution of outdoor advertising campaigns for our clients, including media buying,
-                creative concept development, and strategic placement across Nigeria's most impactful locations.
+                We provide an exclusive resource on the internet for billboards in choice locations in Nigeria. We
+                research, present and negotiate the best media options, locations, and rates.
               </p>
             </div>
           </div>
@@ -35,25 +34,30 @@ export default function AboutPage() {
         {/* Mission Section */}
         <section className="py-16 md:py-24 bg-background">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
-              <div>
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">Our Mission</h2>
-                <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-                  To provide innovative and effective outdoor advertising solutions that help ambitious brands increase
-                  their visibility and revenue across Nigeria.
+            <div className="max-w-4xl mx-auto">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8 text-center">Welcome to Outdoors.ng</h2>
+              <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
+                <p>
+                  We provide an exclusive resource on the internet for billboards in choice locations in Nigeria. We
+                  research, present and negotiate the best media options, locations, and rates. We also handle every
+                  aspect and oversee the entire campaign from start to finish, at no cost to our clients.
                 </p>
-                <p className="text-lg text-muted-foreground leading-relaxed">
-                  We are committed to delivering exceptional service, strategic insights, and measurable results for
-                  every client we work with.
+                <p>
+                  Our diverse portfolio of digital and static displays spread across major cities in Nigeria are
+                  primarily located in the most iconic and high-traffic locations giving your brand the edge and reaches
+                  millions of commuters daily.
                 </p>
-              </div>
-              <div className="relative h-[400px] rounded-2xl overflow-hidden">
-                <Image
-                  src="/modern-led-billboard-at-night-in-lagos-nigeria-wit.jpg"
-                  alt="Our Mission"
-                  fill
-                  className="object-cover"
-                />
+                <p>
+                  With the scope and depth of our presence in the largest cities in Nigeria, advertisers are provided
+                  with the ability to engage with both mass and targeted audiences at many touchpoints throughout the
+                  day.
+                </p>
+                <p>
+                  If you need to rent or buy a billboard, we're the exclusive online resource to make it happen. We
+                  specialize in all forms of outdoor media such as Unipole, Gantry, LED Billboard, Wall Drape, Lamp
+                  Post, Roof Top, Trivision/Ultrawave, Portrait, Backlit/Landscape, Bridge Panel, Mega Billboard, Long
+                  Banner, Mobile Billboard, Bus Exterior, Convenience Store Posters or Pump-Top ads…… and so much more!
+                </p>
               </div>
             </div>
           </div>

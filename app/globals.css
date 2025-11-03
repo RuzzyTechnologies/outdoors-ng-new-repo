@@ -103,9 +103,9 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
-    transition-property: background-color, border-color, color, fill, stroke;
-    transition-duration: 0.5s;
-    transition-timing-function: ease;
+    transition-property: all;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-in-out;
   }
   body {
     @apply bg-background text-foreground;
