@@ -110,6 +110,17 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Custom text selection color using primary color */
+  ::selection {
+    background-color: oklch(0.7 0.22 35); /* Primary orange color */
+    color: oklch(0.98 0.01 85); /* White text for contrast */
+  }
+
+  ::-moz-selection {
+    background-color: oklch(0.7 0.22 35); /* Primary orange color */
+    color: oklch(0.98 0.01 85); /* White text for contrast */
+  }
 }
 
 /* Enhanced animations with more sophisticated effects */
