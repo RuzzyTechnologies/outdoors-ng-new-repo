@@ -10,9 +10,9 @@ export default function LEDScreensPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <Breadcrumbs />
-      <main className="flex-1">
-        <section className="py-20 bg-gradient-to-b from-primary/10 to-background">
+      <main className="flex-1 pt-16 sm:pt-20">
+        <Breadcrumbs />
+        <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-primary/10 to-background">
           <div className="container mx-auto px-4 max-w-6xl">
             <div className="text-center mb-16">
               <h1 className="text-4xl md:text-5xl font-bold mb-4">LED Screen Advertising</h1>

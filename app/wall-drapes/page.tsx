@@ -1,5 +1,6 @@
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { Breadcrumbs } from "@/components/breadcrumbs"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Building2, Maximize, Users, DollarSign } from "lucide-react"
@@ -9,8 +10,9 @@ export default function WallDrapesPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1">
-        <section className="py-20 bg-gradient-to-b from-primary/10 to-background">
+      <main className="flex-1 pt-16 sm:pt-20">
+        <Breadcrumbs />
+        <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-primary/10 to-background">
           <div className="container mx-auto px-4 max-w-6xl">
             <div className="text-center mb-16">
               <h1 className="text-4xl md:text-5xl font-bold mb-4">Wall Drape Advertising</h1>

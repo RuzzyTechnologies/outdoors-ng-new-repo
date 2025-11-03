@@ -3,14 +3,16 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Menu, X } from "lucide-react"
+import { Menu, X, ChevronDown } from "lucide-react"
 import { ThemeToggle } from "@/components/theme-toggle"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false)
   const pathname = usePathname()
 
   useEffect(() => {
@@ -24,6 +26,21 @@ export function Header() {
   const isActive = (path: string) => {
     if (path === "/") return pathname === "/"
     return pathname.startsWith(path)
+  }
+
+  const isServicesActive = () => {
+    return (
+      pathname.startsWith("/billboards") ||
+      pathname.startsWith("/led-screens") ||
+      pathname.startsWith("/wall-drapes") ||
+      pathname.startsWith("/transit") ||
+      pathname.startsWith("/advertising-agency") ||
+      pathname.startsWith("/campaign-monitoring") ||
+      pathname.startsWith("/creative-communication") ||
+      pathname.startsWith("/digital-marketing") ||
+      pathname.startsWith("/media-planning-buying") ||
+      pathname.startsWith("/radio-tv-advertising")
+    )
   }
 
   return (
@@ -54,16 +71,68 @@ export function Header() {
             >
               Home
             </Link>
-            <Link
-              href="/billboards"
-              className={`text-xs lg:text-sm uppercase tracking-wider font-medium transition-all duration-300 hover-lift ${
-                isActive("/billboards") || pathname.startsWith("/billboard-in-")
-                  ? "text-primary"
-                  : "text-muted-foreground hover:text-primary"
-              }`}
-            >
-              Locations
-            </Link>
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                className={`flex items-center gap-1 text-xs lg:text-sm uppercase tracking-wider font-medium transition-all duration-300 hover-lift outline-none ${
+                  isServicesActive() ? "text-primary" : "text-muted-foreground hover:text-primary"
+                }`}
+              >
+                Services
+                <ChevronDown className="h-3 w-3 lg:h-4 lg:w-4 transition-transform duration-300 group-data-[state=open]:rotate-180" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-64">
+                <DropdownMenuItem asChild>
+                  <Link href="/advertising-agency" className="cursor-pointer w-full">
+                    Advertising Agency
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/billboards" className="cursor-pointer w-full">
+                    Billboards
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/campaign-monitoring" className="cursor-pointer w-full">
+                    Campaign Monitoring
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/creative-communication" className="cursor-pointer w-full">
+                    Creative Communication
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/digital-marketing" className="cursor-pointer w-full">
+                    Digital Marketing
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/led-screens" className="cursor-pointer w-full">
+                    LED Screens
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/media-planning-buying" className="cursor-pointer w-full">
+                    Media Planning & Buying
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/radio-tv-advertising" className="cursor-pointer w-full">
+                    Radio & TV Advertising
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/transit" className="cursor-pointer w-full">
+                    Transit Advertising
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/wall-drapes" className="cursor-pointer w-full">
+                    Wall Drapes
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <Link
               href="/about"
               className={`text-xs lg:text-sm uppercase tracking-wider font-medium transition-all duration-300 hover-lift ${
@@ -118,16 +187,103 @@ export function Header() {
             >
               Home
             </Link>
-            <Link
-              href="/billboards"
-              className={`block text-sm font-medium transition-colors py-2 hover-lift ${
-                isActive("/billboards") || pathname.startsWith("/billboard-in-")
-                  ? "text-primary"
-                  : "text-muted-foreground hover:text-primary"
-              }`}
-            >
-              Locations
-            </Link>
+            <div>
+              <button
+                onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+                className={`flex items-center justify-between w-full text-sm font-medium transition-colors py-2 hover-lift ${
+                  isServicesActive() ? "text-primary" : "text-muted-foreground hover:text-primary"
+                }`}
+              >
+                Services
+                <ChevronDown
+                  className={`h-4 w-4 transition-transform duration-300 ease-out ${mobileServicesOpen ? "rotate-180" : ""}`}
+                />
+              </button>
+              {mobileServicesOpen && (
+                <div className="pl-4 space-y-2 mt-2 animate-slide-up">
+                  <Link
+                    href="/advertising-agency"
+                    className={`block text-sm transition-all duration-200 py-2 hover-lift ${
+                      isActive("/advertising-agency") ? "text-primary" : "text-muted-foreground hover:text-primary"
+                    }`}
+                  >
+                    Advertising Agency
+                  </Link>
+                  <Link
+                    href="/billboards"
+                    className={`block text-sm transition-all duration-200 py-2 hover-lift ${
+                      isActive("/billboards") ? "text-primary" : "text-muted-foreground hover:text-primary"
+                    }`}
+                  >
+                    Billboards
+                  </Link>
+                  <Link
+                    href="/campaign-monitoring"
+                    className={`block text-sm transition-all duration-200 py-2 hover-lift ${
+                      isActive("/campaign-monitoring") ? "text-primary" : "text-muted-foreground hover:text-primary"
+                    }`}
+                  >
+                    Campaign Monitoring
+                  </Link>
+                  <Link
+                    href="/creative-communication"
+                    className={`block text-sm transition-all duration-200 py-2 hover-lift ${
+                      isActive("/creative-communication") ? "text-primary" : "text-muted-foreground hover:text-primary"
+                    }`}
+                  >
+                    Creative Communication
+                  </Link>
+                  <Link
+                    href="/digital-marketing"
+                    className={`block text-sm transition-all duration-200 py-2 hover-lift ${
+                      isActive("/digital-marketing") ? "text-primary" : "text-muted-foreground hover:text-primary"
+                    }`}
+                  >
+                    Digital Marketing
+                  </Link>
+                  <Link
+                    href="/led-screens"
+                    className={`block text-sm transition-all duration-200 py-2 hover-lift ${
+                      isActive("/led-screens") ? "text-primary" : "text-muted-foreground hover:text-primary"
+                    }`}
+                  >
+                    LED Screens
+                  </Link>
+                  <Link
+                    href="/media-planning-buying"
+                    className={`block text-sm transition-all duration-200 py-2 hover-lift ${
+                      isActive("/media-planning-buying") ? "text-primary" : "text-muted-foreground hover:text-primary"
+                    }`}
+                  >
+                    Media Planning & Buying
+                  </Link>
+                  <Link
+                    href="/radio-tv-advertising"
+                    className={`block text-sm transition-all duration-200 py-2 hover-lift ${
+                      isActive("/radio-tv-advertising") ? "text-primary" : "text-muted-foreground hover:text-primary"
+                    }`}
+                  >
+                    Radio & TV Advertising
+                  </Link>
+                  <Link
+                    href="/transit"
+                    className={`block text-sm transition-all duration-200 py-2 hover-lift ${
+                      isActive("/transit") ? "text-primary" : "text-muted-foreground hover:text-primary"
+                    }`}
+                  >
+                    Transit Advertising
+                  </Link>
+                  <Link
+                    href="/wall-drapes"
+                    className={`block text-sm transition-all duration-200 py-2 hover-lift ${
+                      isActive("/wall-drapes") ? "text-primary" : "text-muted-foreground hover:text-primary"
+                    }`}
+                  >
+                    Wall Drapes
+                  </Link>
+                </div>
+              )}
+            </div>
             <Link
               href="/about"
               className={`block text-sm font-medium transition-colors py-2 hover-lift ${
@@ -170,3 +326,5 @@ export function Header() {
     </header>
   )
 }
+
+export default Header
