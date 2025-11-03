@@ -30,7 +30,6 @@ export function Header() {
 
   const isServicesActive = () => {
     return (
-      pathname.startsWith("/billboards") ||
       pathname.startsWith("/led-screens") ||
       pathname.startsWith("/wall-drapes") ||
       pathname.startsWith("/transit") ||
@@ -71,6 +70,14 @@ export function Header() {
             >
               Home
             </Link>
+            <Link
+              href="/billboards"
+              className={`text-xs lg:text-sm uppercase tracking-wider font-medium transition-all duration-300 hover-lift ${
+                isActive("/billboards") ? "text-primary" : "text-muted-foreground hover:text-primary"
+              }`}
+            >
+              Billboards
+            </Link>
             <DropdownMenu>
               <DropdownMenuTrigger
                 className={`flex items-center gap-1 text-xs lg:text-sm uppercase tracking-wider font-medium transition-all duration-300 hover-lift outline-none ${
@@ -84,11 +91,6 @@ export function Header() {
                 <DropdownMenuItem asChild>
                   <Link href="/advertising-agency" className="cursor-pointer w-full">
                     Advertising Agency
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/billboards" className="cursor-pointer w-full">
-                    Billboards
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
@@ -187,6 +189,14 @@ export function Header() {
             >
               Home
             </Link>
+            <Link
+              href="/billboards"
+              className={`block text-sm font-medium transition-colors py-2 hover-lift ${
+                isActive("/billboards") ? "text-primary" : "text-muted-foreground hover:text-primary"
+              }`}
+            >
+              Billboards
+            </Link>
             <div>
               <button
                 onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
@@ -208,14 +218,6 @@ export function Header() {
                     }`}
                   >
                     Advertising Agency
-                  </Link>
-                  <Link
-                    href="/billboards"
-                    className={`block text-sm transition-all duration-200 py-2 hover-lift ${
-                      isActive("/billboards") ? "text-primary" : "text-muted-foreground hover:text-primary"
-                    }`}
-                  >
-                    Billboards
                   </Link>
                   <Link
                     href="/campaign-monitoring"
