@@ -41,7 +41,7 @@ export default function BillboardsPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1">
+      <main className="flex-1 pt-16 sm:pt-20">
         <Breadcrumbs />
         <section className="py-24 bg-gradient-to-b from-primary/10 to-background">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">

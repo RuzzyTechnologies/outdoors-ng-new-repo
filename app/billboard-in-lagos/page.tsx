@@ -19,8 +19,8 @@ export default function BillboardInLagosPage() {
   return (
     <div className="min-h-screen">
       <Header />
-      <Breadcrumbs />
-      <main className="pt-32 pb-16 md:pt-40 md:pb-24">
+      <main className="pt-16 sm:pt-20">
+        <Breadcrumbs />
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
             <div className="flex items-center gap-4 mb-8">
