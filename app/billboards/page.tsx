@@ -75,9 +75,9 @@ export default function BillboardsPage() {
                       {billboard.title}
                     </h3>
                     <p className="text-muted-foreground mb-6">{billboard.location}</p>
-                    <div className="flex items-center justify-between gap-4">
+                    <div className="flex flex-col items-start gap-4">
                       <span className="text-2xl font-bold text-primary leading-none">{billboard.price}</span>
-                      <Button asChild className="transition-all duration-300 ease-in-out hover:scale-105 shrink-0">
+                      <Button asChild className="transition-all duration-300 ease-in-out hover:scale-105 w-full">
                         <Link href={`/billboards/${billboard.id}`}>View Details</Link>
                       </Button>
                     </div>
