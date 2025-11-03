@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import Link from "next/link"
+import { truncateText } from "@/lib/utils"
 
 export default function BillboardsPage() {
   const billboards = [
@@ -14,7 +15,8 @@ export default function BillboardsPage() {
       title: "BRT Billboard In Ikeja, Lagos",
       location: "Ikeja, Lagos",
       type: "BRT Billboard",
-      price: "₦500,000/month",
+      description:
+        "Prime billboard location along the busy BRT corridor in Ikeja. High visibility with thousands of daily commuters passing by. Perfect for brand awareness campaigns targeting Lagos residents.",
       image: "/brt-billboard-lagos-nigeria.jpg",
       featured: true,
     },
@@ -23,7 +25,8 @@ export default function BillboardsPage() {
       title: "48 Sheet Billboard Along Ikotun-Idimu Road",
       location: "Ikotun, Lagos",
       type: "48 Sheet",
-      price: "₦350,000/month",
+      description:
+        "Strategic 48-sheet billboard positioned on the heavily trafficked Ikotun-Idimu Road. Excellent exposure to vehicular and pedestrian traffic. Ideal for retail and consumer product advertising.",
       image: "/48-sheet-billboard-lagos-road.jpg",
       featured: true,
     },
@@ -32,7 +35,8 @@ export default function BillboardsPage() {
       title: "Cube Led Billboard At Lekki Phase 1",
       location: "Lekki, Lagos",
       type: "LED Billboard",
-      price: "₦800,000/month",
+      description:
+        "Modern LED cube billboard in the upscale Lekki Phase 1 area. Digital display with rotating content capability. Premium location targeting affluent demographics and business professionals.",
       image: "/led-cube-billboard-lekki-lagos.jpg",
       featured: true,
     },
@@ -76,7 +80,9 @@ export default function BillboardsPage() {
                     </h3>
                     <p className="text-muted-foreground mb-6">{billboard.location}</p>
                     <div className="flex flex-col items-start gap-4">
-                      <span className="text-2xl font-bold text-primary leading-none">{billboard.price}</span>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        {truncateText(billboard.description, 20)}
+                      </p>
                       <Button asChild className="transition-all duration-300 ease-in-out hover:scale-105 w-full">
                         <Link href={`/billboards/${billboard.id}`}>View Details</Link>
                       </Button>

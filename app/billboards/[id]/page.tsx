@@ -64,7 +64,14 @@ export default function BillboardDetailPage({ params }: { params: { id: string }
                   </div>
                 </div>
 
-                <div className="text-4xl font-bold text-primary mb-10">₦500,000/month</div>
+                <div className="mb-10">
+                  <h3 className="font-bold text-lg mb-3">Description</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Prime billboard location along the busy BRT corridor in Ikeja. High visibility with thousands of
+                    daily commuters passing by. Perfect for brand awareness campaigns targeting Lagos residents. This
+                    strategic position offers unparalleled exposure to a diverse audience throughout the day.
+                  </p>
+                </div>
 
                 <Card className="p-8 mb-10 shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out border-2 hover:border-primary/30">
                   <h3 className="font-bold text-xl mb-6">Billboard Details</h3>
