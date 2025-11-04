@@ -131,7 +131,7 @@ export default function AdminDashboardPage() {
                           variant="outline"
                           size="sm"
                           onClick={() => handleDelete(billboard.id)}
-                          className="flex-1 sm:flex-none text-red-500 hover:text-red-600 hover:bg-red-50"
+                          className="flex-1 sm:flex-none text-destructive hover:text-destructive hover:bg-destructive/10 dark:hover:bg-destructive/20"
                         >
                           <Trash2 className="h-4 w-4 sm:mr-1" />
                           <span className="hidden sm:inline">Delete</span>
