@@ -1,7 +1,5 @@
 "use client"
-
-import { Card } from "@/components/ui/card"
-import { Play, Star } from "lucide-react"
+import { Star } from "lucide-react"
 
 export function ClientShowcase() {
   const clients = [
@@ -102,7 +100,7 @@ export function ClientShowcase() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-6xl mx-auto mb-12 sm:mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-6xl mx-auto">
           <div className="relative rounded-2xl overflow-hidden group hover-lift-3d cursor-pointer">
             <img
               src="/successful-billboard-advertising-campaign-for-majo.jpg"
@@ -130,37 +128,6 @@ export function ClientShowcase() {
               </div>
             </div>
           </div>
-        </div>
-
-        <div id="video" className="max-w-5xl mx-auto animate-scale-in">
-          <Card className="overflow-hidden hover:shadow-2xl hover:shadow-primary/30 transition-all duration-700 group border-2 hover:border-primary/40 relative">
-            <div className="aspect-video bg-gradient-to-br from-muted via-muted/80 to-muted/50 flex items-center justify-center relative overflow-hidden">
-              <div className="absolute inset-0 opacity-20">
-                <div className="absolute top-1/4 left-1/4 w-48 h-48 bg-primary rounded-full blur-3xl animate-pulse animate-blob-morph" />
-                <div
-                  className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-accent rounded-full blur-3xl animate-pulse animate-blob-morph"
-                  style={{ animationDelay: "1.5s" }}
-                />
-                <div
-                  className="absolute top-1/2 left-1/2 w-32 h-32 bg-primary/50 rounded-full blur-2xl animate-pulse"
-                  style={{ animationDelay: "3s" }}
-                />
-              </div>
-
-              <div className="text-center relative z-10">
-                <div className="h-16 w-16 sm:h-20 sm:w-20 lg:h-24 lg:w-24 rounded-full glass-effect-strong flex items-center justify-center mx-auto mb-4 sm:mb-6 group-hover:scale-125 transition-all duration-500 cursor-pointer animate-pulse-glow shadow-2xl">
-                  <Play
-                    className="h-8 w-8 sm:h-10 sm:w-10 lg:h-12 lg:w-12 text-primary group-hover:scale-110 transition-transform ml-1"
-                    fill="currentColor"
-                  />
-                </div>
-                <p className="text-base sm:text-lg font-bold text-muted-foreground group-hover:text-foreground transition-colors">
-                  Watch Our Campaign Showcase
-                </p>
-                <p className="text-xs sm:text-sm text-muted-foreground mt-2">See how we transform brands</p>
-              </div>
-            </div>
-          </Card>
         </div>
       </div>
     </section>
