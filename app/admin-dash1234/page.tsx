@@ -1,0 +1,184 @@
+"use client"
+
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+import { AdminSidebar } from "@/components/admin-sidebar"
+import { AdminHeader } from "@/components/admin-header"
+import { Card } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { Input } from "@/components/ui/input"
+import Image from "next/image"
+import Link from "next/link"
+import { Edit, Trash2, Search, Plus } from "lucide-react"
+
+export default function AdminDashboardPage() {
+  const router = useRouter()
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("")
+
+  useEffect(() => {
+    const auth = localStorage.getItem("adminAuth")
+    if (auth === "true") {
+      setIsAuthenticated(true)
+    } else {
+      router.push("/admin-dash1234/login")
+    }
+  }, [router])
+
+  const billboards = [
+    {
+      id: 1,
+      title: "BRT Billboard In Ikeja, Lagos",
+      location: "Ikeja, Lagos",
+      type: "BRT Billboard",
+      size: "48 Sheet",
+      availability: "Available Now",
+      description:
+        "Prime billboard location along the busy BRT corridor in Ikeja. High visibility with thousands of daily commuters passing by.",
+      image: "/brt-billboard-lagos-nigeria.jpg",
+      featured: true,
+    },
+    {
+      id: 2,
+      title: "48 Sheet Billboard Along Ikotun-Idimu Road",
+      location: "Ikotun, Lagos",
+      type: "48 Sheet",
+      size: "48 Sheet",
+      availability: "Available Now",
+      description:
+        "Strategic 48-sheet billboard positioned on the heavily trafficked Ikotun-Idimu Road. Excellent exposure to vehicular and pedestrian traffic.",
+      image: "/48-sheet-billboard-lagos-road.jpg",
+      featured: true,
+    },
+    {
+      id: 3,
+      title: "Cube Led Billboard At Lekki Phase 1",
+      location: "Lekki, Lagos",
+      type: "LED Billboard",
+      size: "LED Screen",
+      availability: "Coming Soon",
+      description:
+        "Modern LED cube billboard in the upscale Lekki Phase 1 area. Digital display with rotating content capability.",
+      image: "/led-cube-billboard-lekki-lagos.jpg",
+      featured: false,
+    },
+  ]
+
+  const filteredBillboards = billboards.filter(
+    (billboard) =>
+      billboard.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      billboard.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      billboard.type.toLowerCase().includes(searchQuery.toLowerCase()),
+  )
+
+  const handleDelete = (id: number) => {
+    if (confirm("Are you sure you want to delete this billboard?")) {
+      console.log("[v0] Deleting billboard:", id)
+      // Add delete logic here
+    }
+  }
+
+  if (!isAuthenticated) {
+    return null
+  }
+
+  return (
+    <div className="flex min-h-screen bg-muted/30">
+      <AdminSidebar />
+
+      <div className="flex-1 flex flex-col">
+        <AdminHeader />
+
+        <main className="flex-1 p-6 space-y-6">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+              <h2 className="text-2xl font-bold">All Billboards</h2>
+              <p className="text-muted-foreground">Manage your billboard inventory</p>
+            </div>
+            <Button asChild className="shadow-md hover:shadow-lg transition-all duration-200">
+              <Link href="/admin-dash1234/billboards/new">
+                <Plus className="h-4 w-4 mr-2" />
+                Add New Billboard
+              </Link>
+            </Button>
+          </div>
+
+          <Card className="p-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+              <Input
+                placeholder="Search billboards by title, location, or type..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 h-12"
+              />
+            </div>
+          </Card>
+
+          <div className="grid gap-6">
+            {filteredBillboards.map((billboard) => (
+              <Card key={billboard.id} className="p-6 hover:shadow-lg transition-all duration-200">
+                <div className="flex flex-col md:flex-row gap-6">
+                  <div className="relative w-full md:w-48 h-32 rounded-lg overflow-hidden flex-shrink-0">
+                    <Image
+                      src={billboard.image || "/placeholder.svg"}
+                      alt={billboard.title}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+
+                  <div className="flex-1 space-y-3">
+                    <div className="flex flex-wrap items-start justify-between gap-2">
+                      <div>
+                        <h3 className="text-xl font-bold mb-2">{billboard.title}</h3>
+                        <div className="flex flex-wrap gap-2">
+                          <Badge variant="outline">{billboard.type}</Badge>
+                          <Badge variant="outline">{billboard.size}</Badge>
+                          {billboard.featured && <Badge className="bg-primary">Featured</Badge>}
+                          <Badge
+                            variant={billboard.availability === "Available Now" ? "default" : "secondary"}
+                            className={billboard.availability === "Available Now" ? "bg-accent" : ""}
+                          >
+                            {billboard.availability}
+                          </Badge>
+                        </div>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button variant="outline" size="sm" asChild>
+                          <Link href={`/admin-dash1234/billboards/${billboard.id}/edit`}>
+                            <Edit className="h-4 w-4 mr-1" />
+                            Edit
+                          </Link>
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleDelete(billboard.id)}
+                          className="text-red-500 hover:text-red-600 hover:bg-red-50"
+                        >
+                          <Trash2 className="h-4 w-4 mr-1" />
+                          Delete
+                        </Button>
+                      </div>
+                    </div>
+
+                    <p className="text-sm text-muted-foreground">{billboard.location}</p>
+                    <p className="text-sm text-muted-foreground line-clamp-2">{billboard.description}</p>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+
+          {filteredBillboards.length === 0 && (
+            <Card className="p-12 text-center">
+              <p className="text-muted-foreground">No billboards found matching your search.</p>
+            </Card>
+          )}
+        </main>
+      </div>
+    </div>
+  )
+}
