@@ -207,26 +207,6 @@ export function Footer() {
           <p className="text-sm sm:text-base text-muted-foreground text-center md:text-left">
             © 2025 <span className="font-semibold text-foreground">Outdoors.ng</span>. All rights reserved.
           </p>
-          <div className="flex flex-wrap justify-center gap-4 sm:gap-6 md:gap-8">
-            <Link
-              href="/privacy"
-              className="text-sm sm:text-base text-muted-foreground hover:text-primary transition-colors hover:underline"
-            >
-              Privacy Policy
-            </Link>
-            <Link
-              href="/terms"
-              className="text-sm sm:text-base text-muted-foreground hover:text-primary transition-colors hover:underline"
-            >
-              Terms of Service
-            </Link>
-            <Link
-              href="/cookies"
-              className="text-sm sm:text-base text-muted-foreground hover:text-primary transition-colors hover:underline"
-            >
-              Cookie Policy
-            </Link>
-          </div>
         </div>
       </div>
     </footer>
