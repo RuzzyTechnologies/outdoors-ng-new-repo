@@ -50,10 +50,34 @@ export function Footer() {
             <ul className="space-y-2 sm:space-y-3">
               <li>
                 <Link
-                  href="/billboards"
+                  href="/advertising-agency"
                   className="text-sm sm:text-base text-muted-foreground hover:text-primary transition-all hover:translate-x-2 inline-block group"
                 >
-                  <span className="group-hover:underline">Find Billboards</span>
+                  <span className="group-hover:underline">Advertising Agency</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/campaign-monitoring"
+                  className="text-sm sm:text-base text-muted-foreground hover:text-primary transition-all hover:translate-x-2 inline-block group"
+                >
+                  <span className="group-hover:underline">Campaign Monitoring</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/creative-communication"
+                  className="text-sm sm:text-base text-muted-foreground hover:text-primary transition-all hover:translate-x-2 inline-block group"
+                >
+                  <span className="group-hover:underline">Creative Communication</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/digital-marketing"
+                  className="text-sm sm:text-base text-muted-foreground hover:text-primary transition-all hover:translate-x-2 inline-block group"
+                >
+                  <span className="group-hover:underline">Digital Marketing</span>
                 </Link>
               </li>
               <li>
@@ -66,10 +90,18 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/wall-drapes"
+                  href="/media-planning-buying"
                   className="text-sm sm:text-base text-muted-foreground hover:text-primary transition-all hover:translate-x-2 inline-block group"
                 >
-                  <span className="group-hover:underline">Wall Drapes</span>
+                  <span className="group-hover:underline">Media Planning & Buying</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/radio-tv-advertising"
+                  className="text-sm sm:text-base text-muted-foreground hover:text-primary transition-all hover:translate-x-2 inline-block group"
+                >
+                  <span className="group-hover:underline">Radio & TV Advertising</span>
                 </Link>
               </li>
               <li>
@@ -78,6 +110,14 @@ export function Footer() {
                   className="text-sm sm:text-base text-muted-foreground hover:text-primary transition-all hover:translate-x-2 inline-block group"
                 >
                   <span className="group-hover:underline">Transit Advertising</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/wall-drapes"
+                  className="text-sm sm:text-base text-muted-foreground hover:text-primary transition-all hover:translate-x-2 inline-block group"
+                >
+                  <span className="group-hover:underline">Wall Drapes</span>
                 </Link>
               </li>
             </ul>
