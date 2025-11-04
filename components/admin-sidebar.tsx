@@ -2,18 +2,7 @@
 
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import {
-  LayoutDashboard,
-  ImageIcon,
-  Plus,
-  LogOut,
-  MapPin,
-  ChevronDown,
-  ChevronRight,
-  FolderTree,
-  Package,
-  Activity,
-} from "lucide-react"
+import { LayoutDashboard, ImageIcon, Plus, LogOut, MapPin, ChevronDown, ChevronRight, Activity } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
@@ -25,8 +14,6 @@ export function AdminSidebar() {
 
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     location: false,
-    category: false,
-    products: false,
     vas: false,
   })
 
@@ -96,6 +83,7 @@ export function AdminSidebar() {
           <span className="text-sm font-medium whitespace-nowrap">Add New Billboard</span>
         </Link>
 
+        {/* Location Section */}
         <div className="space-y-1 pt-2">
           <button
             onClick={() => toggleSection("location")}
@@ -150,103 +138,7 @@ export function AdminSidebar() {
           )}
         </div>
 
-        <div className="space-y-1">
-          <button
-            onClick={() => toggleSection("category")}
-            className="w-full flex items-center justify-between gap-2 px-3 py-2.5 rounded-lg transition-all duration-200 hover:bg-muted text-foreground"
-          >
-            <div className="flex items-center gap-3 flex-1 min-w-0">
-              <FolderTree className="h-5 w-5 flex-shrink-0" />
-              <span className="text-sm font-medium whitespace-nowrap">Product Category</span>
-            </div>
-            {openSections.category ? (
-              <ChevronDown className="h-4 w-4 flex-shrink-0" />
-            ) : (
-              <ChevronRight className="h-4 w-4 flex-shrink-0" />
-            )}
-          </button>
-          {openSections.category && (
-            <div className="ml-8 space-y-1 animate-in slide-in-from-top-2 duration-200">
-              <Link
-                href="/admin-dash1234/categories/add"
-                className={cn(
-                  "block px-3 py-2 rounded-lg transition-all text-sm font-normal",
-                  isActive("/admin-dash1234/categories/add")
-                    ? "bg-primary/10 text-primary font-medium"
-                    : "hover:bg-muted text-muted-foreground hover:text-foreground",
-                )}
-              >
-                Add Category
-              </Link>
-              <Link
-                href="/admin-dash1234/categories/view"
-                className={cn(
-                  "block px-3 py-2 rounded-lg transition-all text-sm font-normal",
-                  isActive("/admin-dash1234/categories/view")
-                    ? "bg-primary/10 text-primary font-medium"
-                    : "hover:bg-muted text-muted-foreground hover:text-foreground",
-                )}
-              >
-                View Category
-              </Link>
-            </div>
-          )}
-        </div>
-
-        <div className="space-y-1">
-          <button
-            onClick={() => toggleSection("products")}
-            className="w-full flex items-center justify-between gap-2 px-3 py-2.5 rounded-lg transition-all duration-200 hover:bg-muted text-foreground"
-          >
-            <div className="flex items-center gap-3 flex-1 min-w-0">
-              <Package className="h-5 w-5 flex-shrink-0" />
-              <span className="text-sm font-medium whitespace-nowrap">Products</span>
-            </div>
-            {openSections.products ? (
-              <ChevronDown className="h-4 w-4 flex-shrink-0" />
-            ) : (
-              <ChevronRight className="h-4 w-4 flex-shrink-0" />
-            )}
-          </button>
-          {openSections.products && (
-            <div className="ml-8 space-y-1 animate-in slide-in-from-top-2 duration-200">
-              <Link
-                href="/admin-dash1234/products/add"
-                className={cn(
-                  "block px-3 py-2 rounded-lg transition-all text-sm font-normal",
-                  isActive("/admin-dash1234/products/add")
-                    ? "bg-primary/10 text-primary font-medium"
-                    : "hover:bg-muted text-muted-foreground hover:text-foreground",
-                )}
-              >
-                Add Product
-              </Link>
-              <Link
-                href="/admin-dash1234/products/view"
-                className={cn(
-                  "block px-3 py-2 rounded-lg transition-all text-sm font-normal",
-                  isActive("/admin-dash1234/products/view")
-                    ? "bg-primary/10 text-primary font-medium"
-                    : "hover:bg-muted text-muted-foreground hover:text-foreground",
-                )}
-              >
-                View Products
-              </Link>
-              <Link
-                href="/admin-dash1234/products/featured"
-                className={cn(
-                  "block px-3 py-2 rounded-lg transition-all text-sm font-normal",
-                  isActive("/admin-dash1234/products/featured")
-                    ? "bg-primary/10 text-primary font-medium"
-                    : "hover:bg-muted text-muted-foreground hover:text-foreground",
-                )}
-              >
-                Featured Products
-              </Link>
-            </div>
-          )}
-        </div>
-
+        {/* VAS Section */}
         <div className="space-y-1">
           <button
             onClick={() => toggleSection("vas")}
