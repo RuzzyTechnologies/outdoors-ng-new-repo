@@ -12,12 +12,14 @@ import Image from "next/image"
 import Link from "next/link"
 import { Edit, Trash2, Search, Plus } from "lucide-react"
 import { getAllBillboards, deleteBillboard, type Billboard } from "@/lib/billboard-storage"
+import { cn } from "@/lib/utils"
 
 export default function AdminDashboardPage() {
   const router = useRouter()
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [billboards, setBillboards] = useState<Billboard[]>([])
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     const auth = localStorage.getItem("adminAuth")
@@ -54,18 +56,18 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="flex min-h-screen bg-muted/30">
-      <AdminSidebar />
+      <AdminSidebar isMobileOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
 
-      <div className="flex-1 flex flex-col ml-64">
-        <AdminHeader />
+      <div className="flex-1 flex flex-col lg:ml-64">
+        <AdminHeader onMenuClick={() => setIsMobileMenuOpen(true)} />
 
-        <main className="flex-1 p-6 space-y-6">
+        <main className="flex-1 p-4 sm:p-6 space-y-4 sm:space-y-6">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
-              <h2 className="text-2xl font-bold">All Billboards</h2>
-              <p className="text-muted-foreground">Manage your billboard inventory</p>
+              <h2 className="text-xl sm:text-2xl font-bold">All Billboards</h2>
+              <p className="text-sm text-muted-foreground">Manage your billboard inventory</p>
             </div>
-            <Button asChild className="shadow-md hover:shadow-lg transition-all duration-200">
+            <Button asChild className="w-full sm:w-auto shadow-md hover:shadow-lg transition-all duration-200">
               <Link href="/admin-dash1234/billboards/new">
                 <Plus className="h-4 w-4 mr-2" />
                 Add New Billboard
@@ -77,19 +79,19 @@ export default function AdminDashboardPage() {
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
               <Input
-                placeholder="Search billboards by title, location, or type..."
+                placeholder="Search billboards..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 h-12"
+                className="pl-10 h-11 sm:h-12"
               />
             </div>
           </Card>
 
-          <div className="grid gap-6">
+          <div className="grid gap-4 sm:gap-6">
             {filteredBillboards.map((billboard) => (
-              <Card key={billboard.id} className="p-6 hover:shadow-lg transition-all duration-200">
-                <div className="flex flex-col md:flex-row gap-6">
-                  <div className="relative w-full md:w-48 h-32 rounded-lg overflow-hidden flex-shrink-0">
+              <Card key={billboard.id} className="p-4 sm:p-6 hover:shadow-lg transition-all duration-200">
+                <div className="flex flex-col md:flex-row gap-4 sm:gap-6">
+                  <div className="relative w-full md:w-48 h-32 sm:h-36 md:h-32 rounded-lg overflow-hidden flex-shrink-0">
                     <Image
                       src={billboard.image || "/placeholder.svg"}
                       alt={billboard.title}
@@ -99,36 +101,40 @@ export default function AdminDashboardPage() {
                   </div>
 
                   <div className="flex-1 space-y-3">
-                    <div className="flex flex-wrap items-start justify-between gap-2">
-                      <div>
-                        <h3 className="text-xl font-bold mb-2">{billboard.title}</h3>
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+                      <div className="space-y-2">
+                        <h3 className="text-lg sm:text-xl font-bold">{billboard.title}</h3>
                         <div className="flex flex-wrap gap-2">
-                          <Badge variant="outline">{billboard.type}</Badge>
-                          <Badge variant="outline">{billboard.size}</Badge>
-                          {billboard.featured && <Badge className="bg-primary">Featured</Badge>}
+                          <Badge variant="outline" className="text-xs">
+                            {billboard.type}
+                          </Badge>
+                          <Badge variant="outline" className="text-xs">
+                            {billboard.size}
+                          </Badge>
+                          {billboard.featured && <Badge className="bg-primary text-xs">Featured</Badge>}
                           <Badge
                             variant={billboard.availability === "Available Now" ? "default" : "secondary"}
-                            className={billboard.availability === "Available Now" ? "bg-accent" : ""}
+                            className={cn("text-xs", billboard.availability === "Available Now" ? "bg-accent" : "")}
                           >
                             {billboard.availability}
                           </Badge>
                         </div>
                       </div>
                       <div className="flex gap-2">
-                        <Button variant="outline" size="sm" asChild>
+                        <Button variant="outline" size="sm" asChild className="flex-1 sm:flex-none bg-transparent">
                           <Link href={`/admin-dash1234/billboards/${billboard.id}/edit`}>
-                            <Edit className="h-4 w-4 mr-1" />
-                            Edit
+                            <Edit className="h-4 w-4 sm:mr-1" />
+                            <span className="hidden sm:inline">Edit</span>
                           </Link>
                         </Button>
                         <Button
                           variant="outline"
                           size="sm"
                           onClick={() => handleDelete(billboard.id)}
-                          className="text-red-500 hover:text-red-600 hover:bg-red-50"
+                          className="flex-1 sm:flex-none text-red-500 hover:text-red-600 hover:bg-red-50"
                         >
-                          <Trash2 className="h-4 w-4 mr-1" />
-                          Delete
+                          <Trash2 className="h-4 w-4 sm:mr-1" />
+                          <span className="hidden sm:inline">Delete</span>
                         </Button>
                       </div>
                     </div>
@@ -142,8 +148,8 @@ export default function AdminDashboardPage() {
           </div>
 
           {filteredBillboards.length === 0 && (
-            <Card className="p-12 text-center">
-              <p className="text-muted-foreground">No billboards found matching your search.</p>
+            <Card className="p-8 sm:p-12 text-center">
+              <p className="text-sm sm:text-base text-muted-foreground">No billboards found matching your search.</p>
             </Card>
           )}
         </main>
