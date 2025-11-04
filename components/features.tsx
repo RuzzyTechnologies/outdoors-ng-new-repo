@@ -82,7 +82,7 @@ export function Features() {
                       <feature.icon className="h-6 w-6 sm:h-7 sm:w-7 text-primary" />
                     </div>
                     <div>
-                      <h3 className="text-xl sm:text-2xl font-bold mb-2">{feature.title}</h3>
+                      <h3 className="text-xl sm:text-2xl font-bold mb-2 text-white">{feature.title}</h3>
                       <p className="text-sm sm:text-base text-gray-400">{feature.description}</p>
                     </div>
                   </div>
