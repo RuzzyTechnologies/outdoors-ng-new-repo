@@ -56,7 +56,7 @@ export default function AdminDashboardPage() {
     <div className="flex min-h-screen bg-muted/30">
       <AdminSidebar />
 
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col ml-64">
         <AdminHeader />
 
         <main className="flex-1 p-6 space-y-6">

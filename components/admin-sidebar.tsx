@@ -44,7 +44,7 @@ export function AdminSidebar() {
   const isActive = (href: string) => pathname === href
 
   return (
-    <aside className="w-64 bg-card border-r border-border min-h-screen flex flex-col">
+    <aside className="fixed left-0 top-0 w-64 h-screen bg-card border-r border-border flex flex-col z-40">
       <div className="p-6 border-b border-border">
         <div className="flex items-center justify-center mb-3">
           <div className="relative w-32 h-12">
