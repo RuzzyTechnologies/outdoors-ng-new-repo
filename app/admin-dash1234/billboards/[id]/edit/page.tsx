@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useParams } from "next/navigation"
 import { AdminSidebar } from "@/components/admin-sidebar"
 import { AdminHeader } from "@/components/admin-header"
 import { Card } from "@/components/ui/card"
@@ -15,22 +15,17 @@ import { Switch } from "@/components/ui/switch"
 import { ArrowLeft, Upload, X } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import { addBillboard } from "@/lib/billboard-storage"
+import { getBillboardById, updateBillboard } from "@/lib/billboard-storage"
 
-export default function NewBillboardPage() {
+export default function EditBillboardPage() {
   const router = useRouter()
+  const params = useParams()
+  const billboardId = Number(params.id)
+
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [previewImages, setPreviewImages] = useState<string[]>([])
-
-  useEffect(() => {
-    const auth = localStorage.getItem("adminAuth")
-    if (auth === "true") {
-      setIsAuthenticated(true)
-    } else {
-      router.push("/admin-dash1234/login")
-    }
-  }, [router])
 
   const [formData, setFormData] = useState({
     title: "",
@@ -40,7 +35,39 @@ export default function NewBillboardPage() {
     availability: "Available Now",
     description: "",
     featured: false,
+    image: "",
   })
+
+  useEffect(() => {
+    const auth = localStorage.getItem("adminAuth")
+    if (auth === "true") {
+      setIsAuthenticated(true)
+
+      // Load billboard data
+      const billboard = getBillboardById(billboardId)
+      if (billboard) {
+        setFormData({
+          title: billboard.title,
+          location: billboard.location,
+          type: billboard.type,
+          size: billboard.size,
+          availability: billboard.availability,
+          description: billboard.description,
+          featured: billboard.featured,
+          image: billboard.image,
+        })
+        if (billboard.image) {
+          setPreviewImages([billboard.image])
+        }
+      } else {
+        alert("Billboard not found")
+        router.push("/admin-dash1234")
+      }
+      setIsLoading(false)
+    } else {
+      router.push("/admin-dash1234/login")
+    }
+  }, [router, billboardId])
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
@@ -59,26 +86,28 @@ export default function NewBillboardPage() {
     setIsSubmitting(true)
 
     try {
-      // Use first image as main image, or placeholder if none
-      const mainImage = previewImages[0] || "/placeholder.svg?height=400&width=600"
+      const mainImage = previewImages[0] || formData.image || "/placeholder.svg?height=400&width=600"
 
-      // Add billboard to localStorage
-      addBillboard({
+      const success = updateBillboard(billboardId, {
         ...formData,
         image: mainImage,
       })
 
-      alert("Billboard added successfully!")
-      router.push("/admin-dash1234")
+      if (success) {
+        alert("Billboard updated successfully!")
+        router.push("/admin-dash1234")
+      } else {
+        alert("Failed to update billboard")
+      }
     } catch (error) {
-      console.error("[v0] Error adding billboard:", error)
-      alert("Failed to add billboard. Please try again.")
+      console.error("[v0] Error updating billboard:", error)
+      alert("Failed to update billboard. Please try again.")
     } finally {
       setIsSubmitting(false)
     }
   }
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated || isLoading) {
     return null
   }
 
@@ -98,8 +127,8 @@ export default function NewBillboardPage() {
                 </Link>
               </Button>
               <div>
-                <h2 className="text-2xl font-bold">Add New Billboard</h2>
-                <p className="text-muted-foreground">Fill in the details to add a new billboard</p>
+                <h2 className="text-2xl font-bold">Edit Billboard</h2>
+                <p className="text-muted-foreground">Update billboard details</p>
               </div>
             </div>
 
@@ -252,7 +281,7 @@ export default function NewBillboardPage() {
 
               <div className="flex gap-4">
                 <Button type="submit" size="lg" className="flex-1" disabled={isSubmitting}>
-                  {isSubmitting ? "Adding Billboard..." : "Add Billboard"}
+                  {isSubmitting ? "Updating Billboard..." : "Update Billboard"}
                 </Button>
                 <Button type="button" variant="outline" size="lg" asChild>
                   <Link href="/admin-dash1234">Cancel</Link>

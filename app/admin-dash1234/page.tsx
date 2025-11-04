@@ -11,59 +11,23 @@ import { Input } from "@/components/ui/input"
 import Image from "next/image"
 import Link from "next/link"
 import { Edit, Trash2, Search, Plus } from "lucide-react"
+import { getAllBillboards, deleteBillboard, type Billboard } from "@/lib/billboard-storage"
 
 export default function AdminDashboardPage() {
   const router = useRouter()
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
+  const [billboards, setBillboards] = useState<Billboard[]>([])
 
   useEffect(() => {
     const auth = localStorage.getItem("adminAuth")
     if (auth === "true") {
       setIsAuthenticated(true)
+      setBillboards(getAllBillboards())
     } else {
       router.push("/admin-dash1234/login")
     }
   }, [router])
-
-  const billboards = [
-    {
-      id: 1,
-      title: "BRT Billboard In Ikeja, Lagos",
-      location: "Ikeja, Lagos",
-      type: "BRT Billboard",
-      size: "48 Sheet",
-      availability: "Available Now",
-      description:
-        "Prime billboard location along the busy BRT corridor in Ikeja. High visibility with thousands of daily commuters passing by.",
-      image: "/brt-billboard-lagos-nigeria.jpg",
-      featured: true,
-    },
-    {
-      id: 2,
-      title: "48 Sheet Billboard Along Ikotun-Idimu Road",
-      location: "Ikotun, Lagos",
-      type: "48 Sheet",
-      size: "48 Sheet",
-      availability: "Available Now",
-      description:
-        "Strategic 48-sheet billboard positioned on the heavily trafficked Ikotun-Idimu Road. Excellent exposure to vehicular and pedestrian traffic.",
-      image: "/48-sheet-billboard-lagos-road.jpg",
-      featured: true,
-    },
-    {
-      id: 3,
-      title: "Cube Led Billboard At Lekki Phase 1",
-      location: "Lekki, Lagos",
-      type: "LED Billboard",
-      size: "LED Screen",
-      availability: "Coming Soon",
-      description:
-        "Modern LED cube billboard in the upscale Lekki Phase 1 area. Digital display with rotating content capability.",
-      image: "/led-cube-billboard-lekki-lagos.jpg",
-      featured: false,
-    },
-  ]
 
   const filteredBillboards = billboards.filter(
     (billboard) =>
@@ -74,8 +38,13 @@ export default function AdminDashboardPage() {
 
   const handleDelete = (id: number) => {
     if (confirm("Are you sure you want to delete this billboard?")) {
-      console.log("[v0] Deleting billboard:", id)
-      // Add delete logic here
+      const success = deleteBillboard(id)
+      if (success) {
+        setBillboards(getAllBillboards())
+        alert("Billboard deleted successfully!")
+      } else {
+        alert("Failed to delete billboard")
+      }
     }
   }
 

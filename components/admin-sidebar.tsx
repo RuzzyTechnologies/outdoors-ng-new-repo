@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { LayoutDashboard, ImageIcon, Plus, LogOut } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -9,6 +9,7 @@ import Image from "next/image"
 
 export function AdminSidebar() {
   const pathname = usePathname()
+  const router = useRouter()
 
   const navItems = [
     {
@@ -29,8 +30,10 @@ export function AdminSidebar() {
   ]
 
   const handleLogout = () => {
-    localStorage.removeItem("adminAuth")
-    window.location.href = "/admin-dash1234/login"
+    if (confirm("Are you sure you want to logout?")) {
+      localStorage.removeItem("adminAuth")
+      router.push("/admin-dash1234/login")
+    }
   }
 
   return (
