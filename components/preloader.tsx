@@ -15,7 +15,7 @@ export function Preloader() {
     const mobile = window.innerWidth < 768
     setIsMobile(mobile)
     const particleCount = mobile ? 8 : 15
-    setChainLinks(mobile ? 6 : 8)
+    setChainLinks(mobile ? 8 : 10)
 
     const particleArray = Array.from({ length: particleCount }, (_, i) => ({
       id: i,
@@ -194,9 +194,9 @@ export function Preloader() {
             transformStyle: "preserve-3d",
           }}
         >
-          <div className="absolute bottom-full left-1/2 -translate-x-1/2 flex flex-col items-center mb-1">
-            {/* Industrial ceiling mount - smaller and more refined */}
-            <div className="absolute -top-6 md:-top-8 w-6 md:w-8 h-4 md:h-5 bg-gradient-to-b from-zinc-700 via-zinc-600 to-zinc-800 rounded shadow-lg">
+          <div className="absolute bottom-full left-1/2 -translate-x-1/2 flex flex-col items-center -mb-2">
+            {/* Industrial ceiling mount */}
+            <div className="absolute -top-12 md:-top-16 w-6 md:w-8 h-4 md:h-5 bg-gradient-to-b from-zinc-700 via-zinc-600 to-zinc-800 rounded shadow-lg">
               <div className="absolute top-0.5 left-1 md:left-1.5 w-0.5 h-0.5 rounded-full bg-zinc-900" />
               <div className="absolute top-0.5 right-1 md:right-1.5 w-0.5 h-0.5 rounded-full bg-zinc-900" />
               <div className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-0.5 h-0.5 rounded-full bg-zinc-900" />
@@ -213,28 +213,28 @@ export function Preloader() {
                     animationDelay: `${i * 0.04}s`,
                   }}
                 >
-                  {/* Chain link - optimized size */}
+                  {/* Chain link */}
                   <div
-                    className="relative w-2 md:w-2.5 h-4 md:h-5 rounded-full my-0.5"
+                    className="relative w-3 md:w-2.5 h-5 md:h-5 rounded-full my-0.5"
                     style={{
                       background:
-                        "linear-gradient(90deg, #3f3f46 0%, #71717a 20%, #a1a1aa 40%, #71717a 60%, #52525b 80%, #3f3f46 100%)",
+                        "linear-gradient(90deg, #52525b 0%, #a1a1aa 25%, #d4d4d8 45%, #a1a1aa 65%, #71717a 85%, #52525b 100%)",
                       boxShadow:
-                        "inset -1px 0 2px rgba(0,0,0,0.6), inset 1px 0 2px rgba(255,255,255,0.2), 1px 1px 3px rgba(0,0,0,0.4)",
-                      border: "0.5px solid #27272a",
+                        "inset -1px 0 3px rgba(0,0,0,0.7), inset 1px 0 3px rgba(255,255,255,0.4), 2px 2px 4px rgba(0,0,0,0.5)",
+                      border: "0.5px solid #3f3f46",
                     }}
                   >
                     <div
-                      className="absolute inset-x-[2px] inset-y-1 rounded-full bg-black/30"
+                      className="absolute inset-x-[3px] inset-y-1 rounded-full bg-black/40"
                       style={{
-                        boxShadow: "inset 0 1px 2px rgba(0,0,0,0.9)",
+                        boxShadow: "inset 0 2px 3px rgba(0,0,0,0.9)",
                       }}
                     />
 
                     <div
-                      className="absolute top-0.5 left-0.5 w-0.5 h-1 rounded-full opacity-60"
+                      className="absolute top-1 left-1 w-1 h-1.5 rounded-full opacity-70"
                       style={{
-                        background: "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), transparent)",
+                        background: "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), transparent 70%)",
                       }}
                     />
                   </div>
@@ -243,20 +243,20 @@ export function Preloader() {
             </div>
 
             {/* Connection hook */}
-            <div className="relative w-2.5 md:w-3 h-4 md:h-5 flex flex-col items-center">
+            <div className="relative w-3 md:w-3 h-4 md:h-5 flex flex-col items-center">
               <div
-                className="w-2 md:w-2.5 h-2 md:h-2.5 rounded-full border"
+                className="w-2.5 md:w-2.5 h-2 md:h-2.5 rounded-full border"
                 style={{
                   borderColor: "#3f3f46",
-                  background: "linear-gradient(135deg, #52525b 0%, #a1a1aa 50%, #52525b 100%)",
-                  boxShadow: "inset -0.5px -0.5px 1px rgba(0,0,0,0.5), inset 0.5px 0.5px 1px rgba(255,255,255,0.2)",
+                  background: "linear-gradient(135deg, #52525b 0%, #d4d4d8 50%, #71717a 100%)",
+                  boxShadow: "inset -1px -1px 2px rgba(0,0,0,0.6), inset 1px 1px 2px rgba(255,255,255,0.3)",
                 }}
               />
               <div
-                className="w-1 md:w-1.5 h-2.5 md:h-3 rounded-b"
+                className="w-1.5 md:w-1.5 h-2 md:h-3 rounded-b"
                 style={{
-                  background: "linear-gradient(90deg, #3f3f46 0%, #71717a 50%, #3f3f46 100%)",
-                  boxShadow: "inset -1px 0 2px rgba(0,0,0,0.4), inset 1px 0 2px rgba(255,255,255,0.1)",
+                  background: "linear-gradient(90deg, #52525b 0%, #a1a1aa 50%, #52525b 100%)",
+                  boxShadow: "inset -1px 0 2px rgba(0,0,0,0.5), inset 1px 0 2px rgba(255,255,255,0.2)",
                 }}
               />
             </div>
