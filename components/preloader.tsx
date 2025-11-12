@@ -40,7 +40,11 @@ export function Preloader() {
 
   return (
     <div className="fixed inset-0 z-[9999] overflow-hidden">
-      <div className="absolute inset-0 z-0 bg-[#0a0a0a]">
+      <div
+        className={`absolute inset-0 z-0 bg-[#0a0a0a] transition-opacity duration-300 ${
+          isRevealing ? "opacity-0" : "opacity-100"
+        }`}
+      >
         {!isRevealing && (
           <div
             className="absolute inset-0 opacity-0 animate-spotlight-fade-in"
@@ -151,7 +155,7 @@ export function Preloader() {
 
       <div
         className={`absolute inset-y-0 left-0 w-1/2 z-20 transition-all duration-[1800ms] ease-in-out overflow-hidden ${
-          isRevealing ? "-translate-x-full opacity-0" : "translate-x-0 opacity-100"
+          isRevealing ? "-translate-x-full" : "translate-x-0"
         }`}
       >
         {/* Curtain rod - responsive height */}
@@ -179,7 +183,7 @@ export function Preloader() {
 
       <div
         className={`absolute inset-y-0 right-0 w-1/2 z-20 transition-all duration-[1800ms] ease-in-out overflow-hidden ${
-          isRevealing ? "translate-x-full opacity-0" : "translate-x-0 opacity-100"
+          isRevealing ? "translate-x-full" : "translate-x-0"
         }`}
       >
         {/* Curtain rod - responsive height */}
