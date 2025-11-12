@@ -10,7 +10,10 @@ export function Preloader() {
   const [particles, setParticles] = useState<Array<{ id: number; x: number; y: number; delay: number }>>([])
 
   useEffect(() => {
-    const particleArray = Array.from({ length: 30 }, (_, i) => ({
+    const isMobile = window.innerWidth < 768
+    const particleCount = isMobile ? 8 : 15
+
+    const particleArray = Array.from({ length: particleCount }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
@@ -37,9 +40,8 @@ export function Preloader() {
       {!isRevealing && (
         <>
           <div className="absolute inset-0 bg-gradient-to-b from-zinc-900 via-neutral-800 to-stone-900">
-            {/* Subtle noise texture for depth */}
             <div
-              className="absolute inset-0 opacity-[0.15]"
+              className="absolute inset-0 opacity-[0.15] hidden sm:block"
               style={{
                 backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' /%3E%3C/svg%3E")`,
               }}
@@ -48,10 +50,9 @@ export function Preloader() {
             {/* Radial spotlight from center */}
             <div className="absolute inset-0 bg-gradient-radial from-amber-500/10 via-transparent to-transparent" />
 
-            {/* Elegant light beams from top */}
-            <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-amber-200/20 via-orange-300/10 to-transparent blur-sm" />
             <div className="absolute top-0 left-1/2 w-0.5 h-full bg-gradient-to-b from-amber-300/30 via-orange-200/15 to-transparent blur-md" />
-            <div className="absolute top-0 right-1/4 w-px h-full bg-gradient-to-b from-amber-200/20 via-orange-300/10 to-transparent blur-sm" />
+            <div className="hidden md:block absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-amber-200/20 via-orange-300/10 to-transparent blur-sm" />
+            <div className="hidden md:block absolute top-0 right-1/4 w-px h-full bg-gradient-to-b from-amber-200/20 via-orange-300/10 to-transparent blur-sm" />
           </div>
 
           {/* Floating ambient particles */}
@@ -81,8 +82,7 @@ export function Preloader() {
           boxShadow: "inset -60px 0 100px rgba(0,0,0,0.7), 30px 0 80px rgba(0,0,0,0.6)",
         }}
       >
-        {/* Velvet fabric texture */}
-        <div className="absolute inset-0 opacity-40">
+        <div className="absolute inset-0 opacity-40 hidden sm:block">
           <div
             className="w-full h-full"
             style={{
@@ -96,15 +96,14 @@ export function Preloader() {
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-300/30 to-transparent" />
         </div>
 
-        {/* Realistic curtain folds */}
         <div className="absolute top-6 md:top-10 left-0 right-0 bottom-0">
-          {Array.from({ length: 20 }).map((_, i) => (
+          {Array.from({ length: 10 }).map((_, i) => (
             <div
               key={i}
               className="absolute top-0 bottom-0"
               style={{
-                left: `${i * 5}%`,
-                width: "6%",
+                left: `${i * 10}%`,
+                width: "12%",
                 background:
                   i % 2 === 0
                     ? "linear-gradient(90deg, rgba(0,0,0,0.3) 0%, transparent 50%, rgba(0,0,0,0.2) 100%)"
@@ -115,7 +114,7 @@ export function Preloader() {
         </div>
 
         {/* Curtain tassel details - hidden on mobile */}
-        <div className="absolute top-12 md:top-20 left-2 md:left-4 hidden sm:block">
+        <div className="absolute top-12 md:top-20 left-2 md:left-4 hidden md:block">
           {Array.from({ length: 3 }).map((_, i) => (
             <div
               key={i}
@@ -136,8 +135,7 @@ export function Preloader() {
           boxShadow: "inset 60px 0 100px rgba(0,0,0,0.7), -30px 0 80px rgba(0,0,0,0.6)",
         }}
       >
-        {/* Velvet fabric texture */}
-        <div className="absolute inset-0 opacity-40">
+        <div className="absolute inset-0 opacity-40 hidden sm:block">
           <div
             className="w-full h-full"
             style={{
@@ -151,15 +149,14 @@ export function Preloader() {
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-300/30 to-transparent" />
         </div>
 
-        {/* Realistic curtain folds */}
         <div className="absolute top-6 md:top-10 left-0 right-0 bottom-0">
-          {Array.from({ length: 20 }).map((_, i) => (
+          {Array.from({ length: 10 }).map((_, i) => (
             <div
               key={i}
               className="absolute top-0 bottom-0"
               style={{
-                left: `${i * 5}%`,
-                width: "6%",
+                left: `${i * 10}%`,
+                width: "12%",
                 background:
                   i % 2 === 0
                     ? "linear-gradient(90deg, rgba(0,0,0,0.3) 0%, transparent 50%, rgba(0,0,0,0.2) 100%)"
@@ -170,7 +167,7 @@ export function Preloader() {
         </div>
 
         {/* Curtain tassel details - hidden on mobile */}
-        <div className="absolute top-12 md:top-20 right-2 md:right-4 hidden sm:block">
+        <div className="absolute top-12 md:top-20 right-2 md:right-4 hidden md:block">
           {Array.from({ length: 3 }).map((_, i) => (
             <div
               key={i}
@@ -196,7 +193,7 @@ export function Preloader() {
           }}
         >
           <div className="absolute bottom-full left-1/2 -translate-x-1/2 flex flex-col items-center">
-            {/* Industrial ceiling mount - smaller on mobile */}
+            {/* Industrial ceiling mount */}
             <div className="absolute -top-6 md:-top-8 w-8 md:w-10 h-5 md:h-6 bg-gradient-to-b from-zinc-700 via-zinc-600 to-zinc-800 rounded shadow-lg">
               <div className="absolute top-1 left-1.5 md:left-2 w-0.5 md:w-1 h-0.5 md:h-1 rounded-full bg-zinc-900" />
               <div className="absolute top-1 right-1.5 md:right-2 w-0.5 md:w-1 h-0.5 md:h-1 rounded-full bg-zinc-900" />
@@ -204,9 +201,8 @@ export function Preloader() {
               <div className="absolute inset-1 bg-gradient-to-br from-zinc-500/10 to-transparent" />
             </div>
 
-            {/* Realistic chain with responsive sizing - fewer links on mobile */}
             <div className="relative flex flex-col items-center">
-              {Array.from({ length: 12 }).map((_, i) => (
+              {Array.from({ length: 8 }).map((_, i) => (
                 <div
                   key={i}
                   className="relative"
@@ -215,7 +211,7 @@ export function Preloader() {
                     animationDelay: `${i * 0.04}s`,
                   }}
                 >
-                  {/* Chain link - responsive sizing */}
+                  {/* Chain link */}
                   <div
                     className="relative w-2.5 md:w-3 h-5 md:h-6 rounded-full my-0.5"
                     style={{
@@ -246,7 +242,7 @@ export function Preloader() {
               ))}
             </div>
 
-            {/* Connection hook - responsive sizing */}
+            {/* Connection hook */}
             <div className="relative w-3 md:w-4 h-5 md:h-6 flex flex-col items-center">
               <div
                 className="w-2.5 md:w-3 h-2.5 md:h-3 rounded-full border-2"
@@ -266,7 +262,7 @@ export function Preloader() {
             </div>
           </div>
 
-          {/* Glowing aura around button - responsive */}
+          {/* Glowing aura around button */}
           <div className="absolute inset-0 blur-2xl md:blur-3xl bg-primary/30 animate-pulse-glow rounded-xl md:rounded-2xl scale-110" />
 
           <Button
@@ -288,16 +284,15 @@ export function Preloader() {
               <div className="absolute inset-0 bg-gradient-radial from-white/20 via-transparent to-transparent" />
             </div>
 
-            {/* Subtle grid pattern overlay */}
             <div
-              className="absolute inset-0 opacity-10"
+              className="absolute inset-0 opacity-10 hidden sm:block"
               style={{
                 backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
                 backgroundSize: "20px 20px",
               }}
             />
 
-            {/* Text with sophisticated styling - responsive */}
+            {/* Text with sophisticated styling */}
             <span className="relative z-10 flex items-center justify-center gap-2 md:gap-3 text-white drop-shadow-lg text-center leading-relaxed">
               <span className="inline-block w-1.5 h-1.5 md:w-2 md:h-2 bg-white rounded-full animate-bounce-subtle flex-shrink-0" />
               <span className="text-balance">Ready to have your 360 digital experience?</span>
@@ -311,15 +306,10 @@ export function Preloader() {
             <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white/50 to-transparent" />
           </Button>
 
-          {/* Decorative floating elements - scaled and repositioned for mobile */}
-          <div className="absolute -top-4 md:-top-8 -left-4 md:-left-8 w-10 md:w-16 h-10 md:h-16 bg-primary/20 rounded-full blur-lg md:blur-xl animate-float-3d" />
+          <div className="hidden sm:block absolute -top-4 md:-top-8 -left-4 md:-left-8 w-10 md:w-16 h-10 md:h-16 bg-primary/20 rounded-full blur-lg md:blur-xl animate-float-3d" />
           <div
-            className="absolute -bottom-4 md:-bottom-8 -right-4 md:-right-8 w-12 md:w-20 h-12 md:h-20 bg-primary/15 rounded-full blur-xl md:blur-2xl animate-float-3d"
+            className="hidden sm:block absolute -bottom-4 md:-bottom-8 -right-4 md:-right-8 w-12 md:w-20 h-12 md:h-20 bg-primary/15 rounded-full blur-xl md:blur-2xl animate-float-3d"
             style={{ animationDelay: "1s" }}
-          />
-          <div
-            className="absolute top-1/2 -right-6 md:-right-12 w-8 md:w-12 h-8 md:h-12 bg-primary/25 rounded-full blur-md md:blur-lg animate-parallax-float"
-            style={{ animationDelay: "0.5s" }}
           />
         </div>
       </div>
