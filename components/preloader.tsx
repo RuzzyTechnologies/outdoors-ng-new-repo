@@ -1,0 +1,330 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import { Button } from "@/components/ui/button"
+
+export function Preloader() {
+  const [hasEntered, setHasEntered] = useState(false)
+  const [isRevealing, setIsRevealing] = useState(false)
+  const [isComplete, setIsComplete] = useState(false)
+  const [particles, setParticles] = useState<Array<{ id: number; x: number; y: number; delay: number }>>([])
+
+  useEffect(() => {
+    const particleArray = Array.from({ length: 30 }, (_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      delay: Math.random() * 5,
+    }))
+    setParticles(particleArray)
+
+    setTimeout(() => {
+      setHasEntered(true)
+    }, 100)
+  }, [])
+
+  const handleClick = () => {
+    setIsRevealing(true)
+    setTimeout(() => {
+      setIsComplete(true)
+    }, 1800)
+  }
+
+  if (isComplete) return null
+
+  return (
+    <div className="fixed inset-0 z-[9999] overflow-hidden bg-transparent">
+      {!isRevealing && (
+        <>
+          <div className="absolute inset-0 bg-gradient-to-b from-zinc-900 via-neutral-800 to-stone-900">
+            {/* Subtle noise texture for depth */}
+            <div
+              className="absolute inset-0 opacity-[0.15]"
+              style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' /%3E%3C/svg%3E")`,
+              }}
+            />
+
+            {/* Radial spotlight from center */}
+            <div className="absolute inset-0 bg-gradient-radial from-amber-500/10 via-transparent to-transparent" />
+
+            {/* Elegant light beams from top */}
+            <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-amber-200/20 via-orange-300/10 to-transparent blur-sm" />
+            <div className="absolute top-0 left-1/2 w-0.5 h-full bg-gradient-to-b from-amber-300/30 via-orange-200/15 to-transparent blur-md" />
+            <div className="absolute top-0 right-1/4 w-px h-full bg-gradient-to-b from-amber-200/20 via-orange-300/10 to-transparent blur-sm" />
+          </div>
+
+          {/* Floating ambient particles */}
+          <div className="absolute inset-0 overflow-hidden">
+            {particles.map((particle) => (
+              <div
+                key={particle.id}
+                className="absolute w-1 h-1 bg-amber-400/30 rounded-full animate-parallax-float blur-[1px]"
+                style={{
+                  left: `${particle.x}%`,
+                  top: `${particle.y}%`,
+                  animationDelay: `${particle.delay}s`,
+                }}
+              />
+            ))}
+          </div>
+        </>
+      )}
+
+      {/* Left curtain */}
+      <div
+        className={`absolute inset-y-0 left-0 w-1/2 transition-all duration-[1800ms] ease-in-out ${
+          isRevealing ? "-translate-x-full" : "translate-x-0"
+        }`}
+        style={{
+          background: "linear-gradient(90deg, #8B0000 0%, #A52A2A 40%, #8B0000 70%, #6B0000 100%)",
+          boxShadow: "inset -60px 0 100px rgba(0,0,0,0.7), 30px 0 80px rgba(0,0,0,0.6)",
+        }}
+      >
+        {/* Velvet fabric texture */}
+        <div className="absolute inset-0 opacity-40">
+          <div
+            className="w-full h-full"
+            style={{
+              backgroundImage: `repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(0,0,0,0.15) 3px, rgba(0,0,0,0.15) 6px)`,
+            }}
+          />
+        </div>
+
+        {/* Golden ornate curtain rod */}
+        <div className="absolute -top-2 left-0 right-0 h-12 bg-gradient-to-b from-yellow-600 via-amber-500 to-yellow-700 shadow-2xl border-y-2 border-yellow-400/50">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-300/30 to-transparent" />
+        </div>
+
+        {/* Realistic curtain folds */}
+        <div className="absolute top-10 left-0 right-0 bottom-0">
+          {Array.from({ length: 20 }).map((_, i) => (
+            <div
+              key={i}
+              className="absolute top-0 bottom-0"
+              style={{
+                left: `${i * 5}%`,
+                width: "6%",
+                background:
+                  i % 2 === 0
+                    ? "linear-gradient(90deg, rgba(0,0,0,0.3) 0%, transparent 50%, rgba(0,0,0,0.2) 100%)"
+                    : "linear-gradient(90deg, rgba(255,255,255,0.08) 0%, transparent 50%, rgba(255,255,255,0.05) 100%)",
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Curtain tassel details */}
+        <div className="absolute top-20 left-4">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-1 h-32 bg-gradient-to-b from-amber-600 to-amber-800 rounded-full"
+              style={{ left: `${i * 8}px`, top: `${i * 40}px` }}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Right curtain */}
+      <div
+        className={`absolute inset-y-0 right-0 w-1/2 transition-all duration-[1800ms] ease-in-out ${
+          isRevealing ? "translate-x-full" : "translate-x-0"
+        }`}
+        style={{
+          background: "linear-gradient(270deg, #8B0000 0%, #A52A2A 40%, #8B0000 70%, #6B0000 100%)",
+          boxShadow: "inset 60px 0 100px rgba(0,0,0,0.7), -30px 0 80px rgba(0,0,0,0.6)",
+        }}
+      >
+        {/* Velvet fabric texture */}
+        <div className="absolute inset-0 opacity-40">
+          <div
+            className="w-full h-full"
+            style={{
+              backgroundImage: `repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(0,0,0,0.15) 3px, rgba(0,0,0,0.15) 6px)`,
+            }}
+          />
+        </div>
+
+        {/* Golden ornate curtain rod */}
+        <div className="absolute -top-2 left-0 right-0 h-12 bg-gradient-to-b from-yellow-600 via-amber-500 to-yellow-700 shadow-2xl border-y-2 border-yellow-400/50">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-300/30 to-transparent" />
+        </div>
+
+        {/* Realistic curtain folds */}
+        <div className="absolute top-10 left-0 right-0 bottom-0">
+          {Array.from({ length: 20 }).map((_, i) => (
+            <div
+              key={i}
+              className="absolute top-0 bottom-0"
+              style={{
+                left: `${i * 5}%`,
+                width: "6%",
+                background:
+                  i % 2 === 0
+                    ? "linear-gradient(90deg, rgba(0,0,0,0.3) 0%, transparent 50%, rgba(0,0,0,0.2) 100%)"
+                    : "linear-gradient(90deg, rgba(255,255,255,0.08) 0%, transparent 50%, rgba(255,255,255,0.05) 100%)",
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Curtain tassel details */}
+        <div className="absolute top-20 right-4">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-1 h-32 bg-gradient-to-b from-amber-600 to-amber-800 rounded-full"
+              style={{ right: `${i * 8}px`, top: `${i * 40}px` }}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="absolute inset-0 flex items-center justify-center z-10 perspective-container">
+        <div
+          className={`relative transition-all ${
+            isRevealing
+              ? "opacity-0 -translate-y-[200px] scale-50 rotate-12 duration-1000"
+              : hasEntered
+                ? "opacity-100 translate-y-0 animate-dangle scale-100 duration-[1200ms] ease-out"
+                : "opacity-100 -translate-y-[100vh] scale-100 duration-0"
+          }`}
+          style={{
+            transformOrigin: "top center",
+            transformStyle: "preserve-3d",
+          }}
+        >
+          {/* Ceiling mounting point with industrial metal plate */}
+          <div className="absolute bottom-full left-1/2 -translate-x-1/2 flex flex-col items-center">
+            {/* Industrial ceiling mount */}
+            <div className="absolute -top-8 w-10 h-6 bg-gradient-to-b from-zinc-700 via-zinc-600 to-zinc-800 rounded shadow-lg">
+              <div className="absolute top-1 left-2 w-1 h-1 rounded-full bg-zinc-900" />
+              <div className="absolute top-1 right-2 w-1 h-1 rounded-full bg-zinc-900" />
+              <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-zinc-900" />
+              <div className="absolute inset-1 bg-gradient-to-br from-zinc-500/10 to-transparent" />
+            </div>
+
+            {/* Realistic chain with smaller, detailed links */}
+            <div className="relative flex flex-col items-center">
+              {Array.from({ length: 12 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="relative"
+                  style={{
+                    animation: `dangle 3s ease-in-out infinite`,
+                    animationDelay: `${i * 0.04}s`,
+                  }}
+                >
+                  {/* Chain link - smaller and more realistic */}
+                  <div
+                    className="relative w-3 h-6 rounded-full my-0.5"
+                    style={{
+                      background:
+                        "linear-gradient(90deg, #3f3f46 0%, #71717a 20%, #a1a1aa 40%, #71717a 60%, #52525b 80%, #3f3f46 100%)",
+                      boxShadow:
+                        "inset -1px 0 2px rgba(0,0,0,0.6), inset 1px 0 2px rgba(255,255,255,0.2), 1px 1px 3px rgba(0,0,0,0.4)",
+                      border: "0.5px solid #27272a",
+                    }}
+                  >
+                    {/* Hollow center */}
+                    <div
+                      className="absolute inset-x-[2px] inset-y-1 rounded-full bg-black/30"
+                      style={{
+                        boxShadow: "inset 0 1px 2px rgba(0,0,0,0.9)",
+                      }}
+                    />
+
+                    {/* Metallic highlight */}
+                    <div
+                      className="absolute top-0.5 left-0.5 w-1 h-1.5 rounded-full opacity-60"
+                      style={{
+                        background: "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), transparent)",
+                      }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Connection hook */}
+            <div className="relative w-4 h-6 flex flex-col items-center">
+              <div
+                className="w-3 h-3 rounded-full border-2"
+                style={{
+                  borderColor: "#3f3f46",
+                  background: "linear-gradient(135deg, #52525b 0%, #a1a1aa 50%, #52525b 100%)",
+                  boxShadow: "inset -0.5px -0.5px 1px rgba(0,0,0,0.5), inset 0.5px 0.5px 1px rgba(255,255,255,0.2)",
+                }}
+              />
+              <div
+                className="w-2 h-4 rounded-b"
+                style={{
+                  background: "linear-gradient(90deg, #3f3f46 0%, #71717a 50%, #3f3f46 100%)",
+                  boxShadow: "inset -1px 0 2px rgba(0,0,0,0.4), inset 1px 0 2px rgba(255,255,255,0.1)",
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Glowing aura around button */}
+          <div className="absolute inset-0 blur-3xl bg-primary/30 animate-pulse-glow rounded-2xl scale-110" />
+
+          {/* Main button with premium styling */}
+          <Button
+            onClick={handleClick}
+            size="lg"
+            className="relative px-12 py-8 text-lg font-bold rounded-2xl shadow-2xl group overflow-hidden preserve-3d"
+            style={{
+              background:
+                "linear-gradient(135deg, oklch(0.75 0.24 35) 0%, oklch(0.65 0.22 35) 50%, oklch(0.70 0.23 35) 100%)",
+              boxShadow:
+                "0 25px 60px rgba(255, 107, 53, 0.4), 0 10px 30px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.3)",
+            }}
+          >
+            {/* Animated shimmer effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+
+            {/* Radial glow on hover */}
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+              <div className="absolute inset-0 bg-gradient-radial from-white/20 via-transparent to-transparent" />
+            </div>
+
+            {/* Subtle grid pattern overlay */}
+            <div
+              className="absolute inset-0 opacity-10"
+              style={{
+                backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+                backgroundSize: "20px 20px",
+              }}
+            />
+
+            {/* Text with sophisticated styling */}
+            <span className="relative z-10 flex items-center gap-3 text-white drop-shadow-lg">
+              <span className="inline-block w-2 h-2 bg-white rounded-full animate-bounce-subtle" />
+              Ready to have your 360 digital experience?
+              <span
+                className="inline-block w-2 h-2 bg-white rounded-full animate-bounce-subtle"
+                style={{ animationDelay: "0.2s" }}
+              />
+            </span>
+
+            {/* Bottom highlight */}
+            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white/50 to-transparent" />
+          </Button>
+
+          {/* Decorative floating elements around button */}
+          <div className="absolute -top-8 -left-8 w-16 h-16 bg-primary/20 rounded-full blur-xl animate-float-3d" />
+          <div
+            className="absolute -bottom-8 -right-8 w-20 h-20 bg-primary/15 rounded-full blur-2xl animate-float-3d"
+            style={{ animationDelay: "1s" }}
+          />
+          <div
+            className="absolute top-1/2 -right-12 w-12 h-12 bg-primary/25 rounded-full blur-lg animate-parallax-float"
+            style={{ animationDelay: "0.5s" }}
+          />
+        </div>
+      </div>
+    </div>
+  )
+}

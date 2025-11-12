@@ -26,6 +26,7 @@ export default function EditBillboardPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [previewImages, setPreviewImages] = useState<string[]>([])
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const [formData, setFormData] = useState({
     title: "",
@@ -44,26 +45,30 @@ export default function EditBillboardPage() {
       setIsAuthenticated(true)
 
       // Load billboard data
-      const billboard = getBillboardById(billboardId)
-      if (billboard) {
-        setFormData({
-          title: billboard.title,
-          location: billboard.location,
-          type: billboard.type,
-          size: billboard.size,
-          availability: billboard.availability,
-          description: billboard.description,
-          featured: billboard.featured,
-          image: billboard.image,
-        })
-        if (billboard.image) {
-          setPreviewImages([billboard.image])
+      const loadBillboard = async () => {
+        const billboard = await getBillboardById(billboardId)
+        if (billboard) {
+          setFormData({
+            title: billboard.title || "",
+            location: billboard.location || "",
+            type: billboard.type || "",
+            size: billboard.size || "",
+            availability: billboard.status || "Available Now",
+            description: billboard.description || "",
+            featured: billboard.featured || false,
+            image: billboard.image_url || billboard.image || "",
+          })
+          if (billboard.image_url || billboard.image) {
+            setPreviewImages([billboard.image_url || billboard.image])
+          }
+        } else {
+          alert("Billboard not found")
+          router.push("/admin-dash1234")
         }
-      } else {
-        alert("Billboard not found")
-        router.push("/admin-dash1234")
+        setIsLoading(false)
       }
-      setIsLoading(false)
+
+      loadBillboard()
     } else {
       router.push("/admin-dash1234/login")
     }
@@ -88,9 +93,10 @@ export default function EditBillboardPage() {
     try {
       const mainImage = previewImages[0] || formData.image || "/placeholder.svg?height=400&width=600"
 
-      const success = updateBillboard(billboardId, {
+      const success = await updateBillboard(billboardId, {
         ...formData,
-        image: mainImage,
+        image_url: mainImage,
+        status: formData.availability,
       })
 
       if (success) {
@@ -113,113 +119,125 @@ export default function EditBillboardPage() {
 
   return (
     <div className="flex min-h-screen bg-muted/30">
-      <AdminSidebar />
+      <AdminSidebar isMobileOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
 
-      <div className="flex-1 flex flex-col">
-        <AdminHeader />
+      <div className="flex-1 flex flex-col lg:ml-64">
+        <AdminHeader onMenuClick={() => setIsMobileMenuOpen(true)} />
 
-        <main className="flex-1 p-6">
-          <div className="max-w-4xl mx-auto space-y-6">
-            <div className="flex items-center gap-4">
-              <Button variant="outline" size="icon" asChild>
+        <main className="flex-1 p-4 sm:p-6">
+          <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <Button variant="outline" size="icon" asChild className="flex-shrink-0 bg-transparent">
                 <Link href="/admin-dash1234">
                   <ArrowLeft className="h-5 w-5" />
                 </Link>
               </Button>
               <div>
-                <h2 className="text-2xl font-bold">Edit Billboard</h2>
-                <p className="text-muted-foreground">Update billboard details</p>
+                <h2 className="text-xl sm:text-2xl font-bold">Edit Billboard</h2>
+                <p className="text-xs sm:text-sm text-muted-foreground">Update billboard details</p>
               </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <Card className="p-6 space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+              <Card className="p-4 sm:p-6 space-y-4 sm:space-y-6">
                 <div className="space-y-4">
-                  <h3 className="text-lg font-semibold">Basic Information</h3>
+                  <h3 className="text-base sm:text-lg font-semibold">Basic Information</h3>
 
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="title">Billboard Title *</Label>
+                      <Label htmlFor="title" className="text-sm">
+                        Billboard Title *
+                      </Label>
                       <Input
                         id="title"
                         placeholder="e.g., BRT Billboard In Ikeja, Lagos"
                         value={formData.title}
                         onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                         required
-                        className="h-11"
+                        className="h-10 sm:h-11"
                       />
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="location">Location *</Label>
+                      <Label htmlFor="location" className="text-sm">
+                        Location *
+                      </Label>
                       <Input
                         id="location"
                         placeholder="e.g., Ikeja, Lagos"
                         value={formData.location}
                         onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                         required
-                        className="h-11"
+                        className="h-10 sm:h-11"
                       />
                     </div>
                   </div>
 
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="type">Billboard Type *</Label>
+                      <Label htmlFor="type" className="text-sm">
+                        Billboard Type *
+                      </Label>
                       <Input
                         id="type"
                         placeholder="e.g., BRT Billboard, LED Billboard"
                         value={formData.type}
                         onChange={(e) => setFormData({ ...formData, type: e.target.value })}
                         required
-                        className="h-11"
+                        className="h-10 sm:h-11"
                       />
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="size">Size *</Label>
+                      <Label htmlFor="size" className="text-sm">
+                        Size *
+                      </Label>
                       <Input
                         id="size"
                         placeholder="e.g., 48 Sheet, LED Screen"
                         value={formData.size}
                         onChange={(e) => setFormData({ ...formData, size: e.target.value })}
                         required
-                        className="h-11"
+                        className="h-10 sm:h-11"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="availability">Availability *</Label>
+                    <Label htmlFor="availability" className="text-sm">
+                      Availability *
+                    </Label>
                     <Input
                       id="availability"
                       placeholder="e.g., Available Now, Coming Soon"
                       value={formData.availability}
                       onChange={(e) => setFormData({ ...formData, availability: e.target.value })}
                       required
-                      className="h-11"
+                      className="h-10 sm:h-11"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="description">Description *</Label>
+                    <Label htmlFor="description" className="text-sm">
+                      Description *
+                    </Label>
                     <Textarea
                       id="description"
                       placeholder="Describe the billboard location, visibility, target audience, and key features..."
                       value={formData.description}
                       onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                       required
-                      rows={5}
-                      className="resize-none"
+                      rows={4}
+                      className="resize-none text-sm"
                     />
                   </div>
 
-                  <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
+                  <div className="flex items-center justify-between p-3 sm:p-4 bg-muted rounded-lg">
                     <div>
-                      <Label htmlFor="featured" className="cursor-pointer">
+                      <Label htmlFor="featured" className="cursor-pointer text-sm">
                         Featured Billboard
                       </Label>
-                      <p className="text-sm text-muted-foreground">Display this billboard as featured</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground">Display this billboard as featured</p>
                     </div>
                     <Switch
                       id="featured"
@@ -230,13 +248,13 @@ export default function EditBillboardPage() {
                 </div>
               </Card>
 
-              <Card className="p-6 space-y-4">
-                <h3 className="text-lg font-semibold">Billboard Images</h3>
-                <p className="text-sm text-muted-foreground">
+              <Card className="p-4 sm:p-6 space-y-4">
+                <h3 className="text-base sm:text-lg font-semibold">Billboard Images</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground">
                   Upload images of the billboard (recommended: at least 3 images)
                 </p>
 
-                <div className="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-primary/50 transition-colors duration-200">
+                <div className="border-2 border-dashed border-border rounded-lg p-6 sm:p-8 text-center hover:border-primary/50 transition-colors duration-200">
                   <input
                     type="file"
                     id="images"
@@ -246,17 +264,17 @@ export default function EditBillboardPage() {
                     className="hidden"
                   />
                   <Label htmlFor="images" className="cursor-pointer">
-                    <Upload className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                    <Upload className="h-10 w-10 sm:h-12 sm:w-12 mx-auto mb-3 sm:mb-4 text-muted-foreground" />
                     <p className="text-sm font-medium mb-1">Click to upload images</p>
                     <p className="text-xs text-muted-foreground">PNG, JPG, WEBP up to 10MB each</p>
                   </Label>
                 </div>
 
                 {previewImages.length > 0 && (
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
                     {previewImages.map((image, index) => (
                       <div key={index} className="relative group">
-                        <div className="relative h-32 rounded-lg overflow-hidden border-2 border-border">
+                        <div className="relative h-24 sm:h-32 rounded-lg overflow-hidden border-2 border-border">
                           <Image
                             src={image || "/placeholder.svg"}
                             alt={`Preview ${index + 1}`}
@@ -279,11 +297,11 @@ export default function EditBillboardPage() {
                 )}
               </Card>
 
-              <div className="flex gap-4">
-                <Button type="submit" size="lg" className="flex-1" disabled={isSubmitting}>
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                <Button type="submit" size="lg" className="flex-1 h-11 sm:h-12" disabled={isSubmitting}>
                   {isSubmitting ? "Updating Billboard..." : "Update Billboard"}
                 </Button>
-                <Button type="button" variant="outline" size="lg" asChild>
+                <Button type="button" variant="outline" size="lg" className="h-11 sm:h-12 bg-transparent" asChild>
                   <Link href="/admin-dash1234">Cancel</Link>
                 </Button>
               </div>

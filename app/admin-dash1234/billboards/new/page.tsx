@@ -62,13 +62,18 @@ export default function NewBillboardPage() {
     try {
       const mainImage = previewImages[0] || "/placeholder.svg?height=400&width=600"
 
-      addBillboard({
+      const billboard = await addBillboard({
         ...formData,
-        image: mainImage,
+        image_url: mainImage,
+        status: "available",
       })
 
-      alert("Billboard added successfully!")
-      router.push("/admin-dash1234")
+      if (billboard) {
+        alert("Billboard added successfully!")
+        router.push("/admin-dash1234")
+      } else {
+        alert("Failed to add billboard. Please try again.")
+      }
     } catch (error) {
       console.error("[v0] Error adding billboard:", error)
       alert("Failed to add billboard. Please try again.")

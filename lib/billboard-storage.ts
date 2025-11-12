@@ -1,105 +1,105 @@
+import { createClient } from "@/lib/supabase/client"
+
 export interface Billboard {
   id: number
   title: string
   location: string
+  city?: string
+  state?: string
+  area?: string
+  address?: string
   type: string
   size: string
-  availability: string
-  description: string
-  image: string
+  width?: number
+  height?: number
+  availability?: string
+  status?: string
+  visibility?: string
+  description?: string
+  image?: string
+  image_url?: string
+  images?: any
   featured: boolean
-  createdAt: string
+  illuminated?: boolean
+  latitude?: number
+  longitude?: number
+  traffic_count?: number
+  price?: number
+  category?: string
+  created_at?: string
+  updated_at?: string
 }
 
-const STORAGE_KEY = "outdoors_billboards"
+export async function getAllBillboards(): Promise<Billboard[]> {
+  const supabase = createClient()
+  const { data, error } = await supabase.from("billboards").select("*").order("created_at", { ascending: false })
 
-// Initialize with default billboards if storage is empty
-const defaultBillboards: Billboard[] = [
-  {
-    id: 1,
-    title: "BRT Billboard In Ikeja, Lagos",
-    location: "Ikeja, Lagos",
-    type: "BRT Billboard",
-    size: "48 Sheet",
-    availability: "Available Now",
-    description:
-      "Prime billboard location along the busy BRT corridor in Ikeja. High visibility with thousands of daily commuters passing by.",
-    image: "/brt-billboard-lagos-nigeria.jpg",
-    featured: true,
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: 2,
-    title: "48 Sheet Billboard Along Ikotun-Idimu Road",
-    location: "Ikotun, Lagos",
-    type: "48 Sheet",
-    size: "48 Sheet",
-    availability: "Available Now",
-    description:
-      "Strategic 48-sheet billboard positioned on the heavily trafficked Ikotun-Idimu Road. Excellent exposure to vehicular and pedestrian traffic.",
-    image: "/48-sheet-billboard-lagos-road.jpg",
-    featured: true,
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: 3,
-    title: "Cube Led Billboard At Lekki Phase 1",
-    location: "Lekki, Lagos",
-    type: "LED Billboard",
-    size: "LED Screen",
-    availability: "Coming Soon",
-    description:
-      "Modern LED cube billboard in the upscale Lekki Phase 1 area. Digital display with rotating content capability.",
-    image: "/led-cube-billboard-lekki-lagos.jpg",
-    featured: false,
-    createdAt: new Date().toISOString(),
-  },
-]
-
-export function getAllBillboards(): Billboard[] {
-  if (typeof window === "undefined") return []
-
-  const stored = localStorage.getItem(STORAGE_KEY)
-  if (!stored) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultBillboards))
-    return defaultBillboards
+  if (error) {
+    console.error("[v0] Error fetching billboards:", error)
+    return []
   }
-  return JSON.parse(stored)
+
+  return data || []
 }
 
-export function getBillboardById(id: number): Billboard | undefined {
-  const billboards = getAllBillboards()
-  return billboards.find((b) => b.id === id)
-}
+export async function getBillboardById(id: number): Promise<Billboard | null> {
+  const supabase = createClient()
+  const { data, error } = await supabase.from("billboards").select("*").eq("id", id).single()
 
-export function addBillboard(billboard: Omit<Billboard, "id" | "createdAt">): Billboard {
-  const billboards = getAllBillboards()
-  const newId = Math.max(0, ...billboards.map((b) => b.id)) + 1
-  const newBillboard: Billboard = {
-    ...billboard,
-    id: newId,
-    createdAt: new Date().toISOString(),
+  if (error) {
+    console.error("[v0] Error fetching billboard:", error)
+    return null
   }
-  billboards.push(newBillboard)
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(billboards))
-  return newBillboard
+
+  return data
 }
 
-export function updateBillboard(id: number, updates: Partial<Billboard>): boolean {
-  const billboards = getAllBillboards()
-  const index = billboards.findIndex((b) => b.id === id)
-  if (index === -1) return false
+export async function addBillboard(billboard: Omit<Billboard, "id" | "created_at">): Promise<Billboard | null> {
+  const supabase = createClient()
+  const { data, error } = await supabase
+    .from("billboards")
+    .insert({
+      ...billboard,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    })
+    .select()
+    .single()
 
-  billboards[index] = { ...billboards[index], ...updates }
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(billboards))
+  if (error) {
+    console.error("[v0] Error adding billboard:", error)
+    return null
+  }
+
+  return data
+}
+
+export async function updateBillboard(id: number, updates: Partial<Billboard>): Promise<boolean> {
+  const supabase = createClient()
+  const { error } = await supabase
+    .from("billboards")
+    .update({
+      ...updates,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", id)
+
+  if (error) {
+    console.error("[v0] Error updating billboard:", error)
+    return false
+  }
+
   return true
 }
 
-export function deleteBillboard(id: number): boolean {
-  const billboards = getAllBillboards()
-  const filtered = billboards.filter((b) => b.id !== id)
-  if (filtered.length === billboards.length) return false
+export async function deleteBillboard(id: number): Promise<boolean> {
+  const supabase = createClient()
+  const { error } = await supabase.from("billboards").delete().eq("id", id)
 
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered))
+  if (error) {
+    console.error("[v0] Error deleting billboard:", error)
+    return false
+  }
+
   return true
 }

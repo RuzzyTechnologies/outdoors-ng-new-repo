@@ -20,29 +20,39 @@ export default function AdminDashboardPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [billboards, setBillboards] = useState<Billboard[]>([])
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const auth = localStorage.getItem("adminAuth")
     if (auth === "true") {
       setIsAuthenticated(true)
-      setBillboards(getAllBillboards())
+      loadBillboards()
     } else {
       router.push("/admin-dash1234/login")
     }
   }, [router])
 
+  const loadBillboards = async () => {
+    setIsLoading(true)
+    const data = await getAllBillboards()
+    setBillboards(data)
+    setIsLoading(false)
+  }
+
   const filteredBillboards = billboards.filter(
     (billboard) =>
-      billboard.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      billboard.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      billboard.type.toLowerCase().includes(searchQuery.toLowerCase()),
+      billboard.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      billboard.location?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      billboard.type?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      billboard.state?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      billboard.city?.toLowerCase().includes(searchQuery.toLowerCase()),
   )
 
-  const handleDelete = (id: number) => {
+  const handleDelete = async (id: number) => {
     if (confirm("Are you sure you want to delete this billboard?")) {
-      const success = deleteBillboard(id)
+      const success = await deleteBillboard(id)
       if (success) {
-        setBillboards(getAllBillboards())
+        await loadBillboards()
         alert("Billboard deleted successfully!")
       } else {
         alert("Failed to delete billboard")
@@ -87,70 +97,95 @@ export default function AdminDashboardPage() {
             </div>
           </Card>
 
-          <div className="grid gap-4 sm:gap-6">
-            {filteredBillboards.map((billboard) => (
-              <Card key={billboard.id} className="p-4 sm:p-6 hover:shadow-lg transition-all duration-200">
-                <div className="flex flex-col md:flex-row gap-4 sm:gap-6">
-                  <div className="relative w-full md:w-48 h-32 sm:h-36 md:h-32 rounded-lg overflow-hidden flex-shrink-0">
-                    <Image
-                      src={billboard.image || "/placeholder.svg"}
-                      alt={billboard.title}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-
-                  <div className="flex-1 space-y-3">
-                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
-                      <div className="space-y-2">
-                        <h3 className="text-lg sm:text-xl font-bold">{billboard.title}</h3>
-                        <div className="flex flex-wrap gap-2">
-                          <Badge variant="outline" className="text-xs">
-                            {billboard.type}
-                          </Badge>
-                          <Badge variant="outline" className="text-xs">
-                            {billboard.size}
-                          </Badge>
-                          {billboard.featured && <Badge className="bg-primary text-xs">Featured</Badge>}
-                          <Badge
-                            variant={billboard.availability === "Available Now" ? "default" : "secondary"}
-                            className={cn("text-xs", billboard.availability === "Available Now" ? "bg-accent" : "")}
-                          >
-                            {billboard.availability}
-                          </Badge>
-                        </div>
+          {isLoading ? (
+            <Card className="p-8 sm:p-12 text-center">
+              <p className="text-sm sm:text-base text-muted-foreground">Loading billboards...</p>
+            </Card>
+          ) : (
+            <>
+              <div className="grid gap-4 sm:gap-6">
+                {filteredBillboards.map((billboard) => (
+                  <Card key={billboard.id} className="p-4 sm:p-6 hover:shadow-lg transition-all duration-200">
+                    <div className="flex flex-col md:flex-row gap-4 sm:gap-6">
+                      <div className="relative w-full md:w-48 h-32 sm:h-36 md:h-32 rounded-lg overflow-hidden flex-shrink-0">
+                        <Image
+                          src={billboard.image_url || billboard.image || "/placeholder.svg"}
+                          alt={billboard.title}
+                          fill
+                          className="object-cover"
+                        />
                       </div>
-                      <div className="flex gap-2">
-                        <Button variant="outline" size="sm" asChild className="flex-1 sm:flex-none bg-transparent">
-                          <Link href={`/admin-dash1234/billboards/${billboard.id}/edit`}>
-                            <Edit className="h-4 w-4 sm:mr-1" />
-                            <span className="hidden sm:inline">Edit</span>
-                          </Link>
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleDelete(billboard.id)}
-                          className="flex-1 sm:flex-none text-destructive hover:text-destructive hover:bg-destructive/10 dark:hover:bg-destructive/20"
-                        >
-                          <Trash2 className="h-4 w-4 sm:mr-1" />
-                          <span className="hidden sm:inline">Delete</span>
-                        </Button>
+
+                      <div className="flex-1 space-y-3">
+                        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+                          <div className="space-y-2">
+                            <h3 className="text-lg sm:text-xl font-bold">{billboard.title}</h3>
+                            <div className="flex flex-wrap gap-2">
+                              {billboard.type && (
+                                <Badge variant="outline" className="text-xs">
+                                  {billboard.type}
+                                </Badge>
+                              )}
+                              {billboard.size && (
+                                <Badge variant="outline" className="text-xs">
+                                  {billboard.size}
+                                </Badge>
+                              )}
+                              {billboard.featured && <Badge className="bg-primary text-xs">Featured</Badge>}
+                              {billboard.status && (
+                                <Badge
+                                  variant={billboard.status === "available" ? "default" : "secondary"}
+                                  className={cn("text-xs", billboard.status === "available" ? "bg-accent" : "")}
+                                >
+                                  {billboard.status}
+                                </Badge>
+                              )}
+                              {billboard.price && (
+                                <Badge variant="outline" className="text-xs">
+                                  ₦{billboard.price.toLocaleString()}
+                                </Badge>
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex gap-2">
+                            <Button variant="outline" size="sm" asChild className="flex-1 sm:flex-none bg-transparent">
+                              <Link href={`/admin-dash1234/billboards/${billboard.id}/edit`}>
+                                <Edit className="h-4 w-4 sm:mr-1" />
+                                <span className="hidden sm:inline">Edit</span>
+                              </Link>
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleDelete(billboard.id)}
+                              className="flex-1 sm:flex-none text-destructive hover:text-destructive hover:bg-destructive/10 dark:hover:bg-destructive/20"
+                            >
+                              <Trash2 className="h-4 w-4 sm:mr-1" />
+                              <span className="hidden sm:inline">Delete</span>
+                            </Button>
+                          </div>
+                        </div>
+
+                        <p className="text-sm text-muted-foreground">
+                          {billboard.location || `${billboard.city}, ${billboard.state}`}
+                        </p>
+                        {billboard.description && (
+                          <p className="text-sm text-muted-foreground line-clamp-2">{billboard.description}</p>
+                        )}
                       </div>
                     </div>
+                  </Card>
+                ))}
+              </div>
 
-                    <p className="text-sm text-muted-foreground">{billboard.location}</p>
-                    <p className="text-sm text-muted-foreground line-clamp-2">{billboard.description}</p>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-
-          {filteredBillboards.length === 0 && (
-            <Card className="p-8 sm:p-12 text-center">
-              <p className="text-sm sm:text-base text-muted-foreground">No billboards found matching your search.</p>
-            </Card>
+              {filteredBillboards.length === 0 && (
+                <Card className="p-8 sm:p-12 text-center">
+                  <p className="text-sm sm:text-base text-muted-foreground">
+                    No billboards found matching your search.
+                  </p>
+                </Card>
+              )}
+            </>
           )}
         </main>
       </div>
