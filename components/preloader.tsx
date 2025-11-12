@@ -8,10 +8,14 @@ export function Preloader() {
   const [isRevealing, setIsRevealing] = useState(false)
   const [isComplete, setIsComplete] = useState(false)
   const [particles, setParticles] = useState<Array<{ id: number; x: number; y: number; delay: number }>>([])
+  const [chainLinks, setChainLinks] = useState(8)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
-    const isMobile = window.innerWidth < 768
-    const particleCount = isMobile ? 8 : 15
+    const mobile = window.innerWidth < 768
+    setIsMobile(mobile)
+    const particleCount = mobile ? 8 : 15
+    setChainLinks(mobile ? 6 : 8)
 
     const particleArray = Array.from({ length: particleCount }, (_, i) => ({
       id: i,
@@ -200,7 +204,7 @@ export function Preloader() {
             </div>
 
             <div className="relative flex flex-col items-center">
-              {Array.from({ length: window.innerWidth < 768 ? 6 : 8 }).map((_, i) => (
+              {Array.from({ length: chainLinks }).map((_, i) => (
                 <div
                   key={i}
                   className="relative"
