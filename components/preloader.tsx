@@ -154,20 +154,24 @@ export function Preloader() {
           isRevealing ? "-translate-x-full opacity-0" : "translate-x-0 opacity-100"
         }`}
       >
-        <div className="absolute -top-1 left-0 right-0 h-4 sm:h-6 md:h-8 bg-gradient-to-b from-amber-700 via-amber-600 to-amber-800 shadow-lg z-10" />
+        {/* Curtain rod - responsive height */}
+        <div className="absolute -top-1 left-0 right-0 h-3 xs:h-4 sm:h-6 md:h-7 lg:h-8 bg-gradient-to-b from-amber-700 via-amber-600 to-amber-800 shadow-lg z-10" />
 
-        <div className="absolute top-2 sm:top-4 md:top-6 left-0 right-0 bottom-0">
+        {/* Curtain image container - starts below rod with responsive offset */}
+        <div className="absolute top-2 xs:top-3 sm:top-4 md:top-5 lg:top-6 left-0 right-0 bottom-0">
           <Image
             src="/luxurious-deep-red-velvet-theater-stage-curtain-wi.jpg"
             alt="Theater curtain"
             fill
             className="object-cover object-right"
             priority
+            sizes="50vw"
             style={{
               filter: "brightness(0.85) contrast(1.1)",
               boxShadow: "inset -40px 0 60px rgba(0,0,0,0.6)",
             }}
           />
+          {/* Shadow overlays for depth */}
           <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-transparent pointer-events-none" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-transparent to-black/30 pointer-events-none" />
         </div>
@@ -178,20 +182,24 @@ export function Preloader() {
           isRevealing ? "translate-x-full opacity-0" : "translate-x-0 opacity-100"
         }`}
       >
-        <div className="absolute -top-1 left-0 right-0 h-4 sm:h-6 md:h-8 bg-gradient-to-b from-amber-700 via-amber-600 to-amber-800 shadow-lg z-10" />
+        {/* Curtain rod - responsive height */}
+        <div className="absolute -top-1 left-0 right-0 h-3 xs:h-4 sm:h-6 md:h-7 lg:h-8 bg-gradient-to-b from-amber-700 via-amber-600 to-amber-800 shadow-lg z-10" />
 
-        <div className="absolute top-2 sm:top-4 md:top-6 left-0 right-0 bottom-0">
+        {/* Curtain image container - starts below rod with responsive offset */}
+        <div className="absolute top-2 xs:top-3 sm:top-4 md:top-5 lg:top-6 left-0 right-0 bottom-0">
           <Image
             src="/luxurious-deep-red-velvet-theater-stage-curtain-wi.jpg"
             alt="Theater curtain"
             fill
             className="object-cover object-left scale-x-[-1]"
             priority
+            sizes="50vw"
             style={{
               filter: "brightness(0.85) contrast(1.1)",
               boxShadow: "inset 40px 0 60px rgba(0,0,0,0.6)",
             }}
           />
+          {/* Shadow overlays for depth */}
           <div className="absolute inset-0 bg-gradient-to-l from-black/20 via-transparent to-transparent pointer-events-none" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-transparent to-black/30 pointer-events-none" />
         </div>
