@@ -266,7 +266,7 @@ export function Preloader() {
           <Button
             onClick={handleClick}
             size="lg"
-            className="relative w-40 h-40 xs:w-44 xs:h-44 sm:w-52 sm:h-52 md:w-60 md:h-60 lg:w-72 lg:h-72 rounded-full shadow-2xl group overflow-visible preserve-3d flex items-center justify-center bg-white hover:bg-white transition-all duration-700 border-2 sm:border-4 border-white/50 hover:border-primary/30"
+            className="relative w-48 h-48 xs:w-52 xs:h-52 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 rounded-full shadow-2xl group overflow-visible preserve-3d flex items-center justify-center bg-white hover:bg-white transition-all duration-700 border-2 sm:border-4 border-white/50 hover:border-primary/30"
             style={{
               boxShadow: isMobile
                 ? "0 10px 40px rgba(255, 107, 53, 0.2), 0 5px 20px rgba(0,0,0,0.1)"
