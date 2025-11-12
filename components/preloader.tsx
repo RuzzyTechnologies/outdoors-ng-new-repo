@@ -92,12 +92,12 @@ export function Preloader() {
         </div>
 
         {/* Golden ornate curtain rod */}
-        <div className="absolute -top-2 left-0 right-0 h-12 bg-gradient-to-b from-yellow-600 via-amber-500 to-yellow-700 shadow-2xl border-y-2 border-yellow-400/50">
+        <div className="absolute -top-2 left-0 right-0 h-8 md:h-12 bg-gradient-to-b from-yellow-600 via-amber-500 to-yellow-700 shadow-2xl border-y-2 border-yellow-400/50">
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-300/30 to-transparent" />
         </div>
 
         {/* Realistic curtain folds */}
-        <div className="absolute top-10 left-0 right-0 bottom-0">
+        <div className="absolute top-6 md:top-10 left-0 right-0 bottom-0">
           {Array.from({ length: 20 }).map((_, i) => (
             <div
               key={i}
@@ -114,12 +114,12 @@ export function Preloader() {
           ))}
         </div>
 
-        {/* Curtain tassel details */}
-        <div className="absolute top-20 left-4">
+        {/* Curtain tassel details - hidden on mobile */}
+        <div className="absolute top-12 md:top-20 left-2 md:left-4 hidden sm:block">
           {Array.from({ length: 3 }).map((_, i) => (
             <div
               key={i}
-              className="absolute w-1 h-32 bg-gradient-to-b from-amber-600 to-amber-800 rounded-full"
+              className="absolute w-0.5 md:w-1 h-20 md:h-32 bg-gradient-to-b from-amber-600 to-amber-800 rounded-full"
               style={{ left: `${i * 8}px`, top: `${i * 40}px` }}
             />
           ))}
@@ -147,12 +147,12 @@ export function Preloader() {
         </div>
 
         {/* Golden ornate curtain rod */}
-        <div className="absolute -top-2 left-0 right-0 h-12 bg-gradient-to-b from-yellow-600 via-amber-500 to-yellow-700 shadow-2xl border-y-2 border-yellow-400/50">
+        <div className="absolute -top-2 left-0 right-0 h-8 md:h-12 bg-gradient-to-b from-yellow-600 via-amber-500 to-yellow-700 shadow-2xl border-y-2 border-yellow-400/50">
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-300/30 to-transparent" />
         </div>
 
         {/* Realistic curtain folds */}
-        <div className="absolute top-10 left-0 right-0 bottom-0">
+        <div className="absolute top-6 md:top-10 left-0 right-0 bottom-0">
           {Array.from({ length: 20 }).map((_, i) => (
             <div
               key={i}
@@ -169,19 +169,19 @@ export function Preloader() {
           ))}
         </div>
 
-        {/* Curtain tassel details */}
-        <div className="absolute top-20 right-4">
+        {/* Curtain tassel details - hidden on mobile */}
+        <div className="absolute top-12 md:top-20 right-2 md:right-4 hidden sm:block">
           {Array.from({ length: 3 }).map((_, i) => (
             <div
               key={i}
-              className="absolute w-1 h-32 bg-gradient-to-b from-amber-600 to-amber-800 rounded-full"
+              className="absolute w-0.5 md:w-1 h-20 md:h-32 bg-gradient-to-b from-amber-600 to-amber-800 rounded-full"
               style={{ right: `${i * 8}px`, top: `${i * 40}px` }}
             />
           ))}
         </div>
       </div>
 
-      <div className="absolute inset-0 flex items-center justify-center z-10 perspective-container">
+      <div className="absolute inset-0 flex items-center justify-center z-10 perspective-container px-4">
         <div
           className={`relative transition-all ${
             isRevealing
@@ -195,17 +195,16 @@ export function Preloader() {
             transformStyle: "preserve-3d",
           }}
         >
-          {/* Ceiling mounting point with industrial metal plate */}
           <div className="absolute bottom-full left-1/2 -translate-x-1/2 flex flex-col items-center">
-            {/* Industrial ceiling mount */}
-            <div className="absolute -top-8 w-10 h-6 bg-gradient-to-b from-zinc-700 via-zinc-600 to-zinc-800 rounded shadow-lg">
-              <div className="absolute top-1 left-2 w-1 h-1 rounded-full bg-zinc-900" />
-              <div className="absolute top-1 right-2 w-1 h-1 rounded-full bg-zinc-900" />
-              <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-zinc-900" />
+            {/* Industrial ceiling mount - smaller on mobile */}
+            <div className="absolute -top-6 md:-top-8 w-8 md:w-10 h-5 md:h-6 bg-gradient-to-b from-zinc-700 via-zinc-600 to-zinc-800 rounded shadow-lg">
+              <div className="absolute top-1 left-1.5 md:left-2 w-0.5 md:w-1 h-0.5 md:h-1 rounded-full bg-zinc-900" />
+              <div className="absolute top-1 right-1.5 md:right-2 w-0.5 md:w-1 h-0.5 md:h-1 rounded-full bg-zinc-900" />
+              <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-0.5 md:w-1 h-0.5 md:h-1 rounded-full bg-zinc-900" />
               <div className="absolute inset-1 bg-gradient-to-br from-zinc-500/10 to-transparent" />
             </div>
 
-            {/* Realistic chain with smaller, detailed links */}
+            {/* Realistic chain with responsive sizing - fewer links on mobile */}
             <div className="relative flex flex-col items-center">
               {Array.from({ length: 12 }).map((_, i) => (
                 <div
@@ -216,9 +215,9 @@ export function Preloader() {
                     animationDelay: `${i * 0.04}s`,
                   }}
                 >
-                  {/* Chain link - smaller and more realistic */}
+                  {/* Chain link - responsive sizing */}
                   <div
-                    className="relative w-3 h-6 rounded-full my-0.5"
+                    className="relative w-2.5 md:w-3 h-5 md:h-6 rounded-full my-0.5"
                     style={{
                       background:
                         "linear-gradient(90deg, #3f3f46 0%, #71717a 20%, #a1a1aa 40%, #71717a 60%, #52525b 80%, #3f3f46 100%)",
@@ -237,7 +236,7 @@ export function Preloader() {
 
                     {/* Metallic highlight */}
                     <div
-                      className="absolute top-0.5 left-0.5 w-1 h-1.5 rounded-full opacity-60"
+                      className="absolute top-0.5 left-0.5 w-0.5 md:w-1 h-1 md:h-1.5 rounded-full opacity-60"
                       style={{
                         background: "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), transparent)",
                       }}
@@ -247,10 +246,10 @@ export function Preloader() {
               ))}
             </div>
 
-            {/* Connection hook */}
-            <div className="relative w-4 h-6 flex flex-col items-center">
+            {/* Connection hook - responsive sizing */}
+            <div className="relative w-3 md:w-4 h-5 md:h-6 flex flex-col items-center">
               <div
-                className="w-3 h-3 rounded-full border-2"
+                className="w-2.5 md:w-3 h-2.5 md:h-3 rounded-full border-2"
                 style={{
                   borderColor: "#3f3f46",
                   background: "linear-gradient(135deg, #52525b 0%, #a1a1aa 50%, #52525b 100%)",
@@ -258,7 +257,7 @@ export function Preloader() {
                 }}
               />
               <div
-                className="w-2 h-4 rounded-b"
+                className="w-1.5 md:w-2 h-3 md:h-4 rounded-b"
                 style={{
                   background: "linear-gradient(90deg, #3f3f46 0%, #71717a 50%, #3f3f46 100%)",
                   boxShadow: "inset -1px 0 2px rgba(0,0,0,0.4), inset 1px 0 2px rgba(255,255,255,0.1)",
@@ -267,14 +266,13 @@ export function Preloader() {
             </div>
           </div>
 
-          {/* Glowing aura around button */}
-          <div className="absolute inset-0 blur-3xl bg-primary/30 animate-pulse-glow rounded-2xl scale-110" />
+          {/* Glowing aura around button - responsive */}
+          <div className="absolute inset-0 blur-2xl md:blur-3xl bg-primary/30 animate-pulse-glow rounded-xl md:rounded-2xl scale-110" />
 
-          {/* Main button with premium styling */}
           <Button
             onClick={handleClick}
             size="lg"
-            className="relative px-12 py-8 text-lg font-bold rounded-2xl shadow-2xl group overflow-hidden preserve-3d"
+            className="relative px-6 py-6 sm:px-8 sm:py-7 md:px-12 md:py-8 text-xs sm:text-sm md:text-base lg:text-lg font-bold rounded-xl md:rounded-2xl shadow-2xl group overflow-hidden preserve-3d w-full max-w-[90vw] sm:max-w-md md:max-w-lg"
             style={{
               background:
                 "linear-gradient(135deg, oklch(0.75 0.24 35) 0%, oklch(0.65 0.22 35) 50%, oklch(0.70 0.23 35) 100%)",
@@ -299,12 +297,12 @@ export function Preloader() {
               }}
             />
 
-            {/* Text with sophisticated styling */}
-            <span className="relative z-10 flex items-center gap-3 text-white drop-shadow-lg">
-              <span className="inline-block w-2 h-2 bg-white rounded-full animate-bounce-subtle" />
-              Ready to have your 360 digital experience?
+            {/* Text with sophisticated styling - responsive */}
+            <span className="relative z-10 flex items-center justify-center gap-2 md:gap-3 text-white drop-shadow-lg text-center leading-relaxed">
+              <span className="inline-block w-1.5 h-1.5 md:w-2 md:h-2 bg-white rounded-full animate-bounce-subtle flex-shrink-0" />
+              <span className="text-balance">Ready to have your 360 digital experience?</span>
               <span
-                className="inline-block w-2 h-2 bg-white rounded-full animate-bounce-subtle"
+                className="inline-block w-1.5 h-1.5 md:w-2 md:h-2 bg-white rounded-full animate-bounce-subtle flex-shrink-0"
                 style={{ animationDelay: "0.2s" }}
               />
             </span>
@@ -313,14 +311,14 @@ export function Preloader() {
             <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white/50 to-transparent" />
           </Button>
 
-          {/* Decorative floating elements around button */}
-          <div className="absolute -top-8 -left-8 w-16 h-16 bg-primary/20 rounded-full blur-xl animate-float-3d" />
+          {/* Decorative floating elements - scaled and repositioned for mobile */}
+          <div className="absolute -top-4 md:-top-8 -left-4 md:-left-8 w-10 md:w-16 h-10 md:h-16 bg-primary/20 rounded-full blur-lg md:blur-xl animate-float-3d" />
           <div
-            className="absolute -bottom-8 -right-8 w-20 h-20 bg-primary/15 rounded-full blur-2xl animate-float-3d"
+            className="absolute -bottom-4 md:-bottom-8 -right-4 md:-right-8 w-12 md:w-20 h-12 md:h-20 bg-primary/15 rounded-full blur-xl md:blur-2xl animate-float-3d"
             style={{ animationDelay: "1s" }}
           />
           <div
-            className="absolute top-1/2 -right-12 w-12 h-12 bg-primary/25 rounded-full blur-lg animate-parallax-float"
+            className="absolute top-1/2 -right-6 md:-right-12 w-8 md:w-12 h-8 md:h-12 bg-primary/25 rounded-full blur-md md:blur-lg animate-parallax-float"
             style={{ animationDelay: "0.5s" }}
           />
         </div>
