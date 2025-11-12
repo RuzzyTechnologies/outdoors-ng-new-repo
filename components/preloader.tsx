@@ -91,7 +91,6 @@ export function Preloader() {
           />
         </div>
 
-        {/* Golden ornate curtain rod */}
         <div className="absolute -top-2 left-0 right-0 h-8 md:h-12 bg-gradient-to-b from-yellow-600 via-amber-500 to-yellow-700 shadow-2xl border-y-2 border-yellow-400/50">
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-300/30 to-transparent" />
         </div>
@@ -113,7 +112,6 @@ export function Preloader() {
           ))}
         </div>
 
-        {/* Curtain tassel details - hidden on mobile */}
         <div className="absolute top-12 md:top-20 left-2 md:left-4 hidden md:block">
           {Array.from({ length: 3 }).map((_, i) => (
             <div
@@ -144,7 +142,6 @@ export function Preloader() {
           />
         </div>
 
-        {/* Golden ornate curtain rod */}
         <div className="absolute -top-2 left-0 right-0 h-8 md:h-12 bg-gradient-to-b from-yellow-600 via-amber-500 to-yellow-700 shadow-2xl border-y-2 border-yellow-400/50">
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-300/30 to-transparent" />
         </div>
@@ -166,7 +163,6 @@ export function Preloader() {
           ))}
         </div>
 
-        {/* Curtain tassel details - hidden on mobile */}
         <div className="absolute top-12 md:top-20 right-2 md:right-4 hidden md:block">
           {Array.from({ length: 3 }).map((_, i) => (
             <div
@@ -182,64 +178,107 @@ export function Preloader() {
         <div
           className={`relative transition-all ${
             isRevealing
-              ? "opacity-0 -translate-y-[200px] scale-50 rotate-12 duration-1000"
+              ? "opacity-0 -translate-y-[200px] scale-50 duration-1000"
               : hasEntered
-                ? "opacity-100 translate-y-0 animate-dangle scale-100 duration-[1200ms] ease-out"
+                ? "opacity-100 translate-y-0 scale-100 duration-[1200ms] ease-out"
                 : "opacity-100 -translate-y-[100vh] scale-100 duration-0"
           }`}
-          style={{
-            transformOrigin: "top center",
-            transformStyle: "preserve-3d",
-          }}
         >
-          {/* Glowing aura around button */}
-          <div className="absolute inset-0 blur-2xl md:blur-3xl bg-primary/30 animate-pulse-glow rounded-xl md:rounded-2xl scale-110" />
+          <div className="absolute inset-0 -m-4 sm:-m-6 md:-m-8">
+            <div className="absolute inset-0 rounded-full border-2 border-primary/20 animate-ping-slow" />
+            <div
+              className="absolute inset-0 rounded-full border-2 border-primary/15 animate-ping-slow"
+              style={{ animationDelay: "0.5s" }}
+            />
+            <div
+              className="absolute inset-0 rounded-full border border-primary/10 animate-ping-slow"
+              style={{ animationDelay: "1s" }}
+            />
+          </div>
+
+          <div className="absolute inset-0 -m-8 sm:-m-12 md:-m-16 blur-3xl bg-primary/20 animate-pulse-glow opacity-60 rounded-full" />
 
           <Button
             onClick={handleClick}
             size="lg"
-            className="relative px-6 py-6 sm:px-8 sm:py-7 md:px-12 md:py-8 text-xs sm:text-sm md:text-base lg:text-lg font-bold rounded-xl md:rounded-2xl shadow-2xl group overflow-hidden preserve-3d w-full max-w-[90vw] sm:max-w-md md:max-w-lg"
+            className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 rounded-full shadow-2xl group overflow-visible preserve-3d flex items-center justify-center bg-white hover:bg-white transition-all duration-700 border-4 border-white/50 hover:border-primary/30"
             style={{
-              background:
-                "linear-gradient(135deg, oklch(0.75 0.24 35) 0%, oklch(0.65 0.22 35) 50%, oklch(0.70 0.23 35) 100%)",
               boxShadow:
-                "0 25px 60px rgba(255, 107, 53, 0.4), 0 10px 30px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.3)",
+                "0 30px 80px rgba(255, 107, 53, 0.25), 0 15px 40px rgba(0,0,0,0.15), inset 0 -2px 20px rgba(255, 107, 53, 0.1), inset 0 2px 20px rgba(255,255,255,0.8)",
             }}
           >
-            {/* Animated shimmer effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-
-            {/* Radial glow on hover */}
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-              <div className="absolute inset-0 bg-gradient-radial from-white/20 via-transparent to-transparent" />
+            {/* Rotating gradient border effect */}
+            <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+              <div
+                className="absolute inset-0 rounded-full animate-spin-slow"
+                style={{
+                  background: `conic-gradient(from 0deg, transparent, hsl(var(--primary) / 0.3), transparent)`,
+                }}
+              />
             </div>
 
-            <div
-              className="absolute inset-0 opacity-10 hidden sm:block"
-              style={{
-                backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-                backgroundSize: "20px 20px",
-              }}
-            />
+            <div className="absolute inset-6 sm:inset-8 md:inset-10 rounded-full bg-primary/5 group-hover:bg-primary/10 transition-all duration-700 animate-morph" />
 
-            {/* Text with sophisticated styling */}
-            <span className="relative z-10 flex items-center justify-center gap-2 md:gap-3 text-white drop-shadow-lg text-center leading-relaxed">
-              <span className="inline-block w-1.5 h-1.5 md:w-2 md:h-2 bg-white rounded-full animate-bounce-subtle flex-shrink-0" />
-              <span className="text-balance">Ready to have your 360 digital experience?</span>
-              <span
-                className="inline-block w-1.5 h-1.5 md:w-2 md:h-2 bg-white rounded-full animate-bounce-subtle flex-shrink-0"
-                style={{ animationDelay: "0.2s" }}
-              />
-            </span>
+            {/* Ambient light burst */}
+            <div className="absolute inset-0 -m-16 md:-m-24 blur-3xl bg-primary/20 animate-pulse-glow opacity-60 rounded-full" />
 
-            {/* Bottom highlight */}
-            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white/50 to-transparent" />
+            {/* Sparkle particles on hover */}
+            <div className="absolute inset-0 rounded-full">
+              {[...Array(8)].map((_, i) => (
+                <div
+                  key={i}
+                  className="absolute w-1 h-1 md:w-1.5 md:h-1.5 bg-primary rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-sparkle"
+                  style={{
+                    top: `${50 + 40 * Math.cos((i * Math.PI * 2) / 8)}%`,
+                    left: `${50 + 40 * Math.sin((i * Math.PI * 2) / 8)}%`,
+                    animationDelay: `${i * 0.1}s`,
+                  }}
+                />
+              ))}
+            </div>
+
+            <div className="relative z-10 flex flex-col items-center justify-center gap-2 sm:gap-3 md:gap-4 px-6 sm:px-8 md:px-10">
+              <div className="relative">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                  <div className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 rounded-full bg-primary animate-pulse-subtle" />
+                </div>
+                {/* Orbiting dots */}
+                <div className="absolute inset-0 animate-spin-slow">
+                  <div className="absolute top-0 left-1/2 w-2 h-2 bg-primary/60 rounded-full -translate-x-1/2" />
+                </div>
+              </div>
+
+              <span className="relative text-primary font-bold text-sm sm:text-base md:text-lg lg:text-xl text-center leading-tight text-balance tracking-tight">
+                Ready to have your
+                <br />
+                <span className="text-base sm:text-lg md:text-xl lg:text-2xl inline-block group-hover:scale-105 transition-transform duration-500">
+                  360 digital experience?
+                </span>
+              </span>
+
+              <div className="flex items-center gap-1.5 sm:gap-2 opacity-60 group-hover:opacity-100 transition-opacity duration-500">
+                <div className="w-6 h-0.5 bg-primary/50 group-hover:w-8 sm:group-hover:w-10 transition-all duration-500" />
+                <span className="text-[10px] sm:text-xs md:text-sm text-primary/70 font-medium uppercase tracking-wider">
+                  Click to Enter
+                </span>
+                <div className="w-6 h-0.5 bg-primary/50 group-hover:w-8 sm:group-hover:w-10 transition-all duration-500" />
+              </div>
+            </div>
+
+            <div className="absolute bottom-6 sm:bottom-8 md:bottom-10 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent group-hover:via-primary/60 transition-colors duration-500" />
+
+            {/* Hover scale ring */}
+            <div className="absolute inset-0 rounded-full border-2 border-primary/0 group-hover:border-primary/20 group-hover:scale-110 transition-all duration-700" />
           </Button>
 
-          <div className="hidden sm:block absolute -top-4 md:-top-8 -left-4 md:-left-8 w-10 md:w-16 h-10 md:h-16 bg-primary/20 rounded-full blur-lg md:blur-xl animate-float-3d" />
+          <div className="hidden md:block absolute -top-12 -left-12 w-16 h-16 bg-primary/10 rounded-full blur-2xl animate-float-slow" />
           <div
-            className="hidden sm:block absolute -bottom-4 md:-bottom-8 -right-4 md:-right-8 w-12 md:w-20 h-12 md:h-20 bg-primary/15 rounded-full blur-xl md:blur-2xl animate-float-3d"
+            className="hidden md:block absolute -bottom-12 -right-12 w-20 h-20 bg-primary/15 rounded-full blur-3xl animate-float-slow"
             style={{ animationDelay: "1s" }}
+          />
+          <div
+            className="hidden lg:block absolute top-1/2 -right-16 w-16 h-16 bg-primary/8 rounded-full blur-xl animate-float-slow"
+            style={{ animationDelay: "2s" }}
           />
         </div>
       </div>
