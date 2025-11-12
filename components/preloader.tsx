@@ -15,7 +15,7 @@ export function Preloader() {
     const mobile = window.innerWidth < 768
     setIsMobile(mobile)
     const particleCount = mobile ? 8 : 15
-    setChainLinks(mobile ? 8 : 10)
+    setChainLinks(mobile ? 12 : 10)
 
     const particleArray = Array.from({ length: particleCount }, (_, i) => ({
       id: i,
@@ -196,7 +196,7 @@ export function Preloader() {
         >
           <div className="absolute bottom-full left-1/2 -translate-x-1/2 flex flex-col items-center -mb-2">
             {/* Industrial ceiling mount */}
-            <div className="absolute -top-12 md:-top-16 w-6 md:w-8 h-4 md:h-5 bg-gradient-to-b from-zinc-700 via-zinc-600 to-zinc-800 rounded shadow-lg">
+            <div className="absolute -top-24 md:-top-16 w-6 md:w-8 h-4 md:h-5 bg-gradient-to-b from-zinc-700 via-zinc-600 to-zinc-800 rounded shadow-lg">
               <div className="absolute top-0.5 left-1 md:left-1.5 w-0.5 h-0.5 rounded-full bg-zinc-900" />
               <div className="absolute top-0.5 right-1 md:right-1.5 w-0.5 h-0.5 rounded-full bg-zinc-900" />
               <div className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-0.5 h-0.5 rounded-full bg-zinc-900" />
