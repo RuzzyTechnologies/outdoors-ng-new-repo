@@ -47,7 +47,6 @@ export function Preloader() {
               }}
             />
 
-            {/* Radial spotlight from center */}
             <div className="absolute inset-0 bg-gradient-radial from-amber-500/10 via-transparent to-transparent" />
 
             <div className="absolute top-0 left-1/2 w-0.5 h-full bg-gradient-to-b from-amber-300/30 via-orange-200/15 to-transparent blur-md" />
@@ -55,7 +54,6 @@ export function Preloader() {
             <div className="hidden md:block absolute top-0 right-1/4 w-px h-full bg-gradient-to-b from-amber-200/20 via-orange-300/10 to-transparent blur-sm" />
           </div>
 
-          {/* Floating ambient particles */}
           <div className="absolute inset-0 overflow-hidden">
             {particles.map((particle) => (
               <div
@@ -192,17 +190,17 @@ export function Preloader() {
             transformStyle: "preserve-3d",
           }}
         >
-          <div className="absolute bottom-full left-1/2 -translate-x-1/2 flex flex-col items-center">
-            {/* Industrial ceiling mount */}
-            <div className="absolute -top-6 md:-top-8 w-8 md:w-10 h-5 md:h-6 bg-gradient-to-b from-zinc-700 via-zinc-600 to-zinc-800 rounded shadow-lg">
-              <div className="absolute top-1 left-1.5 md:left-2 w-0.5 md:w-1 h-0.5 md:h-1 rounded-full bg-zinc-900" />
-              <div className="absolute top-1 right-1.5 md:right-2 w-0.5 md:w-1 h-0.5 md:h-1 rounded-full bg-zinc-900" />
-              <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-0.5 md:w-1 h-0.5 md:h-1 rounded-full bg-zinc-900" />
+          <div className="absolute bottom-full left-1/2 -translate-x-1/2 flex flex-col items-center mb-1">
+            {/* Industrial ceiling mount - smaller and more refined */}
+            <div className="absolute -top-6 md:-top-8 w-6 md:w-8 h-4 md:h-5 bg-gradient-to-b from-zinc-700 via-zinc-600 to-zinc-800 rounded shadow-lg">
+              <div className="absolute top-0.5 left-1 md:left-1.5 w-0.5 h-0.5 rounded-full bg-zinc-900" />
+              <div className="absolute top-0.5 right-1 md:right-1.5 w-0.5 h-0.5 rounded-full bg-zinc-900" />
+              <div className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-0.5 h-0.5 rounded-full bg-zinc-900" />
               <div className="absolute inset-1 bg-gradient-to-br from-zinc-500/10 to-transparent" />
             </div>
 
             <div className="relative flex flex-col items-center">
-              {Array.from({ length: 8 }).map((_, i) => (
+              {Array.from({ length: window.innerWidth < 768 ? 6 : 8 }).map((_, i) => (
                 <div
                   key={i}
                   className="relative"
@@ -211,9 +209,9 @@ export function Preloader() {
                     animationDelay: `${i * 0.04}s`,
                   }}
                 >
-                  {/* Chain link */}
+                  {/* Chain link - optimized size */}
                   <div
-                    className="relative w-2.5 md:w-3 h-5 md:h-6 rounded-full my-0.5"
+                    className="relative w-2 md:w-2.5 h-4 md:h-5 rounded-full my-0.5"
                     style={{
                       background:
                         "linear-gradient(90deg, #3f3f46 0%, #71717a 20%, #a1a1aa 40%, #71717a 60%, #52525b 80%, #3f3f46 100%)",
@@ -222,7 +220,6 @@ export function Preloader() {
                       border: "0.5px solid #27272a",
                     }}
                   >
-                    {/* Hollow center */}
                     <div
                       className="absolute inset-x-[2px] inset-y-1 rounded-full bg-black/30"
                       style={{
@@ -230,9 +227,8 @@ export function Preloader() {
                       }}
                     />
 
-                    {/* Metallic highlight */}
                     <div
-                      className="absolute top-0.5 left-0.5 w-0.5 md:w-1 h-1 md:h-1.5 rounded-full opacity-60"
+                      className="absolute top-0.5 left-0.5 w-0.5 h-1 rounded-full opacity-60"
                       style={{
                         background: "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), transparent)",
                       }}
@@ -243,9 +239,9 @@ export function Preloader() {
             </div>
 
             {/* Connection hook */}
-            <div className="relative w-3 md:w-4 h-5 md:h-6 flex flex-col items-center">
+            <div className="relative w-2.5 md:w-3 h-4 md:h-5 flex flex-col items-center">
               <div
-                className="w-2.5 md:w-3 h-2.5 md:h-3 rounded-full border-2"
+                className="w-2 md:w-2.5 h-2 md:h-2.5 rounded-full border"
                 style={{
                   borderColor: "#3f3f46",
                   background: "linear-gradient(135deg, #52525b 0%, #a1a1aa 50%, #52525b 100%)",
@@ -253,7 +249,7 @@ export function Preloader() {
                 }}
               />
               <div
-                className="w-1.5 md:w-2 h-3 md:h-4 rounded-b"
+                className="w-1 md:w-1.5 h-2.5 md:h-3 rounded-b"
                 style={{
                   background: "linear-gradient(90deg, #3f3f46 0%, #71717a 50%, #3f3f46 100%)",
                   boxShadow: "inset -1px 0 2px rgba(0,0,0,0.4), inset 1px 0 2px rgba(255,255,255,0.1)",
