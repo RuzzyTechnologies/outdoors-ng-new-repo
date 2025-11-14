@@ -30,7 +30,7 @@ export default function PageLoader() {
         {/* Logo */}
         <div className="relative w-24 h-24 animate-bounce-subtle">
           <Image
-            src="/outdoors-logo.svg"
+            src="/images/outdoors-logo.png"
             alt="Outdoors Logo"
             fill
             className="object-contain"
