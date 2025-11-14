@@ -294,6 +294,27 @@
   }
 }
 
+/* Added spinner and bounce animations for page loader */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes bounce-subtle {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
 .animate-float {
   animation: float 8s ease-in-out infinite;
 }
@@ -505,16 +526,6 @@ html {
   }
 }
 
-@keyframes bounce-subtle {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
 @keyframes glow-pulse {
   0%,
   100% {
@@ -561,10 +572,6 @@ html {
 
 .animate-slide-in-right {
   animation: slide-in-right 0.8s ease-out forwards;
-}
-
-.animate-bounce-subtle {
-  animation: bounce-subtle 3s ease-in-out infinite;
 }
 
 .animate-glow-pulse {
@@ -873,31 +880,4 @@ html {
 .container-modern {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 clamp(1rem, 5vw, 4rem);
-}
-
-/* Enhanced typography */
-.heading-display {
-  font-size: clamp(3rem, 8vw, 6rem);
-  font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-}
-
-.heading-large {
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-}
-
-.heading-medium {
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 600;
-  line-height: 1.3;
-}
-
-.text-body-large {
-  font-size: clamp(1.125rem, 2vw, 1.25rem);
-  line-height: 1.6;
-}
+  padding:
