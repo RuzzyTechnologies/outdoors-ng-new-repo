@@ -9,11 +9,14 @@ import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import Image from "next/image"
+import { login } from "@/lib/outdoors-api"
+import { storeToken } from "@/lib/auth-storage"
 
 export default function AdminLoginPage() {
   const router = useRouter()
-  const [email, setEmail] = useState("")
+  const [usernameOrEmail, setUsernameOrEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [email, setEmail] = useState("") // Declare email variable
   const [error, setError] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
@@ -22,16 +25,23 @@ export default function AdminLoginPage() {
     setError("")
     setIsLoading(true)
 
-    // Simple authentication check (replace with real authentication)
-    if (email === "admin@outdoors.ng" && password === "admin123") {
-      // Store auth token (in production, use proper authentication)
-      localStorage.setItem("adminAuth", "true")
-      router.push("/admin-dash1234")
-    } else {
-      setError("Invalid email or password")
-    }
+    try {
+      const response = await login({
+        usernameOrEmail,
+        password,
+      })
 
-    setIsLoading(false)
+      // Store token and admin info
+      storeToken(response.token, response.admin)
+      
+      // Redirect to dashboard
+      router.push("/admin-dash1234")
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Login failed. Please try again.")
+      console.error('[v0] Login error:', err)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -49,13 +59,13 @@ export default function AdminLoginPage() {
 
         <form onSubmit={handleLogin} className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="email">Email Address</Label>
+            <Label htmlFor="usernameOrEmail">Email or Username</Label>
             <Input
-              id="email"
-              type="email"
-              placeholder="admin@outdoors.ng"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              id="usernameOrEmail"
+              type="text"
+              placeholder="admin@outdoors.ng or admin"
+              value={usernameOrEmail}
+              onChange={(e) => setUsernameOrEmail(e.target.value)}
               required
               className="h-12"
             />
@@ -82,8 +92,8 @@ export default function AdminLoginPage() {
         </form>
 
         <div className="mt-6 text-center text-sm text-muted-foreground">
-          <p>Demo credentials:</p>
-          <p className="font-mono text-xs mt-1">admin@outdoors.ng / admin123</p>
+          <p>Login with your admin credentials from the backend.</p>
+          <p className="font-mono text-xs mt-1 text-yellow-600">Make sure your backend API is running and NEXT_PUBLIC_API_BASE_URL is set.</p>
         </div>
       </Card>
     </div>
