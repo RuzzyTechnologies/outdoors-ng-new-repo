@@ -18,8 +18,11 @@ export interface StoredAdmin {
 export function storeToken(token: string, admin: StoredAdmin): void {
   if (typeof window !== 'undefined') {
     try {
+      console.log('[v0] storeToken called, token length:', token?.length || 0);
       localStorage.setItem(TOKEN_KEY, token);
       localStorage.setItem(ADMIN_KEY, JSON.stringify(admin));
+      console.log('[v0] Token stored successfully');
+      console.log('[v0] Verifying: stored token length:', localStorage.getItem(TOKEN_KEY)?.length || 0);
     } catch (error) {
       console.error('[v0] Failed to store token:', error);
     }
@@ -32,12 +35,15 @@ export function storeToken(token: string, admin: StoredAdmin): void {
 export function getToken(): string | null {
   if (typeof window !== 'undefined') {
     try {
-      return localStorage.getItem(TOKEN_KEY);
+      const token = localStorage.getItem(TOKEN_KEY);
+      console.log('[v0] getToken - token exists:', !!token, 'token length:', token?.length || 0);
+      return token;
     } catch (error) {
       console.error('[v0] Failed to retrieve token:', error);
       return null;
     }
   }
+  console.log('[v0] getToken - window undefined (server-side)');
   return null;
 }
 

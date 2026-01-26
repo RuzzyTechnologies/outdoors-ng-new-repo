@@ -39,6 +39,9 @@ export interface AuthResponse {
  * Login with credentials and get JWT token
  */
 export async function login(credentials: LoginCredentials): Promise<AuthResponse> {
+  console.log('[v0] Attempting login to:', `${API_BASE}/api/auth/login`);
+  console.log('[v0] Credentials:', { usernameOrEmail: credentials.usernameOrEmail, password: '***' });
+  
   try {
     const response = await fetch(`${API_BASE}/api/auth/login`, {
       method: 'POST',
@@ -48,19 +51,32 @@ export async function login(credentials: LoginCredentials): Promise<AuthResponse
       body: JSON.stringify(credentials),
     });
 
-    const data: ApiResponse<AuthResponse> = await response.json();
+    const data = await response.json();
+    
+    console.log('[v0] Login response status:', response.status);
+    console.log('[v0] Login response OK?:', response.ok);
+    console.log('[v0] Login response data:', JSON.stringify(data, null, 2));
 
-    if (!response.ok || !data.success) {
-      throw new Error(data.error || 'Login failed');
+    if (!response.ok) {
+      const errorMsg = data.error || data.message || data.msg || `HTTP ${response.status}`;
+      console.error('[v0] Backend error response:', errorMsg);
+      throw new Error(errorMsg);
     }
 
-    if (!data.data || !data.data.token) {
+    // API returns token and admin directly at root level
+    if (!data.token) {
+      console.error('[v0] No token in response');
       throw new Error('No token received from server');
     }
 
-    return data.data;
+    console.log('[v0] Login successful!');
+    return {
+      token: data.token,
+      admin: data.admin,
+    };
   } catch (error) {
-    throw new Error(error instanceof Error ? error.message : 'Login request failed');
+    console.error('[v0] Login error caught:', error);
+    throw error instanceof Error ? error : new Error(String(error));
   }
 }
 
@@ -97,26 +113,34 @@ async function crudRequest<T = any>(
 ): Promise<T> {
   const { token, table, id, data } = options;
   
+  console.log('[v0] crudRequest called:', { method, table, id, hasToken: !!token, tokenLength: token?.length });
+  
   let url = `${API_BASE}/api/crud?table=${encodeURIComponent(table)}`;
   if (id) {
     url += `&id=${id}`;
   }
-
+  
+  const headers = getAuthHeader(token);
+  console.log('[v0] Request headers:', { 'Content-Type': headers['Content-Type'], 'Authorization': headers['Authorization'] ? 'Bearer ...' : 'none' });
+  
   const fetchOptions: RequestInit = {
     method,
-    headers: getAuthHeader(token),
+    headers,
   };
-
+  
   if (data && (method === 'POST' || method === 'PUT')) {
     fetchOptions.body = JSON.stringify(data);
   }
-
+  
   try {
+    console.log('[v0] Fetching:', url);
     const response = await fetch(url, fetchOptions);
+    console.log('[v0] Response status:', response.status);
     const responseData: ApiResponse<T> = await response.json();
-
+    
     if (!response.ok) {
       if (response.status === 401) {
+        console.error('[v0] 401 Unauthorized - token might be invalid or expired');
         throw new Error('Unauthorized - Please login again');
       }
       if (response.status === 403) {
@@ -384,6 +408,114 @@ export interface CategoryProduct {
   date_created?: string;
   date_updated?: string;
 }
+
+// ============ Billboards (special table for frontend) ============
+
+export interface Billboard {
+  billboard_id?: number;
+  id?: number;
+  title: string;
+  location: string;
+  city?: string;
+  state?: string;
+  area?: string;
+  address?: string;
+  type?: string;
+  size?: string;
+  width?: number;
+  height?: number;
+  status?: string;
+  description?: string;
+  image_url?: string;
+  image?: string;
+  featured?: boolean;
+  illuminated?: boolean;
+  latitude?: number;
+  longitude?: number;
+  price?: number;
+  created_at?: string;
+  updated_at?: string;
+}
+
+/**
+ * Billboard operations - fetches from billboards table
+ */
+export async function getAllBillboards(token: string | null): Promise<Billboard[]> {
+  try {
+    console.log('[v0] getAllBillboards called with token:', token ? 'yes' : 'NO TOKEN!');
+    const result = await crudRequest<Billboard[]>('GET', {
+      token,
+      table: 'billboards',
+    });
+    console.log('[v0] Got billboards from API:', result?.length || 0);
+    return result || [];
+  } catch (error) {
+    console.error('[v0] Error fetching billboards:', error);
+    throw error instanceof Error ? error : new Error('Failed to fetch billboards');
+  }
+}
+
+export async function getBillboardById(id: number, token: string | null): Promise<Billboard | null> {
+  try {
+    console.log('[v0] getBillboardById called with ID:', id, 'Token:', token ? 'yes' : 'NO TOKEN!');
+    const result = await crudRequest<Billboard>('GET', {
+      token,
+      table: 'billboards',
+      id,
+    });
+    console.log('[v0] getBillboardById result:', result);
+    return result || null;
+  } catch (error) {
+    console.error('[v0] Error fetching billboard:', error);
+    throw error instanceof Error ? error : new Error('Failed to fetch billboard');
+  }
+}
+
+export async function createBillboard(data: Omit<Billboard, 'billboard_id' | 'id'>, token: string | null): Promise<Billboard | null> {
+  try {
+    const result = await crudRequest<Billboard>('POST', {
+      token,
+      table: 'billboards',
+      data,
+    });
+    return result || null;
+  } catch (error) {
+    console.error('[v0] Error creating billboard:', error);
+    throw error instanceof Error ? error : new Error('Failed to create billboard');
+  }
+}
+
+export async function updateBillboard(id: number, data: Partial<Billboard>, token: string | null): Promise<boolean> {
+  try {
+    await crudRequest('PUT', {
+      token,
+      table: 'billboards',
+      id,
+      data,
+    });
+    return true;
+  } catch (error) {
+    console.error('[v0] Error updating billboard:', error);
+    throw error instanceof Error ? error : new Error('Failed to update billboard');
+  }
+}
+
+export async function deleteBillboard(id: number, token: string | null): Promise<boolean> {
+  try {
+    await crudRequest('DELETE', {
+      token,
+      table: 'billboards',
+      id,
+    });
+    return true;
+  } catch (error) {
+    console.error('[v0] Error deleting billboard:', error);
+    throw error instanceof Error ? error : new Error('Failed to delete billboard');
+  }
+}
+
+// Alias for backwards compatibility
+export const addBillboard = createBillboard;
 
 /**
  * Health check - verify API is accessible

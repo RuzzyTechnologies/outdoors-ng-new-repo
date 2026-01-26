@@ -1,66 +1,127 @@
 "use client"
 
+import type React from "react"
+
 import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useParams } from "next/navigation"
 import { AdminSidebar } from "@/components/admin-sidebar"
 import { AdminHeader } from "@/components/admin-header"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
-import Image from "next/image"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { Switch } from "@/components/ui/switch"
+import { ArrowLeft, Upload, X } from "lucide-react"
 import Link from "next/link"
-import { Edit, Trash2, Search, Plus } from "lucide-react"
-import { getAllBillboards, deleteBillboard, type Billboard } from "@/lib/billboard-storage"
-import { cn } from "@/lib/utils"
+import Image from "next/image"
+import { getBillboardById, updateBillboard } from "@/lib/outdoors-api"
+import { getToken } from "@/lib/auth-storage"
 
-export default function AdminDashboardPage() {
+export default function EditBillboardPage() {
   const router = useRouter()
+  const params = useParams()
+  const billboardId = Number(params.id)
+
   const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("")
-  const [billboards, setBillboards] = useState<Billboard[]>([])
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const [previewImages, setPreviewImages] = useState<string[]>([])
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
+  const [formData, setFormData] = useState({
+    title: "",
+    location: "",
+    type: "",
+    size: "",
+    availability: "Available Now",
+    description: "",
+    featured: false,
+    image: "",
+  })
 
   useEffect(() => {
-    const auth = localStorage.getItem("adminAuth")
-    if (auth === "true") {
+    const token = getToken()
+    if (token) {
       setIsAuthenticated(true)
-      loadBillboards()
+
+      // Load billboard data
+      const loadBillboard = async () => {
+        const billboard = await getBillboardById(billboardId, token)
+        if (billboard) {
+          setFormData({
+            title: billboard.title || "",
+            location: billboard.location || "",
+            type: billboard.type || "",
+            size: billboard.size || "",
+            availability: billboard.status || "Available Now",
+            description: billboard.description || "",
+            featured: billboard.featured || false,
+            image: billboard.image_url || billboard.image || "",
+          })
+          if (billboard.image_url || billboard.image) {
+            setPreviewImages([billboard.image_url || billboard.image])
+          }
+        } else {
+          alert("Billboard not found")
+          router.push("/admin-dash1234")
+        }
+        setIsLoading(false)
+      }
+
+      loadBillboard()
     } else {
       router.push("/admin-dash1234/login")
     }
-  }, [router])
+  }, [router, billboardId])
 
-  const loadBillboards = async () => {
-    setIsLoading(true)
-    const data = await getAllBillboards()
-    setBillboards(data)
-    setIsLoading(false)
-  }
-
-  const filteredBillboards = billboards.filter(
-    (billboard) =>
-      billboard.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      billboard.location?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      billboard.type?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      billboard.state?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      billboard.city?.toLowerCase().includes(searchQuery.toLowerCase()),
-  )
-
-  const handleDelete = async (id: number) => {
-    if (confirm("Are you sure you want to delete this billboard?")) {
-      const success = await deleteBillboard(id)
-      if (success) {
-        await loadBillboards()
-        alert("Billboard deleted successfully!")
-      } else {
-        alert("Failed to delete billboard")
-      }
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (files) {
+      const newImages = Array.from(files).map((file) => URL.createObjectURL(file))
+      setPreviewImages([...previewImages, ...newImages])
     }
   }
 
-  if (!isAuthenticated) {
+  const removeImage = (index: number) => {
+    setPreviewImages(previewImages.filter((_, i) => i !== index))
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+
+    try {
+      const token = getToken()
+      if (!token) {
+        alert("Authentication required. Please login again.")
+        router.push("/admin-dash1234/login")
+        return
+      }
+
+      const mainImage = previewImages[0] || formData.image || "/placeholder.svg?height=400&width=600"
+
+      const success = await updateBillboard(billboardId, {
+        ...formData,
+        image_url: mainImage,
+        status: formData.availability,
+      }, token)
+
+      if (success) {
+        alert("Billboard updated successfully!")
+        router.push("/admin-dash1234")
+      } else {
+        alert("Failed to update billboard")
+      }
+    } catch (error) {
+      console.error("[v0] Error updating billboard:", error)
+      alert(`Failed to update billboard: ${error instanceof Error ? error.message : 'Unknown error'}`)
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  if (!isAuthenticated || isLoading) {
     return null
   }
 
@@ -71,122 +132,189 @@ export default function AdminDashboardPage() {
       <div className="flex-1 flex flex-col lg:ml-64">
         <AdminHeader onMenuClick={() => setIsMobileMenuOpen(true)} />
 
-        <main className="flex-1 p-4 sm:p-6 space-y-4 sm:space-y-6">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <div>
-              <h2 className="text-xl sm:text-2xl font-bold">All Billboards</h2>
-              <p className="text-sm text-muted-foreground">Manage your billboard inventory</p>
-            </div>
-            <Button asChild className="w-full sm:w-auto shadow-md hover:shadow-lg transition-all duration-200">
-              <Link href="/admin-dash1234/billboards/new">
-                <Plus className="h-4 w-4 mr-2" />
-                Add New Billboard
-              </Link>
-            </Button>
-          </div>
-
-          <Card className="p-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-              <Input
-                placeholder="Search billboards..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 h-11 sm:h-12"
-              />
-            </div>
-          </Card>
-
-          {isLoading ? (
-            <Card className="p-8 sm:p-12 text-center">
-              <p className="text-sm sm:text-base text-muted-foreground">Loading billboards...</p>
-            </Card>
-          ) : (
-            <>
-              <div className="grid gap-4 sm:gap-6">
-                {filteredBillboards.map((billboard) => (
-                  <Card key={billboard.id} className="p-4 sm:p-6 hover:shadow-lg transition-all duration-200">
-                    <div className="flex flex-col md:flex-row gap-4 sm:gap-6">
-                      <div className="relative w-full md:w-48 h-32 sm:h-36 md:h-32 rounded-lg overflow-hidden flex-shrink-0">
-                        <Image
-                          src={billboard.image_url || billboard.image || "/placeholder.svg"}
-                          alt={billboard.title}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-
-                      <div className="flex-1 space-y-3">
-                        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
-                          <div className="space-y-2">
-                            <h3 className="text-lg sm:text-xl font-bold">{billboard.title}</h3>
-                            <div className="flex flex-wrap gap-2">
-                              {billboard.type && (
-                                <Badge variant="outline" className="text-xs">
-                                  {billboard.type}
-                                </Badge>
-                              )}
-                              {billboard.size && (
-                                <Badge variant="outline" className="text-xs">
-                                  {billboard.size}
-                                </Badge>
-                              )}
-                              {billboard.featured && <Badge className="bg-primary text-xs">Featured</Badge>}
-                              {billboard.status && (
-                                <Badge
-                                  variant={billboard.status === "available" ? "default" : "secondary"}
-                                  className={cn("text-xs", billboard.status === "available" ? "bg-accent" : "")}
-                                >
-                                  {billboard.status}
-                                </Badge>
-                              )}
-                              {billboard.price && (
-                                <Badge variant="outline" className="text-xs">
-                                  ₦{billboard.price.toLocaleString()}
-                                </Badge>
-                              )}
-                            </div>
-                          </div>
-                          <div className="flex gap-2">
-                            <Button variant="outline" size="sm" asChild className="flex-1 sm:flex-none bg-transparent">
-                              <Link href={`/admin-dash1234/billboards/${billboard.id}/edit`}>
-                                <Edit className="h-4 w-4 sm:mr-1" />
-                                <span className="hidden sm:inline">Edit</span>
-                              </Link>
-                            </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleDelete(billboard.id)}
-                              className="flex-1 sm:flex-none text-destructive hover:text-destructive hover:bg-destructive/10 dark:hover:bg-destructive/20"
-                            >
-                              <Trash2 className="h-4 w-4 sm:mr-1" />
-                              <span className="hidden sm:inline">Delete</span>
-                            </Button>
-                          </div>
-                        </div>
-
-                        <p className="text-sm text-muted-foreground">
-                          {billboard.location || `${billboard.city}, ${billboard.state}`}
-                        </p>
-                        {billboard.description && (
-                          <p className="text-sm text-muted-foreground line-clamp-2">{billboard.description}</p>
-                        )}
-                      </div>
-                    </div>
-                  </Card>
-                ))}
+        <main className="flex-1 p-4 sm:p-6">
+          <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <Button variant="outline" size="icon" asChild className="flex-shrink-0 bg-transparent">
+                <Link href="/admin-dash1234">
+                  <ArrowLeft className="h-5 w-5" />
+                </Link>
+              </Button>
+              <div>
+                <h2 className="text-xl sm:text-2xl font-bold">Edit Billboard</h2>
+                <p className="text-xs sm:text-sm text-muted-foreground">Update billboard details</p>
               </div>
+            </div>
 
-              {filteredBillboards.length === 0 && (
-                <Card className="p-8 sm:p-12 text-center">
-                  <p className="text-sm sm:text-base text-muted-foreground">
-                    No billboards found matching your search.
-                  </p>
-                </Card>
-              )}
-            </>
-          )}
+            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+              <Card className="p-4 sm:p-6 space-y-4 sm:space-y-6">
+                <div className="space-y-4">
+                  <h3 className="text-base sm:text-lg font-semibold">Basic Information</h3>
+
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="title" className="text-sm">
+                        Billboard Title *
+                      </Label>
+                      <Input
+                        id="title"
+                        placeholder="e.g., BRT Billboard In Ikeja, Lagos"
+                        value={formData.title}
+                        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                        required
+                        className="h-10 sm:h-11"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="location" className="text-sm">
+                        Location *
+                      </Label>
+                      <Input
+                        id="location"
+                        placeholder="e.g., Ikeja, Lagos"
+                        value={formData.location}
+                        onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                        required
+                        className="h-10 sm:h-11"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="type" className="text-sm">
+                        Billboard Type *
+                      </Label>
+                      <Input
+                        id="type"
+                        placeholder="e.g., BRT Billboard, LED Billboard"
+                        value={formData.type}
+                        onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+                        required
+                        className="h-10 sm:h-11"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="size" className="text-sm">
+                        Size *
+                      </Label>
+                      <Input
+                        id="size"
+                        placeholder="e.g., 48 Sheet, LED Screen"
+                        value={formData.size}
+                        onChange={(e) => setFormData({ ...formData, size: e.target.value })}
+                        required
+                        className="h-10 sm:h-11"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="availability" className="text-sm">
+                      Availability *
+                    </Label>
+                    <Input
+                      id="availability"
+                      placeholder="e.g., Available Now, Coming Soon"
+                      value={formData.availability}
+                      onChange={(e) => setFormData({ ...formData, availability: e.target.value })}
+                      required
+                      className="h-10 sm:h-11"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="description" className="text-sm">
+                      Description *
+                    </Label>
+                    <Textarea
+                      id="description"
+                      placeholder="Describe the billboard location, visibility, target audience, and key features..."
+                      value={formData.description}
+                      onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                      required
+                      rows={4}
+                      className="resize-none text-sm"
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between p-3 sm:p-4 bg-muted rounded-lg">
+                    <div>
+                      <Label htmlFor="featured" className="cursor-pointer text-sm">
+                        Featured Billboard
+                      </Label>
+                      <p className="text-xs sm:text-sm text-muted-foreground">Display this billboard as featured</p>
+                    </div>
+                    <Switch
+                      id="featured"
+                      checked={formData.featured}
+                      onCheckedChange={(checked) => setFormData({ ...formData, featured: checked })}
+                    />
+                  </div>
+                </div>
+              </Card>
+
+              <Card className="p-4 sm:p-6 space-y-4">
+                <h3 className="text-base sm:text-lg font-semibold">Billboard Images</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground">
+                  Upload images of the billboard (recommended: at least 3 images)
+                </p>
+
+                <div className="border-2 border-dashed border-border rounded-lg p-6 sm:p-8 text-center hover:border-primary/50 transition-colors duration-200">
+                  <input
+                    type="file"
+                    id="images"
+                    accept="image/*"
+                    multiple
+                    onChange={handleImageUpload}
+                    className="hidden"
+                  />
+                  <Label htmlFor="images" className="cursor-pointer">
+                    <Upload className="h-10 w-10 sm:h-12 sm:w-12 mx-auto mb-3 sm:mb-4 text-muted-foreground" />
+                    <p className="text-sm font-medium mb-1">Click to upload images</p>
+                    <p className="text-xs text-muted-foreground">PNG, JPG, WEBP up to 10MB each</p>
+                  </Label>
+                </div>
+
+                {previewImages.length > 0 && (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
+                    {previewImages.map((image, index) => (
+                      <div key={index} className="relative group">
+                        <div className="relative h-24 sm:h-32 rounded-lg overflow-hidden border-2 border-border">
+                          <Image
+                            src={image || "/placeholder.svg"}
+                            alt={`Preview ${index + 1}`}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="icon"
+                          className="absolute -top-2 -right-2 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                          onClick={() => removeImage(index)}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </Card>
+
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                <Button type="submit" size="lg" className="flex-1 h-11 sm:h-12" disabled={isSubmitting}>
+                  {isSubmitting ? "Updating Billboard..." : "Update Billboard"}
+                </Button>
+                <Button type="button" variant="outline" size="lg" className="h-11 sm:h-12 bg-transparent" asChild>
+                  <Link href="/admin-dash1234">Cancel</Link>
+                </Button>
+              </div>
+            </form>
+          </div>
         </main>
       </div>
     </div>
