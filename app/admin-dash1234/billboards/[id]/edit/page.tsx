@@ -176,7 +176,7 @@ export default function EditBillboardPage() {
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="type" className="text-sm">
-                        Billboard Type *
+                        Billboard Type * 
                       </Label>
                       <Input
                         id="type"
