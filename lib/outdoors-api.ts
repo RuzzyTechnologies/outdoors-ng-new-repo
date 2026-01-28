@@ -409,46 +409,68 @@ export interface CategoryProduct {
   date_updated?: string;
 }
 
-// ============ Billboards (special table for frontend) ============
+// ============ Billboards (products from database) ============
 
 export interface Billboard {
-  billboard_id?: number;
+  product_id?: number;
   id?: number;
-  title: string;
-  location: string;
-  city?: string;
-  state?: string;
-  area?: string;
-  address?: string;
-  type?: string;
-  size?: string;
-  width?: number;
-  height?: number;
-  status?: string;
-  description?: string;
-  image_url?: string;
-  image?: string;
-  featured?: boolean;
-  illuminated?: boolean;
-  latitude?: number;
-  longitude?: number;
+  name?: string;
+  title?: string;
+  url?: string;
   price?: number;
+  category_id?: number;
+  category_name?: string;
+  category_url?: string;
+  size?: string;
+  gps_location?: string;
+  address?: string;
+  location?: string;
+  state?: string;
+  state_id?: number;
+  state_name?: string;
+  state_area?: string;
+  area_name?: string;
+  description?: string;
+  long_desc?: string;
+  short_desc?: string;
+  status?: string;
+  product_status?: string;
+  image_url?: string;
+  default_image?: string;
+  images?: string[];
+  all_images?: string;
+  date_added?: string;
+  date_updated?: string;
   created_at?: string;
   updated_at?: string;
 }
 
 /**
- * Billboard operations - fetches from billboards table
+ * Billboard operations - works with products table
  */
-export async function getAllBillboards(token: string | null): Promise<Billboard[]> {
+export async function getAllBillboards(token: string | null, categoryId?: number, stateId?: number): Promise<Billboard[]> {
   try {
-    console.log('[v0] getAllBillboards called with token:', token ? 'yes' : 'NO TOKEN!');
-    const result = await crudRequest<Billboard[]>('GET', {
-      token,
-      table: 'billboards',
+    console.log('[v0] getAllBillboards called');
+
+    let url = `${API_BASE}/api/billboards`;
+    const params = new URLSearchParams();
+    if (categoryId) params.append('category_id', categoryId.toString());
+    if (stateId) params.append('state', stateId.toString());
+    if (params.toString()) url += `?${params.toString()}`;
+
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: getAuthHeader(token),
     });
-    console.log('[v0] Got billboards from API:', result?.length || 0);
-    return result || [];
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Failed to fetch billboards');
+    }
+
+    const result = await response.json();
+    console.log('[v0] Got billboards:', result.data?.length || 0);
+    return result.data || [];
   } catch (error) {
     console.error('[v0] Error fetching billboards:', error);
     throw error instanceof Error ? error : new Error('Failed to fetch billboards');
@@ -457,28 +479,41 @@ export async function getAllBillboards(token: string | null): Promise<Billboard[
 
 export async function getBillboardById(id: number, token: string | null): Promise<Billboard | null> {
   try {
-    console.log('[v0] getBillboardById called with ID:', id, 'Token:', token ? 'yes' : 'NO TOKEN!');
-    const result = await crudRequest<Billboard>('GET', {
-      token,
-      table: 'billboards',
-      id,
+    console.log('[v0] getBillboardById called with ID:', id);
+
+    const response = await fetch(`${API_BASE}/api/billboards?id=${id}`, {
+      method: 'GET',
+      headers: getAuthHeader(token),
     });
-    console.log('[v0] getBillboardById result:', result);
-    return result || null;
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Failed to fetch billboard');
+    }
+
+    const result = await response.json();
+    return result.data || null;
   } catch (error) {
     console.error('[v0] Error fetching billboard:', error);
     throw error instanceof Error ? error : new Error('Failed to fetch billboard');
   }
 }
 
-export async function createBillboard(data: Omit<Billboard, 'billboard_id' | 'id'>, token: string | null): Promise<Billboard | null> {
+export async function createBillboard(data: Partial<Billboard>, token: string | null): Promise<Billboard | null> {
   try {
-    const result = await crudRequest<Billboard>('POST', {
-      token,
-      table: 'billboards',
-      data,
+    const response = await fetch(`${API_BASE}/api/billboards`, {
+      method: 'POST',
+      headers: getAuthHeader(token),
+      body: JSON.stringify(data),
     });
-    return result || null;
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Failed to create billboard');
+    }
+
+    const result = await response.json();
+    return result.data || null;
   } catch (error) {
     console.error('[v0] Error creating billboard:', error);
     throw error instanceof Error ? error : new Error('Failed to create billboard');
@@ -487,12 +522,17 @@ export async function createBillboard(data: Omit<Billboard, 'billboard_id' | 'id
 
 export async function updateBillboard(id: number, data: Partial<Billboard>, token: string | null): Promise<boolean> {
   try {
-    await crudRequest('PUT', {
-      token,
-      table: 'billboards',
-      id,
-      data,
+    const response = await fetch(`${API_BASE}/api/billboards?id=${id}`, {
+      method: 'PUT',
+      headers: getAuthHeader(token),
+      body: JSON.stringify(data),
     });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Failed to update billboard');
+    }
+
     return true;
   } catch (error) {
     console.error('[v0] Error updating billboard:', error);
@@ -502,11 +542,16 @@ export async function updateBillboard(id: number, data: Partial<Billboard>, toke
 
 export async function deleteBillboard(id: number, token: string | null): Promise<boolean> {
   try {
-    await crudRequest('DELETE', {
-      token,
-      table: 'billboards',
-      id,
+    const response = await fetch(`${API_BASE}/api/billboards?id=${id}`, {
+      method: 'DELETE',
+      headers: getAuthHeader(token),
     });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Failed to delete billboard');
+    }
+
     return true;
   } catch (error) {
     console.error('[v0] Error deleting billboard:', error);
@@ -516,6 +561,71 @@ export async function deleteBillboard(id: number, token: string | null): Promise
 
 // Alias for backwards compatibility
 export const addBillboard = createBillboard;
+
+// ============ Categories (Billboard Types) ============
+
+export interface Category {
+  category_id: number;
+  parent_id?: number;
+  name: string;
+  url: string;
+  product_count?: number;
+  date_added?: string;
+  date_updated?: string;
+}
+
+export async function getAllCategories(token: string | null): Promise<Category[]> {
+  try {
+    const response = await fetch(`${API_BASE}/api/categories`, {
+      method: 'GET',
+      headers: getAuthHeader(token),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch categories');
+    }
+
+    const result = await response.json();
+    return result.data || [];
+  } catch (error) {
+    console.error('[v0] Error fetching categories:', error);
+    return [];
+  }
+}
+
+// ============ States & Areas ============
+
+export interface State {
+  state_id: number;
+  state_name: string;
+  areas?: StateArea[];
+}
+
+export interface StateArea {
+  state_area_id: number;
+  state_id: number;
+  area_name: string;
+}
+
+export async function getAllStates(withAreas: boolean = false, token: string | null = null): Promise<State[]> {
+  try {
+    const url = withAreas ? `${API_BASE}/api/states?with_areas=1` : `${API_BASE}/api/states`;
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: getAuthHeader(token),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch states');
+    }
+
+    const result = await response.json();
+    return result.data || [];
+  } catch (error) {
+    console.error('[v0] Error fetching states:', error);
+    return [];
+  }
+}
 
 /**
  * Health check - verify API is accessible

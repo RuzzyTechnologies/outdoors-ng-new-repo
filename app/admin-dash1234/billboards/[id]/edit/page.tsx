@@ -11,11 +11,12 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Switch } from "@/components/ui/switch"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ArrowLeft, Upload, X } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import { getBillboardById, updateBillboard } from "@/lib/billboard-storage"
+import { getBillboardById, updateBillboard, getAllCategories, getAllStates, type Billboard, type Category, type State } from "@/lib/outdoors-api"
+import { getToken } from "@/lib/auth-storage"
 
 export default function EditBillboardPage() {
   const router = useRouter()
@@ -27,58 +28,125 @@ export default function EditBillboardPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [previewImages, setPreviewImages] = useState<string[]>([])
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [categories, setCategories] = useState<Category[]>([])
+  const [states, setStates] = useState<State[]>([])
 
   const [formData, setFormData] = useState({
     title: "",
-    location: "",
-    type: "",
+    address: "",
+    category_id: "",
+    state: "",
+    state_area: "",
     size: "",
-    availability: "Available Now",
+    price: "",
+    gps_location: "",
     description: "",
-    featured: false,
-    image: "",
+    image_url: "",
   })
 
   useEffect(() => {
-    const auth = localStorage.getItem("adminAuth")
-    if (auth === "true") {
+    const token = getToken()
+    if (token) {
       setIsAuthenticated(true)
-
-      // Load billboard data
-      const loadBillboard = async () => {
-        const billboard = await getBillboardById(billboardId)
-        if (billboard) {
-          setFormData({
-            title: billboard.title || "",
-            location: billboard.location || "",
-            type: billboard.type || "",
-            size: billboard.size || "",
-            availability: billboard.status || "Available Now",
-            description: billboard.description || "",
-            featured: billboard.featured || false,
-            image: billboard.image_url || billboard.image || "",
-          })
-          if (billboard.image_url || billboard.image) {
-            setPreviewImages([billboard.image_url || billboard.image])
-          }
-        } else {
-          alert("Billboard not found")
-          router.push("/admin-dash1234")
-        }
-        setIsLoading(false)
-      }
-
-      loadBillboard()
+      loadData(token)
     } else {
       router.push("/admin-dash1234/login")
     }
   }, [router, billboardId])
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const loadData = async (token: string) => {
+    try {
+      // Load categories and states in parallel
+      const [categoriesData, statesData, billboardData] = await Promise.all([
+        getAllCategories(token),
+        getAllStates(true, token),
+        getBillboardById(billboardId, token)
+      ])
+
+      setCategories(categoriesData)
+      setStates(statesData)
+
+      if (billboardData) {
+        // Map product data to form
+        setFormData({
+          title: billboardData.name || "",
+          address: billboardData.address || "",
+          category_id: billboardData.category_id?.toString() || "",
+          state: billboardData.state?.toString() || "",
+          state_area: billboardData.state_area?.toString() || "",
+          size: billboardData.size || "",
+          price: billboardData.price?.toString() || "0",
+          gps_location: billboardData.gps_location || "",
+          description: billboardData.long_desc || billboardData.description || "",
+          image_url: billboardData.image_url || billboardData.default_image || "",
+        })
+
+        // Load images
+        if (billboardData.images && billboardData.images.length > 0) {
+          setPreviewImages(billboardData.images.map(img => `/api/images/${img}`))
+        } else if (billboardData.image_url || billboardData.default_image) {
+          const imageUrl = billboardData.image_url || billboardData.default_image
+          setPreviewImages([imageUrl.startsWith('http') ? imageUrl : `/api/images/${imageUrl}`])
+        }
+      } else {
+        alert("Billboard not found")
+        router.push("/admin-dash1234")
+      }
+    } catch (error) {
+      console.error("[v0] Error loading data:", error)
+      alert("Failed to load billboard data")
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
-    if (files) {
-      const newImages = Array.from(files).map((file) => URL.createObjectURL(file))
-      setPreviewImages([...previewImages, ...newImages])
+    if (!files || files.length === 0) return
+
+    const token = getToken()
+    if (!token) {
+      alert("Authentication required. Please login again.")
+      return
+    }
+
+    // Show loading state
+    setIsSubmitting(true)
+
+    try {
+      const uploadedImages: string[] = []
+
+      for (const file of Array.from(files)) {
+        const formData = new FormData()
+        formData.append('file', file)
+
+        const response = await fetch('http://localhost:3000/api/upload', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          },
+          body: formData
+        })
+
+        if (response.ok) {
+          const result = await response.json()
+          uploadedImages.push(result.filename)
+          console.log(`Uploaded: ${result.filename}`)
+        } else {
+          const error = await response.json()
+          console.error('Upload failed:', error)
+          alert(`Failed to upload ${file.name}: ${error.error}`)
+        }
+      }
+
+      // Update preview images with uploaded filenames
+      setPreviewImages([...previewImages, ...uploadedImages.map(img => `/api/images/${img}`)])
+
+    } catch (error) {
+      console.error('Upload error:', error)
+      alert('Failed to upload images. Please try again.')
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -91,13 +159,45 @@ export default function EditBillboardPage() {
     setIsSubmitting(true)
 
     try {
-      const mainImage = previewImages[0] || formData.image || "/placeholder.svg?height=400&width=600"
+      const token = getToken()
+      if (!token) {
+        alert("Authentication required. Please login again.")
+        router.push("/admin-dash1234/login")
+        return
+      }
 
-      const success = await updateBillboard(billboardId, {
-        ...formData,
-        image_url: mainImage,
-        status: formData.availability,
-      })
+      // Prepare update data
+      // Extract just the filename from preview images (remove /api/images/ prefix)
+      const imageFilenames = previewImages.map(img => {
+        if (img.startsWith('/api/images/')) {
+          return img.replace('/api/images/', '')
+        }
+        if (img.startsWith('/images/')) {
+          return img.replace('/images/', '')
+        }
+        if (img.startsWith('http')) {
+          return img.split('/').pop() || ''
+        }
+        return img
+      }).filter(Boolean)
+
+      const updateData: Partial<Billboard> = {
+        title: formData.title,
+        name: formData.title,
+        address: formData.address,
+        location: formData.address,
+        category_id: parseInt(formData.category_id) || 1,
+        state: formData.state,
+        state_area: formData.state_area,
+        size: formData.size,
+        price: parseFloat(formData.price) || 0,
+        gps_location: formData.gps_location,
+        description: formData.description,
+        image_url: imageFilenames[0] || formData.image_url,
+        images: imageFilenames,
+      }
+
+      const success = await updateBillboard(billboardId, updateData, token)
 
       if (success) {
         alert("Billboard updated successfully!")
@@ -107,7 +207,7 @@ export default function EditBillboardPage() {
       }
     } catch (error) {
       console.error("[v0] Error updating billboard:", error)
-      alert("Failed to update billboard. Please try again.")
+      alert(`Failed to update billboard: ${error instanceof Error ? error.message : 'Unknown error'}`)
     } finally {
       setIsSubmitting(false)
     }
@@ -116,6 +216,8 @@ export default function EditBillboardPage() {
   if (!isAuthenticated || isLoading) {
     return null
   }
+
+  const selectedState = states.find(s => s.state_id.toString() === formData.state)
 
   return (
     <div className="flex min-h-screen bg-muted/30">
@@ -143,49 +245,40 @@ export default function EditBillboardPage() {
                 <div className="space-y-4">
                   <h3 className="text-base sm:text-lg font-semibold">Basic Information</h3>
 
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="title" className="text-sm">
-                        Billboard Title *
-                      </Label>
-                      <Input
-                        id="title"
-                        placeholder="e.g., BRT Billboard In Ikeja, Lagos"
-                        value={formData.title}
-                        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                        required
-                        className="h-10 sm:h-11"
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="location" className="text-sm">
-                        Location *
-                      </Label>
-                      <Input
-                        id="location"
-                        placeholder="e.g., Ikeja, Lagos"
-                        value={formData.location}
-                        onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                        required
-                        className="h-10 sm:h-11"
-                      />
-                    </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="title" className="text-sm">
+                      Billboard Title *
+                    </Label>
+                    <Input
+                      id="title"
+                      placeholder="e.g., LED Billboard at Ikeja Junction"
+                      value={formData.title}
+                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                      required
+                      className="h-10 sm:h-11"
+                    />
                   </div>
 
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="type" className="text-sm">
-                        Billboard Type * 
+                      <Label htmlFor="category" className="text-sm">
+                        Billboard Type *
                       </Label>
-                      <Input
-                        id="type"
-                        placeholder="e.g., BRT Billboard, LED Billboard"
-                        value={formData.type}
-                        onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-                        required
-                        className="h-10 sm:h-11"
-                      />
+                      <Select
+                        value={formData.category_id}
+                        onValueChange={(value) => setFormData({ ...formData, category_id: value })}
+                      >
+                        <SelectTrigger className="h-10 sm:h-11">
+                          <SelectValue placeholder="Select billboard type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {categories.map((cat) => (
+                            <SelectItem key={cat.category_id} value={cat.category_id.toString()}>
+                              {cat.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
 
                     <div className="space-y-2">
@@ -194,7 +287,7 @@ export default function EditBillboardPage() {
                       </Label>
                       <Input
                         id="size"
-                        placeholder="e.g., 48 Sheet, LED Screen"
+                        placeholder="e.g., 48 Sheet, 3m x 6m"
                         value={formData.size}
                         onChange={(e) => setFormData({ ...formData, size: e.target.value })}
                         required
@@ -203,18 +296,92 @@ export default function EditBillboardPage() {
                     </div>
                   </div>
 
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="state" className="text-sm">
+                        State *
+                      </Label>
+                      <Select
+                        value={formData.state}
+                        onValueChange={(value) => setFormData({ ...formData, state: value, state_area: "" })}
+                      >
+                        <SelectTrigger className="h-10 sm:h-11">
+                          <SelectValue placeholder="Select state" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {states.map((state) => (
+                            <SelectItem key={state.state_id} value={state.state_id.toString()}>
+                              {state.state_name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="area" className="text-sm">
+                        Area
+                      </Label>
+                      <Select
+                        value={formData.state_area}
+                        onValueChange={(value) => setFormData({ ...formData, state_area: value })}
+                        disabled={!formData.state}
+                      >
+                        <SelectTrigger className="h-10 sm:h-11">
+                          <SelectValue placeholder="Select area" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {selectedState?.areas?.map((area) => (
+                            <SelectItem key={area.state_area_id} value={area.state_area_id.toString()}>
+                              {area.area_name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+
                   <div className="space-y-2">
-                    <Label htmlFor="availability" className="text-sm">
-                      Availability *
+                    <Label htmlFor="address" className="text-sm">
+                      Full Address *
                     </Label>
                     <Input
-                      id="availability"
-                      placeholder="e.g., Available Now, Coming Soon"
-                      value={formData.availability}
-                      onChange={(e) => setFormData({ ...formData, availability: e.target.value })}
+                      id="address"
+                      placeholder="e.g., Along Ikeja FTF Oshodi by Local Government"
+                      value={formData.address}
+                      onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                       required
                       className="h-10 sm:h-11"
                     />
+                  </div>
+
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="gps" className="text-sm">
+                        GPS Location
+                      </Label>
+                      <Input
+                        id="gps"
+                        placeholder="e.g., 6.5592816,3.3258991,17"
+                        value={formData.gps_location}
+                        onChange={(e) => setFormData({ ...formData, gps_location: e.target.value })}
+                        className="h-10 sm:h-11"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="price" className="text-sm">
+                        Price (₦)
+                      </Label>
+                      <Input
+                        id="price"
+                        type="number"
+                        placeholder="0"
+                        value={formData.price}
+                        onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                        className="h-10 sm:h-11"
+                      />
+                    </div>
                   </div>
 
                   <div className="space-y-2">
@@ -229,20 +396,6 @@ export default function EditBillboardPage() {
                       required
                       rows={4}
                       className="resize-none text-sm"
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between p-3 sm:p-4 bg-muted rounded-lg">
-                    <div>
-                      <Label htmlFor="featured" className="cursor-pointer text-sm">
-                        Featured Billboard
-                      </Label>
-                      <p className="text-xs sm:text-sm text-muted-foreground">Display this billboard as featured</p>
-                    </div>
-                    <Switch
-                      id="featured"
-                      checked={formData.featured}
-                      onCheckedChange={(checked) => setFormData({ ...formData, featured: checked })}
                     />
                   </div>
                 </div>
@@ -280,6 +433,7 @@ export default function EditBillboardPage() {
                             alt={`Preview ${index + 1}`}
                             fill
                             className="object-cover"
+                            unoptimized
                           />
                         </div>
                         <Button

@@ -1,18 +1,93 @@
-"use client" // Convert to client component to manage modal state
+"use client"
 
-import { useState } from "react" // Import useState for modal state
+import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { Breadcrumbs } from "@/components/breadcrumbs"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
-import { BookingModal } from "@/components/booking-modal" // Import BookingModal component
+import { BookingModal } from "@/components/booking-modal"
 import Image from "next/image"
-import { MapPin, Eye, Share2 } from "lucide-react"
+import { MapPin, Maximize, Share2 } from "lucide-react"
+import { getBillboardById, type Billboard } from "@/lib/outdoors-api"
 
 export default function BillboardDetailPage({ params }: { params: { id: string } }) {
+  const router = useRouter()
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false)
+  const [billboard, setBillboard] = useState<Billboard | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [selectedImage, setSelectedImage] = useState(0)
+
+  useEffect(() => {
+    loadBillboard()
+  }, [params.id])
+
+  const loadBillboard = async () => {
+    setIsLoading(true)
+    try {
+      const data = await getBillboardById(parseInt(params.id), null)
+      if (data) {
+        setBillboard(data)
+      } else {
+        router.push("/billboards")
+      }
+    } catch (error) {
+      console.error("Error loading billboard:", error)
+      router.push("/billboards")
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const getImageUrl = (imageName?: string) => {
+    if (!imageName) {
+      return `https://placehold.co/800x600/e2e8f0/64748b?text=${encodeURIComponent(billboard?.category_name || 'Billboard')}`
+    }
+    return imageName.startsWith('http') ? imageName : `/api/images/${imageName}`
+  }
+
+  const getImages = () => {
+    if (!billboard) return []
+    if (billboard.images && billboard.images.length > 0) {
+      return billboard.images
+    }
+    if (billboard.image_url || billboard.default_image) {
+      return [billboard.image_url || billboard.default_image || '']
+    }
+    return []
+  }
+
+  const getLocation = () => {
+    if (!billboard) return ""
+    const parts = []
+    if (billboard.area_name) parts.push(billboard.area_name)
+    if (billboard.state_name) parts.push(billboard.state_name)
+    return parts.join(", ") || billboard.address || "Nigeria"
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <main className="flex-1 pt-16 sm:pt-20 flex items-center justify-center">
+          <div className="text-center">
+            <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Loading billboard details...</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    )
+  }
+
+  if (!billboard) {
+    return null
+  }
+
+  const images = getImages()
+  const currentImage = images[selectedImage] || images[0]
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -25,59 +100,80 @@ export default function BillboardDetailPage({ params }: { params: { id: string }
               <div>
                 <div className="relative h-64 sm:h-80 md:h-96 rounded-lg overflow-hidden mb-6 sm:mb-8 shadow-xl hover:shadow-2xl transition-all duration-300 ease-in-out border-2 border-border hover:border-primary/50">
                   <Image
-                    src="/brt-billboard-lagos-nigeria.jpg"
-                    alt="Billboard"
+                    src={getImageUrl(currentImage)}
+                    alt={billboard.name || billboard.title || "Billboard"}
                     fill
                     className="object-cover hover:scale-105 transition-transform duration-500 ease-in-out"
+                    unoptimized
                   />
                 </div>
-                <div className="grid grid-cols-3 gap-3 sm:gap-4 md:gap-6">
-                  {[1, 2, 3].map((i) => (
-                    <div
-                      key={i}
-                      className="relative h-20 sm:h-24 md:h-28 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 ease-in-out border-2 border-border hover:border-primary/50 cursor-pointer hover:-translate-y-1"
-                    >
-                      <Image
-                        src="/brt-billboard-lagos-nigeria.jpg"
-                        alt={`Billboard view ${i}`}
-                        fill
-                        className="object-cover hover:scale-110 transition-transform duration-500 ease-in-out"
-                      />
-                    </div>
-                  ))}
-                </div>
+                {images.length > 1 && (
+                  <div className="grid grid-cols-3 gap-3 sm:gap-4 md:gap-6">
+                    {images.slice(0, 3).map((image, i) => (
+                      <div
+                        key={i}
+                        onClick={() => setSelectedImage(i)}
+                        className={`relative h-20 sm:h-24 md:h-28 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 ease-in-out border-2 cursor-pointer hover:-translate-y-1 ${
+                          selectedImage === i ? 'border-primary' : 'border-border hover:border-primary/50'
+                        }`}
+                      >
+                        <Image
+                          src={getImageUrl(image)}
+                          alt={`Billboard view ${i + 1}`}
+                          fill
+                          className="object-cover hover:scale-110 transition-transform duration-500 ease-in-out"
+                          unoptimized
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div>
                 <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-                  <Badge className="bg-primary shadow-md text-xs sm:text-sm">Featured</Badge>
                   <Badge variant="outline" className="transition-colors duration-300 ease-in-out text-xs sm:text-sm">
-                    BRT Billboard
+                    {billboard.category_name || "Billboard"}
                   </Badge>
+                  {billboard.status === "available" && (
+                    <Badge className="bg-green-600 shadow-md text-xs sm:text-sm">Available</Badge>
+                  )}
                 </div>
 
                 <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 leading-tight">
-                  BRT Billboard In Ikeja, Lagos
+                  {billboard.name || billboard.title || "Untitled Billboard"}
                 </h1>
 
                 <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-muted-foreground mb-6 sm:mb-8 text-sm sm:text-base">
                   <div className="flex items-center gap-2">
                     <MapPin className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-                    <span>Ikeja, Lagos</span>
+                    <span>{getLocation()}</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Eye className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-                    <span>1,234 views</span>
-                  </div>
+                  {billboard.size && (
+                    <div className="flex items-center gap-2">
+                      <Maximize className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+                      <span>{billboard.size}</span>
+                    </div>
+                  )}
                 </div>
+
+                {billboard.price && billboard.price > 0 && (
+                  <div className="mb-6 sm:mb-8">
+                    <div className="text-3xl sm:text-4xl font-bold text-primary">
+                      ₦{billboard.price.toLocaleString()}
+                      <span className="text-base sm:text-lg text-muted-foreground font-normal ml-2">per period</span>
+                    </div>
+                  </div>
+                )}
 
                 <div className="mb-8 sm:mb-10">
                   <h3 className="font-bold text-base sm:text-lg mb-3">Description</h3>
-                  <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                    Prime billboard location along the busy BRT corridor in Ikeja. High visibility with thousands of
-                    daily commuters passing by. Perfect for brand awareness campaigns targeting Lagos residents. This
-                    strategic position offers unparalleled exposure to a diverse audience throughout the day.
-                  </p>
+                  <div
+                    className="text-sm sm:text-base text-muted-foreground leading-relaxed"
+                    dangerouslySetInnerHTML={{
+                      __html: billboard.long_desc || billboard.short_desc || billboard.description || "No description available."
+                    }}
+                  />
                 </div>
 
                 <Card className="p-6 sm:p-8 mb-8 sm:mb-10 shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out border-2 hover:border-primary/30">
@@ -85,19 +181,33 @@ export default function BillboardDetailPage({ params }: { params: { id: string }
                   <div className="space-y-3 sm:space-y-4">
                     <div className="flex justify-between py-2 border-b border-border/50 transition-colors duration-300 ease-in-out hover:border-primary/30 text-sm sm:text-base">
                       <span className="text-muted-foreground">Type:</span>
-                      <span className="font-semibold">BRT Billboard</span>
+                      <span className="font-semibold">{billboard.category_name || "Billboard"}</span>
                     </div>
-                    <div className="flex justify-between py-2 border-b border-border/50 transition-colors duration-300 ease-in-out hover:border-primary/30 text-sm sm:text-base">
-                      <span className="text-muted-foreground">Size:</span>
-                      <span className="font-semibold">48 Sheet</span>
-                    </div>
+                    {billboard.size && (
+                      <div className="flex justify-between py-2 border-b border-border/50 transition-colors duration-300 ease-in-out hover:border-primary/30 text-sm sm:text-base">
+                        <span className="text-muted-foreground">Size:</span>
+                        <span className="font-semibold">{billboard.size}</span>
+                      </div>
+                    )}
                     <div className="flex justify-between py-2 border-b border-border/50 transition-colors duration-300 ease-in-out hover:border-primary/30 text-sm sm:text-base">
                       <span className="text-muted-foreground">Location:</span>
-                      <span className="font-semibold">Ikeja, Lagos</span>
+                      <span className="font-semibold">{getLocation()}</span>
                     </div>
+                    {billboard.address && (
+                      <div className="flex justify-between py-2 border-b border-border/50 transition-colors duration-300 ease-in-out hover:border-primary/30 text-sm sm:text-base">
+                        <span className="text-muted-foreground">Address:</span>
+                        <span className="font-semibold text-right">{billboard.address}</span>
+                      </div>
+                    )}
+                    {billboard.gps_location && (
+                      <div className="flex justify-between py-2 border-b border-border/50 transition-colors duration-300 ease-in-out hover:border-primary/30 text-sm sm:text-base">
+                        <span className="text-muted-foreground">GPS:</span>
+                        <span className="font-semibold text-right">{billboard.gps_location}</span>
+                      </div>
+                    )}
                     <div className="flex justify-between py-2 transition-colors duration-300 ease-in-out text-sm sm:text-base">
                       <span className="text-muted-foreground">Availability:</span>
-                      <span className="font-semibold text-accent">Available Now</span>
+                      <span className="font-semibold text-green-600">Available Now</span>
                     </div>
                   </div>
                 </Card>
@@ -128,8 +238,8 @@ export default function BillboardDetailPage({ params }: { params: { id: string }
       <BookingModal
         isOpen={isBookingModalOpen}
         onClose={() => setIsBookingModalOpen(false)}
-        billboardTitle="BRT Billboard In Ikeja, Lagos"
-        billboardLocation="Ikeja, Lagos"
+        billboardTitle={billboard.name || billboard.title || ""}
+        billboardLocation={getLocation()}
       />
     </div>
   )

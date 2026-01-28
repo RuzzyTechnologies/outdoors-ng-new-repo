@@ -25,3 +25,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Images folder (too large for git)
+/app/images/
+
+# Claude temporary files
+.claude/
+
+# Backend build files
+backend/.next/
