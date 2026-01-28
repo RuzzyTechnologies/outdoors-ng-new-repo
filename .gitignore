@@ -34,3 +34,4 @@ next-env.d.ts
 
 # Backend build files
 backend/.next/
+/backend/node_modules/
