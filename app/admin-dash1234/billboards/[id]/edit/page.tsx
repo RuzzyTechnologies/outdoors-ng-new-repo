@@ -86,7 +86,9 @@ export default function EditBillboardPage() {
           setPreviewImages(billboardData.images.map(img => `/api/images/${img}`))
         } else if (billboardData.image_url || billboardData.default_image) {
           const imageUrl = billboardData.image_url || billboardData.default_image
-          setPreviewImages([imageUrl.startsWith('http') ? imageUrl : `/api/images/${imageUrl}`])
+          if (imageUrl) {
+            setPreviewImages([imageUrl.startsWith('http') ? imageUrl : `/api/images/${imageUrl}`])
+          }
         }
       } else {
         alert("Billboard not found")
@@ -217,7 +219,7 @@ export default function EditBillboardPage() {
     return null
   }
 
-  const selectedState = states.find(s => s.state_id.toString() === formData.state)
+  const selectedState = states.find(s => s.state_id?.toString() === formData.state)
 
   return (
     <div className="flex min-h-screen bg-muted/30">
@@ -310,9 +312,11 @@ export default function EditBillboardPage() {
                         </SelectTrigger>
                         <SelectContent>
                           {states.map((state) => (
-                            <SelectItem key={state.state_id} value={state.state_id.toString()}>
-                              {state.state_name}
-                            </SelectItem>
+                            state.state_id && (
+                              <SelectItem key={state.state_id} value={state.state_id.toString()}>
+                                {state.state_name}
+                              </SelectItem>
+                            )
                           ))}
                         </SelectContent>
                       </Select>

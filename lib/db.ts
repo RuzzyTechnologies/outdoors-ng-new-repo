@@ -34,28 +34,28 @@ export interface Billboard {
 
 // Get all billboards
 export async function getBillboards() {
-  return await sql<Billboard[]>`SELECT * FROM billboards ORDER BY created_at DESC`
+  return await sql`SELECT * FROM billboards ORDER BY created_at DESC`
 }
 
 // Get billboard by ID
 export async function getBillboardById(id: number) {
-  const result = await sql<Billboard[]>`SELECT * FROM billboards WHERE id = ${id}`
+  const result = await sql`SELECT * FROM billboards WHERE id = ${id}`
   return result[0]
 }
 
 // Get billboards by state
 export async function getBillboardsByState(state: string) {
-  return await sql<Billboard[]>`SELECT * FROM billboards WHERE state = ${state} ORDER BY created_at DESC`
+  return await sql`SELECT * FROM billboards WHERE state = ${state} ORDER BY created_at DESC`
 }
 
 // Get featured billboards
 export async function getFeaturedBillboards() {
-  return await sql<Billboard[]>`SELECT * FROM billboards WHERE featured = true ORDER BY created_at DESC`
+  return await sql`SELECT * FROM billboards WHERE featured = true ORDER BY created_at DESC`
 }
 
 // Create billboard
 export async function createBillboard(billboard: Omit<Billboard, "id" | "created_at" | "updated_at">) {
-  const result = await sql<Billboard[]>`
+  const result = await sql`
     INSERT INTO billboards (
       title, description, location, state, city, area, address, price, size, 
       width, height, type, category, status, image_url, images, featured, 
@@ -103,7 +103,7 @@ export async function updateBillboard(id: number, billboard: Partial<Billboard>)
     values.push(billboard.status)
   }
 
-  const result = await sql<Billboard[]>`
+  const result = await sql`
     UPDATE billboards 
     SET ${sql.unsafe(fields.join(", "))}
     WHERE id = ${id}
@@ -119,7 +119,7 @@ export async function deleteBillboard(id: number) {
 
 // Search billboards
 export async function searchBillboards(query: string) {
-  return await sql<Billboard[]>`
+  return await sql`
     SELECT * FROM billboards 
     WHERE title ILIKE ${`%${query}%`} 
        OR location ILIKE ${`%${query}%`}

@@ -9,16 +9,25 @@ import React from "react"
 
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/hooks/use-auth';
-import { categories, type Category } from '@/lib/outdoors-api';
+import { categories } from '@/lib/outdoors-api';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
+interface CategoryData {
+  category_id?: number;
+  parent_id?: number | null;
+  name: string;
+  url: string;
+  date_added?: string;
+  date_updated?: string;
+}
+
 export function CategoryManager() {
   const { token, isAuthenticated, isLoading: authLoading } = useAuth();
-  const [categoryList, setCategoryList] = useState<Category[]>([]);
+  const [categoryList, setCategoryList] = useState<CategoryData[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -77,7 +86,7 @@ export function CategoryManager() {
     }
   };
 
-  const handleEdit = (category: Category) => {
+  const handleEdit = (category: CategoryData) => {
     setFormData({
       name: category.name,
       url: category.url,

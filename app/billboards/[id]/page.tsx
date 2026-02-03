@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, use } from "react"
 import { useRouter } from "next/navigation"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
@@ -13,7 +13,8 @@ import Image from "next/image"
 import { MapPin, Maximize, Share2 } from "lucide-react"
 import { getBillboardById, type Billboard } from "@/lib/outdoors-api"
 
-export default function BillboardDetailPage({ params }: { params: { id: string } }) {
+export default function BillboardDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = use(params)
   const router = useRouter()
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false)
   const [billboard, setBillboard] = useState<Billboard | null>(null)
@@ -22,12 +23,12 @@ export default function BillboardDetailPage({ params }: { params: { id: string }
 
   useEffect(() => {
     loadBillboard()
-  }, [params.id])
+  }, [resolvedParams.id])
 
   const loadBillboard = async () => {
     setIsLoading(true)
     try {
-      const data = await getBillboardById(parseInt(params.id), null)
+      const data = await getBillboardById(parseInt(resolvedParams.id), null)
       if (data) {
         setBillboard(data)
       } else {

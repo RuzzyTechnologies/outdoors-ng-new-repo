@@ -163,9 +163,6 @@ export function Header() {
 
           <div className="hidden md:flex items-center space-x-2 lg:space-x-4">
             <ThemeToggle />
-            <Button variant="ghost" className="rounded-full text-sm hover-lift" asChild>
-              <Link href="/login">Login</Link>
-            </Button>
             <Button className="rounded-full text-sm hover-lift-3d preserve-3d" asChild>
               <Link href="/register">Get Started</Link>
             </Button>
@@ -315,9 +312,6 @@ export function Header() {
                 <span className="text-sm font-medium text-muted-foreground">Theme</span>
                 <ThemeToggle />
               </div>
-              <Button variant="ghost" className="rounded-full hover-lift" asChild>
-                <Link href="/login">Login</Link>
-              </Button>
               <Button className="rounded-full hover-lift-3d preserve-3d" asChild>
                 <Link href="/register">Get Started</Link>
               </Button>

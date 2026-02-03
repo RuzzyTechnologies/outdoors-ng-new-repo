@@ -121,7 +121,7 @@ async function crudRequest<T = any>(
   }
   
   const headers = getAuthHeader(token);
-  console.log('[v0] Request headers:', { 'Content-Type': headers['Content-Type'], 'Authorization': headers['Authorization'] ? 'Bearer ...' : 'none' });
+  console.log('[v0] Request headers:', { hasAuth: !!(headers as Record<string, string>)['Authorization'] });
   
   const fetchOptions: RequestInit = {
     method,
@@ -284,19 +284,19 @@ function getPrimaryKeyForTable(table: string): string {
 // ============ Domain-Specific Functions ============
 
 /**
- * Category operations
+ * Category operations (legacy)
  */
 export const categories = {
-  getAll: (token: string | null) => getAll<Category>('category', token),
-  getOne: (id: number, token: string | null) => getOne<Category>('category', id, token),
-  create: (data: Omit<Category, 'category_id'>, token: string | null) =>
-    create<Category>('category', data, token),
-  update: (id: number, data: Partial<Category>, token: string | null) =>
-    update<Category>('category', id, data, token),
+  getAll: (token: string | null) => getAll<CategoryLegacy>('category', token),
+  getOne: (id: number, token: string | null) => getOne<CategoryLegacy>('category', id, token),
+  create: (data: Omit<CategoryLegacy, 'category_id'>, token: string | null) =>
+    create<CategoryLegacy>('category', data, token),
+  update: (id: number, data: Partial<CategoryLegacy>, token: string | null) =>
+    update<CategoryLegacy>('category', id, data, token),
   delete: (id: number, token: string | null) => remove('category', id, token),
 };
 
-export interface Category {
+interface CategoryLegacy {
   category_id?: number;
   parent_id?: number | null;
   name: string;
@@ -330,38 +330,38 @@ export interface Product {
 }
 
 /**
- * State operations
+ * State operations (legacy)
  */
 export const states = {
-  getAll: (token: string | null) => getAll<State>('state', token),
-  getOne: (id: number, token: string | null) => getOne<State>('state', id, token),
-  create: (data: Omit<State, 'state_id'>, token: string | null) =>
-    create<State>('state', data, token),
-  update: (id: number, data: Partial<State>, token: string | null) =>
-    update<State>('state', id, data, token),
+  getAll: (token: string | null) => getAll<StateLegacy>('state', token),
+  getOne: (id: number, token: string | null) => getOne<StateLegacy>('state', id, token),
+  create: (data: Omit<StateLegacy, 'state_id'>, token: string | null) =>
+    create<StateLegacy>('state', data, token),
+  update: (id: number, data: Partial<StateLegacy>, token: string | null) =>
+    update<StateLegacy>('state', id, data, token),
   delete: (id: number, token: string | null) => remove('state', id, token),
 };
 
-export interface State {
+interface StateLegacy {
   state_id?: number;
   name: string;
   code?: string;
 }
 
 /**
- * State Area operations
+ * State Area operations (legacy)
  */
 export const stateAreas = {
-  getAll: (token: string | null) => getAll<StateArea>('state_area', token),
-  getOne: (id: number, token: string | null) => getOne<StateArea>('state_area', id, token),
-  create: (data: Omit<StateArea, 'area_id'>, token: string | null) =>
-    create<StateArea>('state_area', data, token),
-  update: (id: number, data: Partial<StateArea>, token: string | null) =>
-    update<StateArea>('state_area', id, data, token),
+  getAll: (token: string | null) => getAll<StateAreaLegacy>('state_area', token),
+  getOne: (id: number, token: string | null) => getOne<StateAreaLegacy>('state_area', id, token),
+  create: (data: Omit<StateAreaLegacy, 'area_id'>, token: string | null) =>
+    create<StateAreaLegacy>('state_area', data, token),
+  update: (id: number, data: Partial<StateAreaLegacy>, token: string | null) =>
+    update<StateAreaLegacy>('state_area', id, data, token),
   delete: (id: number, token: string | null) => remove('state_area', id, token),
 };
 
-export interface StateArea {
+interface StateAreaLegacy {
   area_id?: number;
   state_id: number;
   name: string;

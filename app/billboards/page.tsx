@@ -8,30 +8,41 @@ import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Input } from "@/components/ui/input"
+import { Search } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { truncateText } from "@/lib/utils"
-import { getAllBillboards, getAllCategories, type Billboard, type Category } from "@/lib/outdoors-api"
+import { getAllBillboards, getAllCategories, getAllStates, type Billboard, type Category, type State } from "@/lib/outdoors-api"
 
 export default function BillboardsPage() {
   const [billboards, setBillboards] = useState<Billboard[]>([])
   const [categories, setCategories] = useState<Category[]>([])
+  const [states, setStates] = useState<State[]>([])
   const [selectedCategory, setSelectedCategory] = useState<string>("all")
+  const [selectedState, setSelectedState] = useState<string>("all")
+  const [searchTerm, setSearchTerm] = useState<string>("")
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     loadData()
-  }, [selectedCategory])
+  }, [selectedCategory, selectedState])
 
   const loadData = async () => {
     setIsLoading(true)
     try {
-      const [billboardsData, categoriesData] = await Promise.all([
-        getAllBillboards(null, selectedCategory === "all" ? undefined : parseInt(selectedCategory)),
-        getAllCategories(null)
+      const [billboardsData, categoriesData, statesData] = await Promise.all([
+        getAllBillboards(
+          null,
+          selectedCategory === "all" ? undefined : parseInt(selectedCategory),
+          selectedState === "all" ? undefined : parseInt(selectedState)
+        ),
+        getAllCategories(null),
+        getAllStates(false, null)
       ])
       setBillboards(billboardsData)
       setCategories(categoriesData)
+      setStates(statesData)
     } catch (error) {
       console.error("Error loading billboards:", error)
     } finally {
@@ -58,6 +69,16 @@ export default function BillboardsPage() {
     return parts.join(", ") || billboard.address || "Nigeria"
   }
 
+  const filteredBillboards = billboards.filter((billboard) => {
+    if (!searchTerm) return true
+    const searchLower = searchTerm.toLowerCase()
+    const name = (billboard.name || billboard.title || "").toLowerCase()
+    const description = (billboard.long_desc || "").replace(/<[^>]*>/g, '').toLowerCase()
+    const location = getLocation(billboard).toLowerCase()
+    const category = (billboard.category_name || "").toLowerCase()
+    return name.includes(searchLower) || description.includes(searchLower) || location.includes(searchLower) || category.includes(searchLower)
+  })
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -71,27 +92,61 @@ export default function BillboardsPage() {
             </div>
 
             <div className="max-w-7xl mx-auto mb-8">
+              <div className="mb-6">
+                <div className="relative max-w-md">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                  <Input
+                    type="text"
+                    placeholder="Search billboards by name, location, or category..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
+              </div>
               <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="text-sm text-muted-foreground">
-                    Showing {billboards.length} billboards
+                    Showing {filteredBillboards.length} billboards
                   </span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <label className="text-sm font-medium">Filter by Type:</label>
-                  <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                    <SelectTrigger className="w-[200px]">
-                      <SelectValue placeholder="All Categories" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Categories</SelectItem>
-                      {categories.map((cat) => (
-                        <SelectItem key={cat.category_id} value={cat.category_id.toString()}>
-                          {cat.name} {cat.product_count ? `(${cat.product_count})` : ''}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                  <div className="flex items-center gap-2">
+                    <label className="text-sm font-medium">State:</label>
+                    <Select value={selectedState} onValueChange={setSelectedState}>
+                      <SelectTrigger className="w-[200px]">
+                        <SelectValue placeholder="All States" />
+                      </SelectTrigger>
+                      <SelectContent align="end">
+                        <SelectItem value="all">All States</SelectItem>
+                        {states.map((state) => (
+                          state.state_id && (
+                            <SelectItem key={state.state_id} value={state.state_id.toString()}>
+                              {state.state_name}
+                            </SelectItem>
+                          )
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <label className="text-sm font-medium">Category:</label>
+                    <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                      <SelectTrigger className="w-[200px]">
+                        <SelectValue placeholder="All Categories" />
+                      </SelectTrigger>
+                      <SelectContent align="end">
+                        <SelectItem value="all">All Categories</SelectItem>
+                        {categories.map((cat) => (
+                          cat.category_id && (
+                            <SelectItem key={cat.category_id} value={cat.category_id.toString()}>
+                              {cat.name} {cat.product_count ? `(${cat.product_count})` : ''}
+                            </SelectItem>
+                          )
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
               </div>
             </div>
@@ -103,13 +158,15 @@ export default function BillboardsPage() {
                   <p className="text-muted-foreground">Loading billboards...</p>
                 </div>
               </div>
-            ) : billboards.length === 0 ? (
+            ) : filteredBillboards.length === 0 ? (
               <div className="text-center py-16">
-                <p className="text-xl text-muted-foreground">No billboards found.</p>
+                <p className="text-xl text-muted-foreground">
+                  {searchTerm ? "No billboards match your search." : "No billboards found."}
+                </p>
               </div>
             ) : (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-7xl mx-auto">
-                {billboards.map((billboard) => (
+                {filteredBillboards.map((billboard) => (
                   <Card
                     key={billboard.product_id}
                     className="overflow-hidden border-2 shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out group hover:border-primary/50 hover:-translate-y-2"
