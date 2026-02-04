@@ -17,13 +17,11 @@ export async function GET(request: NextRequest) {
           c.name as category_name,
           c.url as category_url,
           s.state_name,
-          sa.area_name,
-          pi.file_path as default_image
+          sa.area_name
         FROM product p
         LEFT JOIN category c ON p.category_id = c.category_id
         LEFT JOIN state s ON p.state_id = s.state_id
         LEFT JOIN state_area sa ON p.area_id = sa.area_id
-        LEFT JOIN product_images pi ON p.product_id = pi.product_id AND pi.sort_order = 0
         WHERE p.product_id = ?
         LIMIT 1
       `;
@@ -43,13 +41,11 @@ export async function GET(request: NextRequest) {
         c.name as category_name,
         c.url as category_url,
         s.state_name,
-        sa.area_name,
-        pi.file_path as default_image
+        sa.area_name
       FROM product p
       LEFT JOIN category c ON p.category_id = c.category_id
       LEFT JOIN state s ON p.state_id = s.state_id
       LEFT JOIN state_area sa ON p.area_id = sa.area_id
-      LEFT JOIN product_images pi ON p.product_id = pi.product_id AND pi.sort_order = 0
       WHERE 1=1
     `;
 
