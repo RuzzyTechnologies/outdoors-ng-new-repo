@@ -11,32 +11,69 @@ export async function GET(request: NextRequest) {
   try {
     if (id) {
       // Get single billboard
-      const query = `SELECT * FROM product WHERE product_id = ? LIMIT 1`;
-      const [rows] = await db.query<RowDataPacket[]>(query, [id]);
+      const [productRows] = await db.query<RowDataPacket[]>(
+        'SELECT * FROM product WHERE product_id = ? LIMIT 1',
+        [id]
+      );
+
+      if (productRows.length === 0) {
+        return NextResponse.json({ success: true, data: null });
+      }
+
+      const product = productRows[0];
+
+      // Try to get images
+      try {
+        const [imageRows] = await db.query<RowDataPacket[]>(
+          'SELECT * FROM product_images WHERE product_id = ? ORDER BY sort_order ASC LIMIT 1',
+          [id]
+        );
+        if (imageRows.length > 0) {
+          product.image_url = imageRows[0].image || imageRows[0].path || imageRows[0].url || null;
+        }
+      } catch {
+        // Images not available
+      }
 
       return NextResponse.json({
         success: true,
-        data: rows[0] || null,
+        data: product,
       });
     }
 
-    // Get all billboards with filters
-    let query = `SELECT * FROM product WHERE 1=1`;
+    // Get all billboards
+    let query = 'SELECT * FROM product WHERE 1=1';
     const params: any[] = [];
 
     if (categoryId) {
-      query += ` AND category_id = ?`;
+      query += ' AND category_id = ?';
       params.push(categoryId);
     }
 
     if (stateId) {
-      query += ` AND state = ?`;
+      query += ' AND state = ?';
       params.push(stateId);
     }
 
-    query += ` ORDER BY product_id DESC LIMIT 100`;
+    query += ' ORDER BY product_id DESC LIMIT 100';
 
     const [rows] = await db.query<RowDataPacket[]>(query, params);
+
+    // Try to add images to each product
+    for (const product of rows) {
+      try {
+        const [imageRows] = await db.query<RowDataPacket[]>(
+          'SELECT * FROM product_images WHERE product_id = ? ORDER BY sort_order ASC LIMIT 1',
+          [product.product_id]
+        );
+        if (imageRows.length > 0) {
+          const img = imageRows[0];
+          product.image_url = img.image || img.path || img.url || img.file_path || null;
+        }
+      } catch {
+        // Images not available for this product
+      }
+    }
 
     return NextResponse.json({
       success: true,
