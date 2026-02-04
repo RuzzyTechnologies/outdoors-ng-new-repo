@@ -22,14 +22,14 @@ export async function GET(request: NextRequest) {
 
       const product = productRows[0];
 
-      // Try to get images
+      // Get images
       try {
         const [imageRows] = await db.query<RowDataPacket[]>(
-          'SELECT * FROM product_images WHERE product_id = ? ORDER BY sort_order ASC LIMIT 1',
+          'SELECT name FROM product_images WHERE product_id = ? AND `default` = 1 LIMIT 1',
           [id]
         );
         if (imageRows.length > 0) {
-          product.image_url = imageRows[0].image || imageRows[0].path || imageRows[0].url || null;
+          product.image_url = imageRows[0].name;
         }
       } catch {
         // Images not available
@@ -41,39 +41,30 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    // Get all billboards
-    let query = 'SELECT * FROM product WHERE 1=1';
+    // Get all billboards with images in one query using LEFT JOIN
+    let query = `
+      SELECT
+        p.*,
+        pi.name as image_url
+      FROM product p
+      LEFT JOIN product_images pi ON p.product_id = pi.product_id AND pi.default = 1
+      WHERE 1=1
+    `;
     const params: any[] = [];
 
     if (categoryId) {
-      query += ' AND category_id = ?';
+      query += ' AND p.category_id = ?';
       params.push(categoryId);
     }
 
     if (stateId) {
-      query += ' AND state = ?';
+      query += ' AND p.state = ?';
       params.push(stateId);
     }
 
-    query += ' ORDER BY product_id DESC LIMIT 100';
+    query += ' ORDER BY p.product_id DESC LIMIT 100';
 
     const [rows] = await db.query<RowDataPacket[]>(query, params);
-
-    // Try to add images to each product
-    for (const product of rows) {
-      try {
-        const [imageRows] = await db.query<RowDataPacket[]>(
-          'SELECT * FROM product_images WHERE product_id = ? ORDER BY sort_order ASC LIMIT 1',
-          [product.product_id]
-        );
-        if (imageRows.length > 0) {
-          const img = imageRows[0];
-          product.image_url = img.image || img.path || img.url || img.file_path || null;
-        }
-      } catch {
-        // Images not available for this product
-      }
-    }
 
     return NextResponse.json({
       success: true,
