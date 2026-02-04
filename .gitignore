@@ -16,8 +16,11 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files
-.env*
+# env files (except .env which contains production config)
+.env.local
+.env.development
+.env.test
+.env*.local
 
 # vercel
 .vercel
