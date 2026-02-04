@@ -10,22 +10,8 @@ export async function GET(request: NextRequest) {
 
   try {
     if (id) {
-      // Get single billboard with joined data
-      const query = `
-        SELECT
-          p.*,
-          c.name as category_name,
-          c.url as category_url,
-          s.state_name,
-          sa.area_name
-        FROM product p
-        LEFT JOIN category c ON p.category_id = c.category_id
-        LEFT JOIN state s ON p.state_id = s.state_id
-        LEFT JOIN state_area sa ON p.area_id = sa.area_id
-        WHERE p.product_id = ?
-        LIMIT 1
-      `;
-
+      // Get single billboard - simple query first
+      const query = `SELECT * FROM product WHERE product_id = ? LIMIT 1`;
       const [rows] = await db.query<RowDataPacket[]>(query, [id]);
 
       return NextResponse.json({
@@ -35,33 +21,20 @@ export async function GET(request: NextRequest) {
     }
 
     // Get all billboards with filters
-    let query = `
-      SELECT
-        p.*,
-        c.name as category_name,
-        c.url as category_url,
-        s.state_name,
-        sa.area_name
-      FROM product p
-      LEFT JOIN category c ON p.category_id = c.category_id
-      LEFT JOIN state s ON p.state_id = s.state_id
-      LEFT JOIN state_area sa ON p.area_id = sa.area_id
-      WHERE 1=1
-    `;
-
+    let query = `SELECT * FROM product WHERE 1=1`;
     const params: any[] = [];
 
     if (categoryId) {
-      query += ` AND p.category_id = ?`;
+      query += ` AND category_id = ?`;
       params.push(categoryId);
     }
 
     if (stateId) {
-      query += ` AND p.state_id = ?`;
+      query += ` AND state_id = ?`;
       params.push(stateId);
     }
 
-    query += ` ORDER BY p.product_id DESC`;
+    query += ` ORDER BY product_id DESC`;
 
     const [rows] = await db.query<RowDataPacket[]>(query, params);
 
@@ -81,29 +54,12 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const data = await request.json();
+    const fields = Object.keys(data).filter(k => k !== 'product_id');
+    const values = fields.map(f => data[f]);
+    const placeholders = fields.map(() => '?').join(', ');
 
-    const query = `
-      INSERT INTO product (
-        category_id, name, short_desc, long_desc, file_path,
-        state_id, area_id, address, size, price, status, date_added
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
-    `;
-
-    const params = [
-      data.category_id || null,
-      data.name || '',
-      data.short_desc || '',
-      data.long_desc || '',
-      data.file_path || '',
-      data.state_id || null,
-      data.area_id || null,
-      data.address || '',
-      data.size || '',
-      data.price || 0,
-      data.status || 'available',
-    ];
-
-    const [result] = await db.query<ResultSetHeader>(query, params);
+    const query = `INSERT INTO product (${fields.join(', ')}) VALUES (${placeholders})`;
+    const [result] = await db.query<ResultSetHeader>(query, values);
 
     return NextResponse.json({
       success: true,
@@ -129,27 +85,12 @@ export async function PUT(request: NextRequest) {
 
   try {
     const data = await request.json();
+    const fields = Object.keys(data).filter(k => k !== 'product_id');
+    const updates = fields.map(f => `${f} = ?`).join(', ');
+    const values = fields.map(f => data[f]);
 
-    const updates: string[] = [];
-    const params: any[] = [];
-
-    if (data.name !== undefined) { updates.push('name = ?'); params.push(data.name); }
-    if (data.short_desc !== undefined) { updates.push('short_desc = ?'); params.push(data.short_desc); }
-    if (data.long_desc !== undefined) { updates.push('long_desc = ?'); params.push(data.long_desc); }
-    if (data.category_id !== undefined) { updates.push('category_id = ?'); params.push(data.category_id); }
-    if (data.state_id !== undefined) { updates.push('state_id = ?'); params.push(data.state_id); }
-    if (data.area_id !== undefined) { updates.push('area_id = ?'); params.push(data.area_id); }
-    if (data.address !== undefined) { updates.push('address = ?'); params.push(data.address); }
-    if (data.size !== undefined) { updates.push('size = ?'); params.push(data.size); }
-    if (data.price !== undefined) { updates.push('price = ?'); params.push(data.price); }
-    if (data.status !== undefined) { updates.push('status = ?'); params.push(data.status); }
-
-    updates.push('date_updated = NOW()');
-
-    const query = `UPDATE product SET ${updates.join(', ')} WHERE product_id = ?`;
-    params.push(id);
-
-    await db.query(query, params);
+    const query = `UPDATE product SET ${updates} WHERE product_id = ?`;
+    await db.query(query, [...values, id]);
 
     return NextResponse.json({
       success: true,
