@@ -10,129 +10,33 @@ export async function GET(request: NextRequest) {
 
   try {
     if (id) {
-      // Get single billboard with images
-      const productQuery = `SELECT * FROM product WHERE product_id = ? LIMIT 1`;
-      const [productRows] = await db.query<RowDataPacket[]>(productQuery, [id]);
-
-      if (productRows.length === 0) {
-        return NextResponse.json({ success: true, data: null });
-      }
-
-      const product = productRows[0];
-
-      // Get images for this product
-      const imagesQuery = `
-        SELECT image_id, file_path, sort_order
-        FROM product_images
-        WHERE product_id = ?
-        ORDER BY sort_order ASC
-      `;
-      const [imageRows] = await db.query<RowDataPacket[]>(imagesQuery, [id]);
-
-      // Get category name
-      if (product.category_id) {
-        const [catRows] = await db.query<RowDataPacket[]>(
-          'SELECT name, url FROM category WHERE category_id = ?',
-          [product.category_id]
-        );
-        if (catRows.length > 0) {
-          product.category_name = catRows[0].name;
-          product.category_url = catRows[0].url;
-        }
-      }
-
-      // Get state name
-      if (product.state) {
-        const [stateRows] = await db.query<RowDataPacket[]>(
-          'SELECT state_name FROM state WHERE state_id = ?',
-          [product.state]
-        );
-        if (stateRows.length > 0) {
-          product.state_name = stateRows[0].state_name;
-        }
-      }
-
-      // Get area name
-      if (product.state_area) {
-        const [areaRows] = await db.query<RowDataPacket[]>(
-          'SELECT area_name FROM state_area WHERE area_id = ?',
-          [product.state_area]
-        );
-        if (areaRows.length > 0) {
-          product.area_name = areaRows[0].area_name;
-        }
-      }
-
-      // Add images to product
-      product.images = imageRows;
-      product.image_url = imageRows.length > 0 ? imageRows[0].file_path : null;
+      // Get single billboard
+      const query = `SELECT * FROM product WHERE product_id = ? LIMIT 1`;
+      const [rows] = await db.query<RowDataPacket[]>(query, [id]);
 
       return NextResponse.json({
         success: true,
-        data: product,
+        data: rows[0] || null,
       });
     }
 
-    // Get all billboards
-    let query = `
-      SELECT
-        p.*,
-        (SELECT file_path FROM product_images WHERE product_id = p.product_id ORDER BY sort_order ASC LIMIT 1) as image_url
-      FROM product p
-      WHERE 1=1
-    `;
+    // Get all billboards with filters
+    let query = `SELECT * FROM product WHERE 1=1`;
     const params: any[] = [];
 
     if (categoryId) {
-      query += ` AND p.category_id = ?`;
+      query += ` AND category_id = ?`;
       params.push(categoryId);
     }
 
     if (stateId) {
-      query += ` AND p.state = ?`;
+      query += ` AND state = ?`;
       params.push(stateId);
     }
 
-    query += ` ORDER BY p.product_id DESC LIMIT 100`;
+    query += ` ORDER BY product_id DESC LIMIT 100`;
 
     const [rows] = await db.query<RowDataPacket[]>(query, params);
-
-    // Enrich with category, state, and area names
-    for (const product of rows) {
-      // Get category name
-      if (product.category_id) {
-        const [catRows] = await db.query<RowDataPacket[]>(
-          'SELECT name, url FROM category WHERE category_id = ?',
-          [product.category_id]
-        );
-        if (catRows.length > 0) {
-          product.category_name = catRows[0].name;
-          product.category_url = catRows[0].url;
-        }
-      }
-
-      // Get state name
-      if (product.state) {
-        const [stateRows] = await db.query<RowDataPacket[]>(
-          'SELECT state_name FROM state WHERE state_id = ?',
-          [product.state]
-        );
-        if (stateRows.length > 0) {
-          product.state_name = stateRows[0].state_name;
-        }
-      }
-
-      // Get area name
-      if (product.state_area) {
-        const [areaRows] = await db.query<RowDataPacket[]>(
-          'SELECT area_name FROM state_area WHERE area_id = ?',
-          [product.state_area]
-        );
-        if (areaRows.length > 0) {
-          product.area_name = areaRows[0].area_name;
-        }
-      }
-    }
 
     return NextResponse.json({
       success: true,
