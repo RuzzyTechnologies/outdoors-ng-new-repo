@@ -127,7 +127,7 @@ export default function BillboardsPage() {
                       <SelectTrigger className="w-[200px]">
                         <SelectValue placeholder="All States" />
                       </SelectTrigger>
-                      <SelectContent align="end">
+                      <SelectContent>
                         <SelectItem value="all">All States</SelectItem>
                         {states.map((state) => (
                           state.state_id && (
@@ -145,7 +145,7 @@ export default function BillboardsPage() {
                       <SelectTrigger className="w-[200px]">
                         <SelectValue placeholder="All Categories" />
                       </SelectTrigger>
-                      <SelectContent align="end">
+                      <SelectContent>
                         <SelectItem value="all">All Categories</SelectItem>
                         {categories.map((cat) => (
                           cat.category_id && (
