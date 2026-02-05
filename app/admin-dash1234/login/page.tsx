@@ -22,7 +22,7 @@ export default function AdminLoginPage() {
   const testConnection = async () => {
     console.log('[v0] Testing connection to backend...')
     try {
-      const response = await fetch('http://localhost:3000/api/health', {
+      const response = await fetch('/api/health', {
         method: 'GET',
       })
       console.log('[v0] Health check response:', response.status)
@@ -127,7 +127,7 @@ export default function AdminLoginPage() {
 
         <div className="mt-6 text-center text-sm text-muted-foreground">
           <p>Login with your admin credentials from the backend.</p>
-          <p className="font-mono text-xs mt-1 text-yellow-600">Make sure your backend API is running and NEXT_PUBLIC_API_BASE_URL is set.</p>
+          <p className="font-mono text-xs mt-1 text-yellow-600">Ensure the API proxy is reachable and env vars are configured.</p>
         </div>
       </Card>
     </div>

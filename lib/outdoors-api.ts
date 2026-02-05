@@ -3,7 +3,16 @@
  * Connects to the secured admin-only CRUD API with JWT authentication
  */
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3000';
+const IS_BROWSER = typeof window !== "undefined";
+const API_BASE = IS_BROWSER ? "" : process.env.NEXT_PUBLIC_APP_URL?.replace(/\/+$/, "") ?? "";
+
+const buildAppUrl = (path: string) => {
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  if (!API_BASE) {
+    return normalizedPath;
+  }
+  return `${API_BASE}${normalizedPath}`;
+};
 
 interface ApiResponse<T = any> {
   success: boolean;
@@ -43,7 +52,7 @@ export async function login(credentials: LoginCredentials): Promise<AuthResponse
   console.log('[v0] Credentials:', { usernameOrEmail: credentials.usernameOrEmail, password: '***' });
   
   try {
-    const response = await fetch(`${API_BASE}/api/auth/login`, {
+    const response = await fetch(buildAppUrl("/api/auth/login"), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -115,7 +124,7 @@ async function crudRequest<T = any>(
   
   console.log('[v0] crudRequest called:', { method, table, id, hasToken: !!token, tokenLength: token?.length });
   
-  let url = `${API_BASE}/api/crud?table=${encodeURIComponent(table)}`;
+  let url = buildAppUrl(`/api/crud?table=${encodeURIComponent(table)}`);
   if (id) {
     url += `&id=${id}`;
   }
@@ -371,43 +380,31 @@ interface StateAreaLegacy {
 /**
  * Admin Users operations
  */
+export interface AdminUserRecord {
+  user_id?: number;
+  username?: string;
+  firstname?: string;
+  lastname?: string;
+  email?: string;
+  password?: string;
+  image?: string;
+  user_level?: number | string;
+  added_by?: number | string;
+  user_status?: string;
+  date_created?: string;
+  last_login?: string;
+  date_updated?: string;
+}
+
 export const adminUsers = {
   getAll: (token: string | null) => getAll<AdminUserRecord>('admin_users', token),
   getOne: (id: string, token: string | null) => getOne<AdminUserRecord>('admin_users', parseInt(id), token),
-  create: (data: Omit<AdminUserRecord, 'admin_id'>, token: string | null) =>
+  create: (data: Omit<AdminUserRecord, 'user_id'>, token: string | null) =>
     create<AdminUserRecord>('admin_users', data, token),
-  update: (id: string, data: Partial<AdminUserRecord>, token: string | null) =>
-    update<AdminUserRecord>('admin_users', parseInt(id), data, token),
-  delete: (id: string, token: string | null) => remove('admin_users', parseInt(id), token),
+  update: (id: number, data: Partial<AdminUserRecord>, token: string | null) =>
+    update<AdminUserRecord>('admin_users', id, data, token),
+  delete: (id: number, token: string | null) => remove('admin_users', id, token),
 };
-
-export interface AdminUserRecord {
-  admin_id?: string;
-  username: string;
-  email: string;
-  password?: string;
-  created_at?: string;
-  updated_at?: string;
-}
-
-/**
- * Category-Product junction operations
- */
-export const categoryProducts = {
-  getAll: (token: string | null) => getAll<CategoryProduct>('category_product', token),
-  getOne: (id: number, token: string | null) => getOne<CategoryProduct>('category_product', id, token),
-  create: (data: Omit<CategoryProduct, 'category_product_id'>, token: string | null) =>
-    create<CategoryProduct>('category_product', data, token),
-  delete: (id: number, token: string | null) => remove('category_product', id, token),
-};
-
-export interface CategoryProduct {
-  category_product_id?: number;
-  category_id: number;
-  product_id: number;
-  date_created?: string;
-  date_updated?: string;
-}
 
 // ============ Billboards (products from database) ============
 
@@ -448,11 +445,15 @@ export interface Billboard {
 /**
  * Billboard operations - works with products table
  */
-export async function getAllBillboards(token: string | null, categoryId?: number, stateId?: number): Promise<Billboard[]> {
+export async function getAllBillboards(
+  token: string | null,
+  categoryId?: number,
+  stateId?: number
+): Promise<Billboard[]> {
   try {
     console.log('[v0] getAllBillboards called');
 
-    let url = `${API_BASE}/api/billboards`;
+    let url = buildAppUrl("/api/billboards");
     const params = new URLSearchParams();
     if (categoryId) params.append('category_id', categoryId.toString());
     if (stateId) params.append('state', stateId.toString());
@@ -481,7 +482,7 @@ export async function getBillboardById(id: number, token: string | null): Promis
   try {
     console.log('[v0] getBillboardById called with ID:', id);
 
-    const response = await fetch(`${API_BASE}/api/billboards?id=${id}`, {
+    const response = await fetch(buildAppUrl(`/api/billboards/${id}`), {
       method: 'GET',
       headers: getAuthHeader(token),
     });
@@ -501,7 +502,7 @@ export async function getBillboardById(id: number, token: string | null): Promis
 
 export async function createBillboard(data: Partial<Billboard>, token: string | null): Promise<Billboard | null> {
   try {
-    const response = await fetch(`${API_BASE}/api/billboards`, {
+    const response = await fetch(buildAppUrl("/api/billboards"), {
       method: 'POST',
       headers: getAuthHeader(token),
       body: JSON.stringify(data),
@@ -522,7 +523,7 @@ export async function createBillboard(data: Partial<Billboard>, token: string | 
 
 export async function updateBillboard(id: number, data: Partial<Billboard>, token: string | null): Promise<boolean> {
   try {
-    const response = await fetch(`${API_BASE}/api/billboards?id=${id}`, {
+    const response = await fetch(buildAppUrl(`/api/billboards/${id}`), {
       method: 'PUT',
       headers: getAuthHeader(token),
       body: JSON.stringify(data),
@@ -542,7 +543,7 @@ export async function updateBillboard(id: number, data: Partial<Billboard>, toke
 
 export async function deleteBillboard(id: number, token: string | null): Promise<boolean> {
   try {
-    const response = await fetch(`${API_BASE}/api/billboards?id=${id}`, {
+    const response = await fetch(buildAppUrl(`/api/billboards/${id}`), {
       method: 'DELETE',
       headers: getAuthHeader(token),
     });
@@ -576,7 +577,7 @@ export interface Category {
 
 export async function getAllCategories(token: string | null): Promise<Category[]> {
   try {
-    const response = await fetch(`${API_BASE}/api/categories`, {
+    const response = await fetch(buildAppUrl("/api/categories"), {
       method: 'GET',
       headers: getAuthHeader(token),
     });
@@ -609,14 +610,15 @@ export interface StateArea {
 
 export async function getAllStates(withAreas: boolean = false, token: string | null = null): Promise<State[]> {
   try {
-    const url = withAreas ? `${API_BASE}/api/states?with_areas=1` : `${API_BASE}/api/states`;
+    const url = withAreas ? buildAppUrl("/api/states?with_areas=1") : buildAppUrl("/api/states");
     const response = await fetch(url, {
       method: 'GET',
       headers: getAuthHeader(token),
     });
 
     if (!response.ok) {
-      throw new Error('Failed to fetch states');
+      console.error('[v0] States request failed:', response.status, response.statusText);
+      return [];
     }
 
     const result = await response.json();
@@ -632,7 +634,7 @@ export async function getAllStates(withAreas: boolean = false, token: string | n
  */
 export async function healthCheck(): Promise<boolean> {
   try {
-    const response = await fetch(`${API_BASE}/api/crud?ping=1`);
+    const response = await fetch(buildAppUrl("/api/health"));
     return response.ok;
   } catch {
     return false;
