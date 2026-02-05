@@ -4,12 +4,12 @@ import { MapPin } from "lucide-react"
 
 export function FindBillboardsSection() {
   const locations = [
-    { name: "Lagos", count: 1006, slug: "lagos" },
-    { name: "Kano", count: 102, slug: "kano" },
-    { name: "Benin", count: 126, slug: "benin" },
-    { name: "Abuja", count: 324, slug: "abuja" },
-    { name: "Rivers", count: 239, slug: "rivers" },
-    { name: "Cross Rivers", count: 65, slug: "crossrivers" },
+    { name: "Lagos", count: 1006, stateId: 1 },
+    { name: "Kano", count: 102, stateId: 36 },
+    { name: "Benin", count: 126, stateId: 4 },
+    { name: "Abuja", count: 324, stateId: 3 },
+    { name: "Rivers", count: 239, stateId: 9 },
+    { name: "Cross Rivers", count: 65, stateId: 6 },
   ]
 
   return (
@@ -23,7 +23,7 @@ export function FindBillboardsSection() {
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {locations.map((location) => (
-              <Link key={location.slug} href={`/billboard-in-${location.slug}`}>
+              <Link key={location.stateId} href={`/billboards?state=${location.stateId}`}>
                 <Card className="p-6 hover:shadow-lg hover:border-primary/50 transition-all cursor-pointer group">
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">

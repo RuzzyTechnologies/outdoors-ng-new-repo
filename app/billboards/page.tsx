@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { useSearchParams } from "next/navigation"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { Breadcrumbs } from "@/components/breadcrumbs"
@@ -16,6 +17,7 @@ import { truncateText } from "@/lib/utils"
 import { getAllBillboards, getAllCategories, getAllStates, type Billboard, type Category, type State } from "@/lib/outdoors-api"
 
 export default function BillboardsPage() {
+  const searchParams = useSearchParams()
   const [billboards, setBillboards] = useState<Billboard[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   const [states, setStates] = useState<State[]>([])
@@ -23,6 +25,14 @@ export default function BillboardsPage() {
   const [selectedState, setSelectedState] = useState<string>("all")
   const [searchTerm, setSearchTerm] = useState<string>("")
   const [isLoading, setIsLoading] = useState(true)
+
+  // Initialize filters from URL params
+  useEffect(() => {
+    const stateParam = searchParams.get('state')
+    const categoryParam = searchParams.get('category')
+    if (stateParam) setSelectedState(stateParam)
+    if (categoryParam) setSelectedCategory(categoryParam)
+  }, [searchParams])
 
   useEffect(() => {
     loadData()
