@@ -60,6 +60,7 @@ function SelectContent({
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
         data-slot="select-content"
+        style={{ animationDuration: '0s', transitionDuration: '0s' }}
         className={cn(
           'bg-popover text-popover-foreground relative z-50 max-h-(--radix-select-content-available-height) min-w-[8rem] origin-(--radix-select-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border shadow-md',
           position === 'popper' &&
