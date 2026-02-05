@@ -11,7 +11,7 @@ export async function GET() {
     const [count] = await db.query<RowDataPacket[]>('SELECT COUNT(*) as total FROM admin_users');
 
     // Get sample (without passwords)
-    const [samples] = await db.query<RowDataPacket[]>('SELECT admin_id, username, email FROM admin_users LIMIT 3');
+    const [samples] = await db.query<RowDataPacket[]>('SELECT user_id, username, email FROM admin_users LIMIT 3');
 
     return NextResponse.json({
       success: true,

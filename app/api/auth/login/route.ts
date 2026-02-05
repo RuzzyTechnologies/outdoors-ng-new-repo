@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
 
     // Query admin_users table with correct column names
     const query = `
-      SELECT admin_id, username, email, password
+      SELECT user_id, username, email, password
       FROM admin_users
       WHERE username = ? OR email = ?
       LIMIT 1
@@ -41,13 +41,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Generate a simple token (use JWT in production)
-    const token = Buffer.from(`${admin.admin_id}:${admin.username}:${Date.now()}`).toString('base64');
+    const token = Buffer.from(`${admin.user_id}:${admin.username}:${Date.now()}`).toString('base64');
 
     return NextResponse.json({
       success: true,
       token,
       admin: {
-        id: admin.admin_id,
+        id: admin.user_id,
         username: admin.username,
         email: admin.email,
       },
