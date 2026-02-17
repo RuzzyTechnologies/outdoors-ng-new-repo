@@ -8,10 +8,10 @@ import Image from "next/image"
 export default function TeamPage() {
   const boardMembers = [
     {
-      name: "Sir Emmanuel Ikozoboh",
+      name: "Sir Emmanuel Ikazoboh",
       title: "Chairman",
       image: "/images/team/chairman.jpg",
-      linkedIn: "https://linkedin.com/in/emmanuel-ikozoboh",
+      linkedIn: "https://linkedin.com/in/emmanuel-ikazoboh",
       bio: "Visionary leader guiding strategic direction and governance",
     },
     {
@@ -22,10 +22,10 @@ export default function TeamPage() {
       bio: "Deputy leadership and strategic oversight",
     },
     {
-      name: "Michael Emeleme",
+      name: "Michael Emelieze",
       title: "Group CEO",
       image: "/images/team/group-ceo.jpg",
-      linkedIn: "https://linkedin.com/in/michael-emeleme",
+      linkedIn: "https://linkedin.com/in/michael-emelieze",
       bio: "Executive leadership driving operational excellence",
     },
     {
@@ -36,10 +36,10 @@ export default function TeamPage() {
       bio: "Board director providing strategic guidance and oversight",
     },
     {
-      name: "Dr. Josephine Eimen, Pharm Dr",
+      name: "Dr. Josephine Ehimen, Pharm Dr",
       title: "Director",
       image: "/images/team/director-2.jpg",
-      linkedIn: "https://linkedin.com/in/josephine-eimen",
+      linkedIn: "https://linkedin.com/in/josephine-ehimen",
       bio: "Pharmaceutical and healthcare expertise on board",
     },
     {
@@ -50,10 +50,10 @@ export default function TeamPage() {
       bio: "Seasoned director bringing industry expertise",
     },
     {
-      name: "Emmanuella Uyaelume, Esq",
+      name: "Emmanuella Uyaelumo, Esq",
       title: "Secretary",
       image: "/images/team/director-4.jpg",
-      linkedIn: "https://linkedin.com/in/emmanuella-uyaelume",
+      linkedIn: "https://linkedin.com/in/emmanuella-uyaelumo",
       bio: "Legal and compliance expertise on board",
     },
   ]
