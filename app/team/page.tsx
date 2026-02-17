@@ -91,7 +91,7 @@ export default function TeamPage() {
                   key={i}
                   className="overflow-hidden hover:shadow-lg transition-all duration-300 hover:border-primary/50"
                 >
-                  <div className="relative h-48 bg-muted overflow-hidden">
+                  <div className="relative h-64 bg-muted overflow-hidden">
                     <div className="w-full h-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
                       <div className="text-center">
                         <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
