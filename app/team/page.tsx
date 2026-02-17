@@ -57,9 +57,9 @@ export default function TeamPage() {
       <Breadcrumbs />
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="py-20 bg-gradient-to-b from-primary/10 to-background">
+        <section className="py-32 bg-gradient-to-b from-primary/10 to-background">
           <div className="container mx-auto px-4 max-w-6xl">
-            <div className="text-center mb-16">
+            <div className="text-center mb-8">
               <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Team</h1>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
                 Meet the talented professionals driving innovation and excellence in outdoor advertising across Nigeria
@@ -69,9 +69,9 @@ export default function TeamPage() {
         </section>
 
         {/* Board Members Grid */}
-        <section className="py-20 bg-background">
+        <section className="py-12 bg-background">
           <div className="container mx-auto px-4 max-w-6xl">
-            <div className="text-center mb-16">
+            <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Board of Directors</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Experienced leaders committed to delivering outstanding results
@@ -120,7 +120,7 @@ export default function TeamPage() {
         </section>
 
         {/* Culture Section */}
-        <section className="py-20 bg-muted/30">
+        <section className="py-12 bg-muted/30">
           <div className="container mx-auto px-4 max-w-4xl">
             <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">Our Culture</h2>
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
