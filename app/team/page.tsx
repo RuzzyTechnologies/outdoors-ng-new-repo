@@ -51,7 +51,7 @@ export default function TeamPage() {
     },
     {
       name: "Emmanuella Uyaelume, Esq",
-      title: "Director",
+      title: "Secretary",
       image: "/images/team/director-4.jpg",
       linkedIn: "https://linkedin.com/in/emmanuella-uyaelume",
       bio: "Legal and compliance expertise on board",
