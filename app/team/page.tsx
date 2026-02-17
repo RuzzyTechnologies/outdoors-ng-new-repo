@@ -8,10 +8,10 @@ import Image from "next/image"
 export default function TeamPage() {
   const boardMembers = [
     {
-      name: "Sir Emmanuel Ikuzaboh",
+      name: "Sir Emmanuel Ikozoboh",
       title: "Chairman",
       image: "/images/team/chairman.jpg",
-      linkedIn: "https://linkedin.com/in/emmanuel-ikuzaboh",
+      linkedIn: "https://linkedin.com/in/emmanuel-ikozoboh",
       bio: "Visionary leader guiding strategic direction and governance",
     },
     {
@@ -36,17 +36,17 @@ export default function TeamPage() {
       bio: "Board director providing strategic guidance and oversight",
     },
     {
-      name: "Dr. Josephine Chimen",
+      name: "Dr. Josephine Eimen, Pharm Dr",
       title: "Director",
       image: "/images/team/director-2.jpg",
-      linkedIn: "https://linkedin.com/in/josephine-chimen",
+      linkedIn: "https://linkedin.com/in/josephine-eimen",
       bio: "Pharmaceutical and healthcare expertise on board",
     },
     {
-      name: "Dr. Innocent Ekeseme",
+      name: "Dr. Innocent Ekeleme",
       title: "Director",
       image: "/images/team/director-3.jpg",
-      linkedIn: "https://linkedin.com/in/innocent-ekeseme",
+      linkedIn: "https://linkedin.com/in/innocent-ekeleme",
       bio: "Seasoned director bringing industry expertise",
     },
     {
