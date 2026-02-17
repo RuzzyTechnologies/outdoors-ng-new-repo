@@ -91,11 +91,11 @@ export default function TeamPage() {
                   key={i}
                   className="overflow-hidden hover:shadow-lg transition-all duration-300 hover:border-primary/50"
                 >
-                  <div className="relative h-64 bg-muted overflow-hidden">
+                  <div className="relative h-48 bg-muted overflow-hidden">
                     <div className="w-full h-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
                       <div className="text-center">
-                        <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
-                          <span className="text-4xl font-bold text-primary">
+                        <div className="w-20 h-20 mx-auto mb-3 rounded-full bg-primary/10 flex items-center justify-center">
+                          <span className="text-3xl font-bold text-primary">
                             {member.name.split(" ").map((n) => n[0]).join("")}
                           </span>
                         </div>
@@ -103,13 +103,13 @@ export default function TeamPage() {
                     </div>
                   </div>
 
-                  <div className="p-6 flex flex-col h-full">
-                    <h3 className="text-xl font-bold mb-1">{member.name}</h3>
-                    <p className="text-sm text-primary font-semibold mb-3">{member.title}</p>
-                    <p className="text-sm text-muted-foreground mb-6 flex-grow">{member.bio}</p>
+                  <div className="p-4 flex flex-col h-full">
+                    <h3 className="text-lg font-bold mb-1">{member.name}</h3>
+                    <p className="text-xs text-primary font-semibold mb-2">{member.title}</p>
+                    <p className="text-xs text-muted-foreground mb-4 flex-grow">{member.bio}</p>
 
                     <button
-                      className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary font-medium transition-all duration-300"
+                      className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary font-medium transition-all duration-300"
                     >
                       <Linkedin className="h-4 w-4" />
                       <span className="hidden sm:inline">LinkedIn</span>
