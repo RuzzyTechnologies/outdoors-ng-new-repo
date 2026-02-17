@@ -108,14 +108,12 @@ export default function TeamPage() {
                     <p className="text-sm text-primary font-semibold mb-3">{member.title}</p>
                     <p className="text-sm text-muted-foreground mb-6 flex-grow">{member.bio}</p>
 
-                    <div className="flex gap-3">
-                      <button
-                        className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary font-medium transition-all duration-300"
-                      >
-                        <Linkedin className="h-4 w-4" />
-                        <span className="hidden sm:inline">LinkedIn</span>
-                      </button>
-                    </div>
+                    <button
+                      className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary font-medium transition-all duration-300"
+                    >
+                      <Linkedin className="h-4 w-4" />
+                      <span className="hidden sm:inline">LinkedIn</span>
+                    </button>
                   </div>
                 </Card>
               ))}
