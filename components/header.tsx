@@ -144,6 +144,22 @@ export function Header() {
               About
             </Link>
             <Link
+              href="/team"
+              className={`text-xs lg:text-sm uppercase tracking-wider font-medium transition-all duration-300 hover-lift ${
+                isActive("/team") ? "text-primary" : "text-muted-foreground hover:text-primary"
+              }`}
+            >
+              Team
+            </Link>
+            <Link
+              href="/careers"
+              className={`text-xs lg:text-sm uppercase tracking-wider font-medium transition-all duration-300 hover-lift ${
+                isActive("/careers") ? "text-primary" : "text-muted-foreground hover:text-primary"
+              }`}
+            >
+              Careers
+            </Link>
+            <Link
               href="/blog"
               className={`text-xs lg:text-sm uppercase tracking-wider font-medium transition-all duration-300 hover-lift ${
                 isActive("/blog") ? "text-primary" : "text-muted-foreground hover:text-primary"
@@ -290,6 +306,22 @@ export function Header() {
               }`}
             >
               About
+            </Link>
+            <Link
+              href="/team"
+              className={`block text-sm font-medium transition-colors py-2 hover-lift ${
+                isActive("/team") ? "text-primary" : "text-muted-foreground hover:text-primary"
+              }`}
+            >
+              Team
+            </Link>
+            <Link
+              href="/careers"
+              className={`block text-sm font-medium transition-colors py-2 hover-lift ${
+                isActive("/careers") ? "text-primary" : "text-muted-foreground hover:text-primary"
+              }`}
+            >
+              Careers
             </Link>
             <Link
               href="/blog"
