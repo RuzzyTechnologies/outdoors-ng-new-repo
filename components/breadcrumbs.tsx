@@ -67,6 +67,7 @@ export function Breadcrumbs() {
           </BreadcrumbList>
         </Breadcrumb>
       </div>
+      </div>
     </>
   )
 }
