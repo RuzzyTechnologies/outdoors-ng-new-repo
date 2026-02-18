@@ -38,7 +38,7 @@ export function Breadcrumbs() {
   })
 
   return (
-    <div className="sticky top-16 sm:top-20 z-40 bg-muted/30 border-b border-border backdrop-blur-sm">
+    <div className="sticky top-16 sm:top-20 z-40 bg-white/95 border-b border-border backdrop-blur-sm">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <Breadcrumb>
           <BreadcrumbList>
