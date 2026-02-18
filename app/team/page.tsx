@@ -64,7 +64,7 @@ export default function TeamPage() {
       <Breadcrumbs />
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="py-32 bg-gradient-to-b from-primary/10 to-background">
+        <section className="py-32 bg-background">
           <div className="container mx-auto px-4 max-w-6xl">
             <div className="text-center mb-8">
               <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Team</h1>
