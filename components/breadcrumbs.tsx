@@ -38,9 +38,12 @@ export function Breadcrumbs() {
   })
 
   return (
-    <>
-      <div className="fixed top-16 sm:top-20 left-0 right-0 h-0 bg-background z-30"></div>
-      <div className="sticky top-16 sm:top-20 z-40 bg-background border-b border-border backdrop-blur-sm">
+    <div 
+      className="sticky top-16 sm:top-20 z-40 bg-background border-b border-border backdrop-blur-sm"
+      style={{
+        boxShadow: "0 -80px 0 -60px rgb(var(--background))",
+      }}
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-2">
         <Breadcrumb>
           <BreadcrumbList>
@@ -67,8 +70,7 @@ export function Breadcrumbs() {
           </BreadcrumbList>
         </Breadcrumb>
       </div>
-      </div>
-    </>
+    </div>
   )
 }
 
