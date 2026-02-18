@@ -64,7 +64,7 @@ export default function TeamPage() {
       <Breadcrumbs />
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="py-32 bg-transparent">
+        <section className="py-32 bg-gradient-to-b from-primary/10 to-background">
           <div className="container mx-auto px-4 max-w-6xl">
             <div className="text-center mb-8">
               <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Team</h1>
@@ -76,7 +76,7 @@ export default function TeamPage() {
         </section>
 
         {/* Board Members Grid */}
-        <section className="py-12 bg-gradient-to-b from-primary/10 to-background">
+        <section className="py-12 bg-background">
           <div className="container mx-auto px-4 max-w-6xl">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Board of Directors</h2>
