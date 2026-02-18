@@ -50,7 +50,7 @@ export function Breadcrumbs() {
 
   return (
     <div className={`sticky top-16 sm:top-20 z-40 border-b border-border backdrop-blur-sm transition-all duration-500 ${
-      scrolled ? "bg-black/20" : ""
+      scrolled ? "bg-white/40" : ""
     }`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <Breadcrumb>
