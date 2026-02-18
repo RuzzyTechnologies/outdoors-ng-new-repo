@@ -121,7 +121,24 @@ export default function TeamPage() {
           </div>
         </section>
 
-
+        {/* Culture Section */}
+        <section className="py-12 bg-muted/30">
+          <div className="container mx-auto px-4 max-w-4xl">
+            <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">Our Culture</h2>
+            <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
+              <p>
+                At Outdoors.ng, we believe in fostering a culture of innovation, collaboration, and excellence. Our
+                team is driven by a shared vision to transform outdoor advertising and deliver unparalleled value to
+                our clients.
+              </p>
+              <p>
+                We invest in our people, promoting continuous learning and professional growth. Every team member
+                contributes to our success, and we celebrate achievements together while supporting each other through
+                challenges.
+              </p>
+            </div>
+          </div>
+        </section>
       </main>
       <Footer />
     </div>
