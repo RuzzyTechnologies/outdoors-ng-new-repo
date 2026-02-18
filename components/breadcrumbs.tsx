@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { useEffect, useState } from "react"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -13,6 +14,16 @@ import {
 
 export function Breadcrumbs() {
   const pathname = usePathname()
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 0)
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   // Don't show breadcrumbs on homepage
   if (pathname === "/") return null
@@ -38,7 +49,9 @@ export function Breadcrumbs() {
   })
 
   return (
-    <div className="sticky top-16 sm:top-20 z-40 bg-muted/30 border-b border-border backdrop-blur-sm">
+    <div className={`sticky top-16 sm:top-20 z-40 border-b border-border backdrop-blur-sm transition-all duration-500 ${
+      scrolled ? "bg-white/25" : ""
+    }`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <Breadcrumb>
           <BreadcrumbList>
