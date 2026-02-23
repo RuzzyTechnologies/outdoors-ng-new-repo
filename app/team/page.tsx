@@ -92,15 +92,12 @@ export default function TeamPage() {
                   className="overflow-hidden hover:shadow-lg transition-all duration-300 hover:border-primary/50"
                 >
                   <div className="relative h-64 bg-muted overflow-hidden">
-                    <div className="w-full h-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
-                      <div className="text-center">
-                        <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
-                          <span className="text-4xl font-bold text-primary">
-                            {member.name.split(" ").map((n) => n[0]).join("")}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                    <Image
+                      src={member.image}
+                      alt={member.name}
+                      fill
+                      className="object-cover"
+                    />
                   </div>
 
                   <div className="p-6 flex flex-col h-full">
