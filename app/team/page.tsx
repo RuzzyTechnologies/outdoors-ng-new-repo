@@ -25,7 +25,7 @@ export default function TeamPage() {
       name: "Michael Emelieze",
       title: "Group CEO",
       image: "/images/team/group-ceo.jpg",
-      linkedIn: "https://linkedin.com/in/michael-emelieze",
+      linkedIn: "https://www.linkedin.com/in/michael-emelieze-932619288?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3B8h9JBmhESW%2B96Hv4JnUR%2FQ%3D%3D",
       bio: "Executive leadership driving operational excellence",
     },
     {
