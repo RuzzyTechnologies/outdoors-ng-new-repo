@@ -91,12 +91,12 @@ export default function TeamPage() {
                   key={i}
                   className="overflow-hidden hover:shadow-lg transition-all duration-300 hover:border-primary/50"
                 >
-                  <div className="relative h-64 bg-muted overflow-hidden">
+                  <div className="relative h-64 bg-muted overflow-hidden flex items-center justify-center">
                     <Image
                       src={member.image}
                       alt={member.name}
                       fill
-                      className="object-cover"
+                      className="object-contain"
                     />
                   </div>
 
