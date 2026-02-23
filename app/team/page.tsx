@@ -10,7 +10,7 @@ export default function TeamPage() {
     {
       name: "Sir Emmanuel Ikazoboh",
       title: "Chairman",
-      image: "/images/team/chairman.jpg",
+      image: "/images/team/emmanuel-ikazoboh.jpg",
       linkedIn: "https://www.linkedin.com/in/emmanuel-ikazoboh-29a36b57/?originalSubdomain=ng",
       bio: "Visionary leader guiding strategic direction and governance",
     },
