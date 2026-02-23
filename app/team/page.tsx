@@ -39,7 +39,7 @@ export default function TeamPage() {
       name: "Dr. Josephine Ehimen, Pharm Dr",
       title: "Director",
       image: "/images/team/director-2.jpg",
-      linkedIn: "https://linkedin.com/in/josephine-ehimen",
+      linkedIn: "https://www.linkedin.com/in/josephine-ehimen-m-ciod-b169b344?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BELIYh9TYTsuxCuMU%2FDm2Tg%3D%3D",
       bio: "Pharmaceutical and healthcare expertise on board",
     },
     {
