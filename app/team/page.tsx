@@ -46,7 +46,7 @@ export default function TeamPage() {
       name: "Dr. Innocent Ekeleme",
       title: "Director",
       image: "/images/team/director-3.jpg",
-      linkedIn: "https://linkedin.com/in/innocent-ekeleme",
+      linkedIn: "https://www.linkedin.com/in/dr-innocent-ekeleme-a2b35678?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
       bio: "Seasoned director bringing industry expertise",
     },
     {
