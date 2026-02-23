@@ -11,7 +11,7 @@ export default function TeamPage() {
       name: "Sir Emmanuel Ikazoboh",
       title: "Chairman",
       image: "/images/team/chairman.jpg",
-      linkedIn: "https://linkedin.com/in/emmanuel-ikazoboh",
+      linkedIn: "https://www.linkedin.com/in/emmanuel-ikazoboh-29a36b57/?originalSubdomain=ng",
       bio: "Visionary leader guiding strategic direction and governance",
     },
     {
@@ -39,21 +39,21 @@ export default function TeamPage() {
       name: "Dr. Josephine Ehimen, Pharm Dr",
       title: "Director",
       image: "/images/team/director-2.jpg",
-      linkedIn: "https://linkedin.com/in/josephine-ehimen",
+      linkedIn: "https://www.linkedin.com/in/josephine-ehimen-m-ciod-b169b344?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BELIYh9TYTsuxCuMU%2FDm2Tg%3D%3D",
       bio: "Pharmaceutical and healthcare expertise on board",
     },
     {
       name: "Dr. Innocent Ekeleme",
       title: "Director",
       image: "/images/team/director-3.jpg",
-      linkedIn: "https://linkedin.com/in/innocent-ekeleme",
+      linkedIn: "https://www.linkedin.com/in/dr-innocent-ekeleme-a2b35678?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
       bio: "Seasoned director bringing industry expertise",
     },
     {
       name: "Emmanuella Uyaelumo, Esq",
       title: "Secretary",
       image: "/images/team/director-4.jpg",
-      linkedIn: "https://linkedin.com/in/emmanuella-uyaelumo",
+      linkedIn: "https://www.linkedin.com/in/emmanuella-uyaelumuo-7bb7322bb?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BgV2Vmy9sQGy0q6lXzUEaXg%3D%3D",
       bio: "Legal and compliance expertise on board",
     },
   ]
@@ -108,12 +108,15 @@ export default function TeamPage() {
                     <p className="text-sm text-primary font-semibold mb-3">{member.title}</p>
                     <p className="text-sm text-muted-foreground mb-6 flex-grow">{member.bio}</p>
 
-                    <button
+                    <a
+                      href={member.linkedIn}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary font-medium transition-all duration-300"
                     >
                       <Linkedin className="h-4 w-4" />
                       <span className="hidden sm:inline">LinkedIn</span>
-                    </button>
+                    </a>
                   </div>
                 </Card>
               ))}
