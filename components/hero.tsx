@@ -11,16 +11,16 @@ export function Hero() {
 
   const slides = [
     {
-      image: "/modern-led-billboard-at-night-in-lagos-nigeria-wit.jpg",
-      alt: "Billboard advertising in Lagos Nigeria",
+      image: "/billboard-african-1.jpg",
+      alt: "Digital LED billboard advertisement on Lagos street",
     },
     {
-      image: "/large-unipole-billboard-on-highway-in-nigeria-with.jpg",
-      alt: "Outdoor advertising billboards",
+      image: "/billboard-african-2.jpg",
+      alt: "Highway billboard advertising in Nigeria",
     },
     {
-      image: "/digital-led-billboard-screen-displaying-colorful-a.jpg",
-      alt: "Digital billboard displays",
+      image: "/billboard-african-3.jpg",
+      alt: "Illuminated evening billboard in African city",
     },
   ]
 
