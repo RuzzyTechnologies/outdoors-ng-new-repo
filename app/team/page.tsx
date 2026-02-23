@@ -53,7 +53,7 @@ export default function TeamPage() {
       name: "Emmanuella Uyaelumo, Esq",
       title: "Secretary",
       image: "/images/team/director-4.jpg",
-      linkedIn: "https://linkedin.com/in/emmanuella-uyaelumo",
+      linkedIn: "https://www.linkedin.com/in/emmanuella-uyaelumuo-7bb7322bb?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BgV2Vmy9sQGy0q6lXzUEaXg%3D%3D",
       bio: "Legal and compliance expertise on board",
     },
   ]
